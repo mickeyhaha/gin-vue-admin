@@ -138,12 +138,19 @@ auth(Vue)
 import uploader from 'vue-simple-uploader'
 Vue.use(uploader)
 
+import './assets/common.less'
+import dataV from '@jiaminghi/data-view'
+Vue.use(dataV)
+
+//引入echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts;
+
 export default new Vue({
     render: h => h(App),
     router,
     store
 }).$mount('#app')
-
 
 console.log(`
        欢迎使用 Gin-Vue-Admin
