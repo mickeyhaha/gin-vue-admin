@@ -1,16 +1,23 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <datav />
+    <!--<router-view></router-view>-->
   </div>
 </template>
 
 <script>
 import { checkDB } from "@/api/initdb"
+import datav from './view/datav/index.vue'
+
 export default {
   name: 'app',
   async created(){
     await checkDB()
-  }  
+  },
+
+  components: {
+    datav
+  },
 }
 </script>
 
