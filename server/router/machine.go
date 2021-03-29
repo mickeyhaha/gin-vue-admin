@@ -15,5 +15,7 @@ func InitMachineRouter(Router *gin.RouterGroup) {
 		MachineRouter.PUT("updateMachine", v1.UpdateMachine)    // 更新Machine
 		MachineRouter.GET("findMachine", v1.FindMachine)        // 根据ID获取Machine
 		MachineRouter.GET("getMachineList", v1.GetMachineList)  // 获取Machine列表
+		
+		MachineRouter.GET("getFlopData", v1.GetFlopData)  // getFlopData
 	}
 }
