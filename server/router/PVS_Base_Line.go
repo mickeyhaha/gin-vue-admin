@@ -1,0 +1,19 @@
+package router
+
+import (
+	"gin-vue-admin/api/v1"
+	"gin-vue-admin/middleware"
+	"github.com/gin-gonic/gin"
+)
+
+func InitPVS_Base_LineRouter(Router *gin.RouterGroup) {
+	PVS_Base_LineRouter := Router.Group("PBL").Use(middleware.OperationRecord())
+	{
+		PVS_Base_LineRouter.POST("createPVS_Base_Line", v1.CreatePVS_Base_Line)   // 新建PVS_Base_Line
+		PVS_Base_LineRouter.DELETE("deletePVS_Base_Line", v1.DeletePVS_Base_Line) // 删除PVS_Base_Line
+		PVS_Base_LineRouter.DELETE("deletePVS_Base_LineByIds", v1.DeletePVS_Base_LineByIds) // 批量删除PVS_Base_Line
+		PVS_Base_LineRouter.PUT("updatePVS_Base_Line", v1.UpdatePVS_Base_Line)    // 更新PVS_Base_Line
+		PVS_Base_LineRouter.GET("findPVS_Base_Line", v1.FindPVS_Base_Line)        // 根据ID获取PVS_Base_Line
+		PVS_Base_LineRouter.GET("getPVS_Base_LineList", v1.GetPVS_Base_LineList)  // 获取PVS_Base_Line列表
+	}
+}
