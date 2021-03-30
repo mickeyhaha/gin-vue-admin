@@ -13,7 +13,7 @@ import (
 //@return: err error
 
 func CreatePUB_MOrderProduce(PMOP model.PUB_MOrderProduce) (err error) {
-	err = global.GVA_DB.Create(&PMOP).Error
+	err = global.GVA_DB_MSSQL.Create(&PMOP).Error
 	return err
 }
 
@@ -24,7 +24,7 @@ func CreatePUB_MOrderProduce(PMOP model.PUB_MOrderProduce) (err error) {
 //@return: err error
 
 func DeletePUB_MOrderProduce(PMOP model.PUB_MOrderProduce) (err error) {
-	err = global.GVA_DB.Delete(&PMOP).Error
+	err = global.GVA_DB_MSSQL.Delete(&PMOP).Error
 	return err
 }
 
@@ -35,7 +35,7 @@ func DeletePUB_MOrderProduce(PMOP model.PUB_MOrderProduce) (err error) {
 //@return: err error
 
 func DeletePUB_MOrderProduceByIds(ids request.IdsReq) (err error) {
-	err = global.GVA_DB.Delete(&[]model.PUB_MOrderProduce{},"id in ?",ids.Ids).Error
+	err = global.GVA_DB_MSSQL.Delete(&[]model.PUB_MOrderProduce{},"id in ?",ids.Ids).Error
 	return err
 }
 
@@ -46,7 +46,7 @@ func DeletePUB_MOrderProduceByIds(ids request.IdsReq) (err error) {
 //@return: err error
 
 func UpdatePUB_MOrderProduce(PMOP model.PUB_MOrderProduce) (err error) {
-	err = global.GVA_DB.Save(&PMOP).Error
+	err = global.GVA_DB_MSSQL.Save(&PMOP).Error
 	return err
 }
 
@@ -57,7 +57,7 @@ func UpdatePUB_MOrderProduce(PMOP model.PUB_MOrderProduce) (err error) {
 //@return: err error, PMOP model.PUB_MOrderProduce
 
 func GetPUB_MOrderProduce(id uint) (err error, PMOP model.PUB_MOrderProduce) {
-	err = global.GVA_DB.Where("id = ?", id).First(&PMOP).Error
+	err = global.GVA_DB_MSSQL.Where("id = ?", id).First(&PMOP).Error
 	return
 }
 
@@ -68,49 +68,51 @@ func GetPUB_MOrderProduce(id uint) (err error, PMOP model.PUB_MOrderProduce) {
 //@return: err error, list interface{}, total int64
 
 func GetPUB_MOrderProduceInfoList(info request.PUB_MOrderProduceSearch) (err error, list interface{}, total int64) {
-	limit := info.PageSize
-	offset := info.PageSize * (info.Page - 1)
+	//limit := info.PageSize
+	//offset := info.PageSize * (info.Page - 1)
     // 创建db
-	db := global.GVA_DB.Model(&model.PUB_MOrderProduce{})
+	db := global.GVA_DB_MSSQL.Model(&model.PUB_MOrderProduce{})
     var PMOPs []model.PUB_MOrderProduce
     // 如果有条件搜索 下方会自动创建搜索语句
-    if info.LineName != "" {
-        db = db.Where("`LineName` LIKE ?","%"+ info.LineName+"%")
-    }
-    if info.MOrderNo != "" {
-        db = db.Where("`MOrderNo` LIKE ?","%"+ info.MOrderNo+"%")
-    }
-    if info.WorkOrderNo != "" {
-        db = db.Where("`WorkOrderNo` LIKE ?","%"+ info.WorkOrderNo+"%")
-    }
-    if info.Customer != "" {
-        db = db.Where("`Customer` LIKE ?","%"+ info.Customer+"%")
-    }
-    if info.CustOrderNo != "" {
-        db = db.Where("`CustOrderNo` LIKE ?","%"+ info.CustOrderNo+"%")
-    }
-    if info.MachineType != "" {
-        db = db.Where("`MachineType` LIKE ?","%"+ info.MachineType+"%")
-    }
-    if info.BOMNo != "" {
-        db = db.Where("`BOMNo` LIKE ?","%"+ info.BOMNo+"%")
-    }
-    if info.BOMVersion != "" {
-        db = db.Where("`BOMVersion` LIKE ?","%"+ info.BOMVersion+"%")
-    }
-    if info.Product != "" {
-        db = db.Where("`Product` LIKE ?","%"+ info.Product+"%")
-    }
-    if info.PasteSide != "" {
-        db = db.Where("`PasteSide` LIKE ?","%"+ info.PasteSide+"%")
-    }
-    if !info.BeginTime.IsZero() {
-         db = db.Where("`BeginTime` <> ?",info.BeginTime)
-    }
-    if info.Remark != "" {
-        db = db.Where("`Remark` LIKE ?","%"+ info.Remark+"%")
-    }
-	err = db.Count(&total).Error
-	err = db.Limit(limit).Offset(offset).Find(&PMOPs).Error
+    //if info.LineName != "" {
+    //    db = db.Where("`LineName` LIKE ?","%"+ info.LineName+"%")
+    //}
+    //if info.MOrderNo != "" {
+    //    db = db.Where("`MOrderNo` LIKE ?","%"+ info.MOrderNo+"%")
+    //}
+    //if info.WorkOrderNo != "" {
+    //    db = db.Where("`WorkOrderNo` LIKE ?","%"+ info.WorkOrderNo+"%")
+    //}
+    //if info.Customer != "" {
+    //    db = db.Where("`Customer` LIKE ?","%"+ info.Customer+"%")
+    //}
+    //if info.CustOrderNo != "" {
+    //    db = db.Where("`CustOrderNo` LIKE ?","%"+ info.CustOrderNo+"%")
+    //}
+    //if info.MachineType != "" {
+    //    db = db.Where("`MachineType` LIKE ?","%"+ info.MachineType+"%")
+    //}
+    //if info.BOMNo != "" {
+    //    db = db.Where("`BOMNo` LIKE ?","%"+ info.BOMNo+"%")
+    //}
+    //if info.BOMVersion != "" {
+    //    db = db.Where("`BOMVersion` LIKE ?","%"+ info.BOMVersion+"%")
+    //}
+    //if info.Product != "" {
+    //    db = db.Where("`Product` LIKE ?","%"+ info.Product+"%")
+    //}
+    //if info.PasteSide != "" {
+    //    db = db.Where("`PasteSide` LIKE ?","%"+ info.PasteSide+"%")
+    //}
+    //if !info.BeginTime.IsZero() {
+    //     db = db.Where("`BeginTime` <> ?",info.BeginTime)
+    //}
+    //if info.Remark != "" {
+    //    db = db.Where("`Remark` LIKE ?","%"+ info.Remark+"%")
+    //}
+	//err = db.Count(&total).Error
+	//err = db.Limit(limit).Offset(offset).Find(&PMOPs).Error
+	err = db.Raw("select top 10 * from PUB_MOrderProduce").Scan(&PMOPs).Error
+	total = int64(len(PMOPs))
 	return err, PMOPs, total
 }
