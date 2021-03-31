@@ -1,27 +1,29 @@
 <template>
-  <div id="ranking-board">
-    <div class="ranking-board-title">缺料预警</div>
-    <dv-scroll-ranking-board :config="config" />
+  <div id="reject-rate">
+    <div class="reject-rate-title">抛料预警</div>
+    <ve-bar :data="chartData" width="200px" height="200px"></ve-bar>
   </div>
 </template>
 
 <script>
+import VeBar from 'v-charts/lib/bar.common'
+
 import {
   getLackWarnings
 } from "@/api/MoniWholeView";
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'RankingBoard',
+  name: 'RejectRate',
   mixins: [infoList],
+  components: {
+    VeBar,
+  },
   data () {
     return {
       listApi: getLackWarnings,
-      config: {
-        data: [
-        ],
-        rowNum: 9
-      }
+      chartData: {
+      },
     }
   },
   methods: {
@@ -31,13 +33,13 @@ export default {
         for (let index = 0; index < this.tableData.length && index < 9; index++) {
           const element = this.tableData[index]
           datas[index] = {
-            name: element.machineCode,  //MatrCode
-            value: element.leftTime
+            '机器': element.machineCode+index,  //MatrCode
+            '时间': element.leftTime+index
           }
         }
-        this.config = {
-          data: datas,
-          rowNum: 9
+        this.chartData = {
+          columns: ['机器', '时间'],
+          rows: datas
         }
       });
       
@@ -54,8 +56,9 @@ export default {
 </script>
 
 <style lang="less">
-#ranking-board {
+#reject-rate {
   width: 100%;
+  height: 22%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
@@ -63,8 +66,9 @@ export default {
   border-top: 2px solid rgba(1, 153, 209, .5);
   box-sizing: border-box;
   padding: 0px 30px;
+  margin-bottom: 10px;
 
-  .ranking-board-title {
+  .reject-rate-title {
     font-weight: bold;
     height: 50px;
     display: flex;
@@ -72,7 +76,7 @@ export default {
     font-size: 20px;
   }
 
-  .dv-scroll-ranking-board {
+  .dv-conical-column-chart {
     flex: 1;
   }
 }

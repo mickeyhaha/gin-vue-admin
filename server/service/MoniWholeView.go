@@ -121,7 +121,8 @@ func GetMoniWholeViewInfoList(info request.MoniWholeViewSearch) (err error, list
     //}
 	//err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&MWVs).Error
-	err = db.Raw("select top 10 * from MoniWholeView").Scan(&MWVs).Error
+	err = db.Raw("SELECT top 5 ID, MachineCode, TableNo, PickPos, lefttime, MatrCode FROM MoniWholeView WITH(NOLOCK) " +
+		"WHERE LineID = ? and LeftTime is not null and uselevel <> 0 Order by lefttime", "43").Scan(&MWVs).Error
 	total = int64(len(MWVs))
 	return err, MWVs, total
 }

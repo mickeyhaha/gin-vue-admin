@@ -1,7 +1,7 @@
 <template>
-  <div id="ranking-board">
-    <div class="ranking-board-title">缺料预警</div>
-    <dv-scroll-ranking-board :config="config" />
+  <div id="lack-warning">
+    <div class="lack-warning-title">缺料预警</div>
+    <dv-capsule-chart :config="config" />
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import {
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'RankingBoard',
+  name: 'LackWarning',
   mixins: [infoList],
   data () {
     return {
@@ -31,7 +31,7 @@ export default {
         for (let index = 0; index < this.tableData.length && index < 9; index++) {
           const element = this.tableData[index]
           datas[index] = {
-            name: element.machineCode,  //MatrCode
+            name: element.machineCode+index,  //MatrCode
             value: element.leftTime
           }
         }
@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style lang="less">
-#ranking-board {
+#lack-warning {
   width: 100%;
   box-shadow: 0 0 3px blue;
   display: flex;
@@ -64,7 +64,7 @@ export default {
   box-sizing: border-box;
   padding: 0px 30px;
 
-  .ranking-board-title {
+  .lack-warning-title {
     font-weight: bold;
     height: 50px;
     display: flex;
@@ -72,7 +72,7 @@ export default {
     font-size: 20px;
   }
 
-  .dv-scroll-ranking-board {
+  .dv-capsule-chart {
     flex: 1;
   }
 }

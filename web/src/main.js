@@ -138,13 +138,24 @@ auth(Vue)
 import uploader from 'vue-simple-uploader'
 Vue.use(uploader)
 
+//引入datav
 import './assets/common.less'
 import dataV from '@jiaminghi/data-view'
 Vue.use(dataV)
 
 //引入echarts
-import echarts from 'echarts'
-Vue.prototype.$echarts = echarts;
+//import echarts from 'echarts'
+//Vue.prototype.$echarts = echarts;
+
+//引入toastui-chart: https://github.com/nhn/tui.chart/tree/main/apps/vue-chart
+// import '@toast-ui/chart/dist/toastui-chart.min.css';
+// import { barChart, lineChart } from '@toast-ui/vue-chart';
+// Vue.use(barChart)
+// Vue.use(lineChart)
+
+//引入v-charts: https://github.com/ElemeFE/v-charts
+import VCharts from 'v-charts'
+Vue.use(VCharts)
 
 export default new Vue({
     render: h => h(App),
@@ -152,11 +163,4 @@ export default new Vue({
     store
 }).$mount('#app')
 
-console.log(`
-       欢迎使用 Gin-Vue-Admin
-       当前版本:V2.4.0
-       加群方式:微信：shouzi_1994 QQ群：622360840
-       默认自动化文档地址:http://127.0.0.1%s/swagger/index.html
-       默认前端文件运行地址:http://127.0.0.1:8080
-       如果项目让您获得了收益，希望您能请团队喝杯可乐:https://www.gin-vue-admin.com/docs/coffee
-`)
+console.log(`================Started================`)

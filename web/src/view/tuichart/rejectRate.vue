@@ -1,26 +1,41 @@
 <template>
-  <div id="ranking-board">
-    <div class="ranking-board-title">缺料预警</div>
-    <dv-scroll-ranking-board :config="config" />
+  <div id="reject-rate">
+    <div class="reject-rate-title">抛料率</div>
+    <bar-chart :data="config" />
+    <!-- <dv-conical-column-chart :config="config" style="width:400px;height:200px;"/> -->
   </div>
 </template>
 
 <script>
+import '@toast-ui/chart/dist/toastui-chart.min.css';
+import { barChart, lineChart } from '@toast-ui/vue-chart';
+
 import {
   getLackWarnings
 } from "@/api/MoniWholeView";
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'RankingBoard',
+  name: 'RejectRate',
   mixins: [infoList],
+  components: {
+    'bar-chart': barChart,
+  },
   data () {
     return {
       listApi: getLackWarnings,
       config: {
-        data: [
+        categories: ['July', 'Aug', 'Sep', 'Oct', 'Nov'],
+        series: [
+          {
+            name: 'Budget',
+            data: [3000, 5000, 7000, 6000, 4000],
+          },
+          {
+            name: 'Income',
+            data: [1000, 7000, 2000, 5000, 3000],
+          },
         ],
-        rowNum: 9
       }
     }
   },
@@ -31,14 +46,14 @@ export default {
         for (let index = 0; index < this.tableData.length && index < 9; index++) {
           const element = this.tableData[index]
           datas[index] = {
-            name: element.machineCode,  //MatrCode
-            value: element.leftTime
+            name: element.machineCode+index,  //MatrCode
+            value: element.leftTime+index
           }
         }
-        this.config = {
-          data: datas,
-          rowNum: 9
-        }
+        // this.config = {
+        //   data: datas,
+        //   rowNum: 9
+        // }
       });
       
     },
@@ -54,7 +69,7 @@ export default {
 </script>
 
 <style lang="less">
-#ranking-board {
+#reject-rate {
   width: 100%;
   box-shadow: 0 0 3px blue;
   display: flex;
@@ -64,7 +79,7 @@ export default {
   box-sizing: border-box;
   padding: 0px 30px;
 
-  .ranking-board-title {
+  .reject-rate-title {
     font-weight: bold;
     height: 50px;
     display: flex;
@@ -72,7 +87,7 @@ export default {
     font-size: 20px;
   }
 
-  .dv-scroll-ranking-board {
+  .dv-conical-column-chart {
     flex: 1;
   }
 }

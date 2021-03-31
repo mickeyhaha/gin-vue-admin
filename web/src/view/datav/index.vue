@@ -1,28 +1,51 @@
 <template>
   <div id="data-view">
     <dv-full-screen-container>
+      <el-row>
+        <el-col :span="24"><top-header /></el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8" class="block-top-bottom-content">
+            <reject-rate />
+            <lack-warning />
+            <scroll-board />
+        </el-col>
+        <el-col :span="8" class="block-top-bottom-content">
+              <water-level-chart /> 
+              <water-level-chart /> 
+              <water-level-chart /> 
+        </el-col>
+        <el-col :span="8" class="block-top-bottom-content">
+              <spi-rate /> 
+              <spi-rate /> 
+              <spi-rate /> 
+        </el-col>
+      </el-row>
 
-      <top-header />
-
-      <div class="main-content">
-        <digital-flop />
+      <!-- <div class="main-content">
+         <digital-flop />  
 
         <div class="block-left-right-content">
-          <ranking-board />
 
           <div class="block-top-bottom-content">
-            <div class="block-top-content">
-              <rose-chart />
+            <reject-rate />
+            <lack-warning />
+            <scroll-board />
+          </div>
 
-              <water-level-chart />
+          <div class="block-top-bottom-content"> 
+              <water-level-chart /> 
+              <water-level-chart /> 
+              <water-level-chart /> 
+          </div>
 
-              <scroll-board />
-            </div>
-
-            <cards />
+          <div class="block-top-bottom-content"> 
+              <spi-rate /> 
+              <spi-rate /> 
+              <spi-rate /> 
           </div>
         </div>
-      </div>
+      </div> -->
     </dv-full-screen-container>
   </div>
 </template>
@@ -35,6 +58,9 @@ import roseChart from './roseChart'
 import waterLevelChart from './waterLevelChart'
 import scrollBoard from './scrollBoard'
 import cards from './cards'
+import lackWarning from './lackWarning'
+import rejectRate from './rejectRate'
+import spiRate from './spiRate'
 
 export default {
   name: 'DataView',
@@ -45,7 +71,10 @@ export default {
     roseChart,
     waterLevelChart,
     scrollBoard,
-    cards
+    cards,
+    lackWarning,
+    rejectRate,
+    spiRate
   },
   data () {
     return {}
@@ -55,6 +84,14 @@ export default {
 </script>
 
 <style lang="less">
+  .title {
+    font-weight: bold;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+  }
+
 #data-view {
   width: 100%;
   height: 100%;
@@ -82,10 +119,12 @@ export default {
   }
 
   .block-top-bottom-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
+    // flex: 1;
+    // display: flex;
+    // width: 33%;
+    height: 100%;
+    // flex-direction: column;
+    // box-sizing: border-box;
     padding-left: 20px;
   }
 

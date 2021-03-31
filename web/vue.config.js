@@ -9,6 +9,7 @@ function resolve(dir) {
 }
 module.exports = {
     // 基础配置 详情看文档
+    runtimeCompiler: true,
     publicPath: './',
     outputDir: 'dist',
     assetsDir: 'static',

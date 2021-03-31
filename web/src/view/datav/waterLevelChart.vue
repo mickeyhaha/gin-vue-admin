@@ -1,13 +1,10 @@
 <template>
   <div id="water-level-chart">
-    <div class="water-level-chart-title">计划资金累计完成情况</div>
-
-    <div class="water-level-chart-details">
-      累计完成<span>235,680</span>元
-    </div>
-
     <div class="chart-container">
       <dv-water-level-pond :config="config" />
+    </div>
+    <div class="water-level-chart-title">
+      工单生产进度
     </div>
   </div>
 </template>
@@ -29,14 +26,18 @@ export default {
 </script>
 
 <style lang="less">
+
 #water-level-chart {
-  width: 20%;
-  box-sizing: border-box;
-  margin-left: 20px;
-  background-color: rgba(6, 30, 93, 0.5);
-  border-top: 2px solid rgba(1, 153, 209, .5);
+  width: 100%;
+  height: 22%;
+  box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
+  background-color: rgba(6, 30, 93, 0.5);
+  border-top: 2px solid rgba(1, 153, 209, .5);
+  box-sizing: border-box;
+  padding: 0px 30px;
+  margin-bottom: 10px;
 
   .water-level-chart-title {
     font-weight: bold;
@@ -71,9 +72,8 @@ export default {
   }
 
   .dv-water-pond-level {
-    max-width: 90%;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     border: 10px solid #19c3eb;
     border-radius: 50%;
 

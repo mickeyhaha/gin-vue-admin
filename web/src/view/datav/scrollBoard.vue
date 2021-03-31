@@ -1,5 +1,6 @@
 <template>
   <div id="scroll-board">
+    <div class="title">停机原因</div>
     <dv-scroll-board :config="config" />
   </div>
 </template>
@@ -39,10 +40,15 @@ export default {
 
 <style lang="less">
 #scroll-board {
-  width: 50%;
+  width: 100%;
+  height: 22%;
+  box-shadow: 0 0 3px blue;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(6, 30, 93, 0.5);
+  border-top: 2px solid rgba(1, 153, 209, .5);
   box-sizing: border-box;
-  margin-left: 20px;
-  height: 100%;
-  overflow: hidden;
+  padding: 0px 30px;
+  margin-bottom: 10px;
 }
 </style>

@@ -2,16 +2,16 @@
   <div id="digital-flop">
     <div
       class="digital-flop-item"
-      v-for="item in digitalFlopData"
-      :key="item.title"
+      v-for="item in tableData"
+      :key="item.lineName"
     >
-      <div class="digital-flop-title">{{ item.title }}</div>
+      <div class="digital-flop-title">{{ item.lineName }}</div>
       <div class="digital-flop">
-        <dv-digital-flop
-          :config="item.number"
+        <!-- <dv-digital-flop
+          :config="item.lineID"
           style="width:100px;height:50px;"
-        />
-          <div class="unit">{{ item.unit }}</div>
+        /> -->
+          <div class="unit">{{ item.lineID }}</div>
       </div>
     </div>
 
@@ -21,21 +21,21 @@
 
 <script>
 import {
-  getFlopData
-} from "@/api/machine";
+  getPVS_Base_LineList
+} from "@/api/PVS_Base_Line";
+import infoList from "@/mixins/infoList";
 
 export default {
   name: 'DigitalFlop',
+  mixins: [infoList],
   data () {
     return {
-      digitalFlopData: []
+      listApi: getPVS_Base_LineList,
     }
   },
   methods: {
     createData () {
-      //const { randomExtend } = this
-
-      this.digitalFlopData = getFlopData()
+      this.getTableData();
     },
   },
   mounted () {

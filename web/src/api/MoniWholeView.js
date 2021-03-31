@@ -98,3 +98,11 @@ export const createMoniWholeView = (data) => {
          params
      })
  }
+
+export const getLackWarnings = (params) => {
+    return service({
+        url: "/MWV/getMoniWholeViewList",
+        method: 'get',
+        params
+    })
+}
