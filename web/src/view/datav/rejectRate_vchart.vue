@@ -1,12 +1,16 @@
 <template>
-  <div id="spi-rate">
-    <div class="title">SPI不良率</div>
-    <ve-line :data="chartData" width="200px" height="200px"></ve-line>
+  <div id="reject-rate">
+    <div class="title">抛料率</div>
+    <ve-histogram :data="chartData" width="200px" height="200px"></ve-histogram>
+    <!-- <bar-chart :data="chartData" :style="chartData.containerStyle" /> -->
+    <!-- <dv-conical-column-chart :config="chartData" style="width:400px;height:200px;"/> -->
   </div>
 </template>
 
 <script>
-import VeLine from 'v-charts/lib/line.common'
+// import 'tui-chart/dist/tui-chart.css'
+// import { barChart, lineChart } from '@toast-ui/vue-chart'
+import VeHistogram from 'v-charts/lib/histogram.common'
 
 import {
   getLackWarnings
@@ -14,16 +18,34 @@ import {
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'SpiRate',
+  name: 'RejectRate',
   mixins: [infoList],
   components: {
-    VeLine,
+    VeHistogram,
+    // 'bar-chart': barChart
   },
   data () {
     return {
       listApi: getLackWarnings,
       chartData: {
       },
+      // chartData: {
+      //   categories: ['July', 'Aug', 'Sep', 'Oct', 'Nov'],
+      //   series: [
+      //     {
+      //       name: 'Budget',
+      //       data: [3000, 5000, 7000, 6000, 4000],
+      //     },
+      //     {
+      //       name: 'Income',
+      //       data: [1000, 7000, 2000, 5000, 3000],
+      //     }
+      //   ],
+      //   containerStyle: {
+      //     width: '600px',
+      //     height: '700px',
+      //   }
+      //}
     }
   },
   methods: {
@@ -56,7 +78,7 @@ export default {
 </script>
 
 <style lang="less">
-#spi-rate {
+#reject-rate {
   width: 100%;
   height: 22%;
   box-shadow: 0 0 3px blue;

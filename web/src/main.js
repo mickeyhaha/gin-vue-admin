@@ -148,10 +148,10 @@ Vue.use(dataV)
 //Vue.prototype.$echarts = echarts;
 
 //引入toastui-chart: https://github.com/nhn/tui.chart/tree/main/apps/vue-chart
-// import '@toast-ui/chart/dist/toastui-chart.min.css';
-// import { barChart, lineChart } from '@toast-ui/vue-chart';
-// Vue.use(barChart)
-// Vue.use(lineChart)
+import '@toast-ui/chart/dist/toastui-chart.min.css';
+import { barChart, lineChart } from '@toast-ui/vue-chart';
+Vue.use(barChart)
+Vue.use(lineChart)
 
 //引入v-charts: https://github.com/ElemeFE/v-charts
 import VCharts from 'v-charts'

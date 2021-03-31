@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     createData () {
-      this.getTableData().then(res => {
+      this.getTableData().then(() => {
         let datas = []
         for (let index = 0; index < this.tableData.length && index < 9; index++) {
           const element = this.tableData[index]
