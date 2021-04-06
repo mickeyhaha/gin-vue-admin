@@ -21,7 +21,7 @@ export default {
           [ '机器1', '卡纸',  '1-1',  '太厚',  '1'],
           [ '机器1', '卡纸',  '1-1',  '太厚',  '1'],
         ],
-        index: true,
+        index: false,
         align: ['center'],
         rowNum: 6,
         headerBGC: '#5ca8f2',

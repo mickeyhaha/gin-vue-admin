@@ -100,12 +100,12 @@ export default {
           },
           {
             name: '少料',
-            data: [0.3, 0.4, 0.2, 0.1, 0.5],
+            data: [0.2, 0.3, 0.3, 0.2, 0.5],
             stackGroup: 'AOI',
           },
           {
             name: '错点',
-            data: [0.3, 0.4, 0.2, 0.1, 0.5],
+            data: [0.4, 0.2, 0.1, 0.3, 0.1],
             stackGroup: 'AOI',
           },
         ],

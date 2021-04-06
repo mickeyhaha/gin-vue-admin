@@ -1,27 +1,45 @@
 <template>
   <div id="order-info">
       <el-row>
-        <el-col :span="12" class="block-top-bottom-content">
+        <el-col :span="col_span.col1" class="block-top-bottom-content">
           工单:
         </el-col>
-        <el-col :span="12" class="block-top-bottom-content">
+        <el-col :span="col_span.col2"  class="block-top-bottom-content">
+          P201223067-1
+        </el-col>
+        <el-col :span="col_span.col3"  class="block-top-bottom-content">
           计划产能(H):
         </el-col>
+        <el-col :span="col_span.col4"  class="block-top-bottom-content">
+          10000
+        </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12" class="block-top-bottom-content">
+        <el-col :span="col_span.col1" class="block-top-bottom-content">
           产品:
         </el-col>
-        <el-col :span="12" class="block-top-bottom-content">
+        <el-col :span="col_span.col2"  class="block-top-bottom-content">
+          P23067-1_001
+        </el-col>
+        <el-col :span="col_span.col3"  class="block-top-bottom-content">
           产品名称:
+        </el-col>
+        <el-col :span="col_span.col4"  class="block-top-bottom-content">
+          abcdefghik
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="12" class="block-top-bottom-content">
+        <el-col :span="col_span.col1" class="block-top-bottom-content">
           制令单:
         </el-col>
-        <el-col :span="12" class="block-top-bottom-content">
+        <el-col :span="col_span.col2"  class="block-top-bottom-content">
+          321207938
+        </el-col>
+        <el-col :span="col_span.col3"  class="block-top-bottom-content">
           面别:
+        </el-col>
+        <el-col :span="col_span.col4"  class="block-top-bottom-content">
+          AB
         </el-col>
       </el-row>
   </div>
@@ -38,6 +56,12 @@ export default {
   mixins: [infoList],
   data () {
     return {
+      col_span: {
+        col1: 4,
+        col2: 8,
+        col3: 6,
+        col4: 6,
+      },
       listApi: getLackWarnings,
     }
   },
