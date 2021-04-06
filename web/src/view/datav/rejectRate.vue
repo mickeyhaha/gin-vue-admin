@@ -52,7 +52,7 @@ export default {
             },
             chart: {
               fontFamily: 'Verdana',
-              backgroundColor: 'rgba(9, 206, 115, 0.1)',
+              backgroundColor: 'rgba(9, 206, 115, 0.2)',
             },
             series: {
               dataLabels: {

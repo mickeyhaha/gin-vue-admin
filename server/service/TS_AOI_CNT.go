@@ -97,7 +97,18 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
     //}
 	//err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&TACs).Error
-	err = db.Raw("SELECT Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM TS_AOI WITH(NOLOCK)").Scan(&TACs).Error
+	//err = db.Raw("SELECT Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM TS_AOI WITH(NOLOCK)").Scan(&TACs).Error
+	err = db.Raw(`SELECT TOP 7 a.IssueName, COUNT(1) AS Num 
+        FROM ( 
+            SELECT a.IssueName, a.AOIID 
+            FROM TS_AOI_Repair a WITH(NOLOCK) 
+            JOIN TS_AOI b WITH(NOLOCK) 
+            ON b.ID =a.AOIID 
+            WHERE b.Result =0 AND b.OrderNo <>''
+            GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo
+          ) a 
+        GROUP BY a.IssueName 
+        ORDER BY Num DESC`).Scan(&TACs).Error
 	total = int64(len(TACs))
 	return err, TACs, total
 }

@@ -2,6 +2,7 @@
 /web/node_modules
 /web/dist
 gin-vue-admin
+nohup.out
 
 .DS_Store
 

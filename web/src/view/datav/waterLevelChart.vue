@@ -1,89 +1,123 @@
 <template>
-  <div id="water-level-chart">
-    <div class="chart-container">
-      <dv-water-level-pond :config="config" />
-    </div>
-    <div class="water-level-chart-title">
-      工单生产进度
-    </div>
+  <div id="finish-rate">
+    <gauge-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
+import '@toast-ui/chart/dist/toastui-chart.min.css';
+import { gaugeChart } from '@toast-ui/vue-chart';
+
+import {
+  getLackWarnings
+} from "@/api/MoniWholeView";
+import infoList from "@/mixins/infoList";
+
 export default {
-  name: 'WaterLevelChart',
+  name: 'FinishRate',
+  mixins: [infoList],
+  components: {
+    'gauge-chart': gaugeChart
+  },
   data () {
     return {
-      config: {
-        data: [45],
-        shape: 'round',
-        waveHeight: 25,
-        waveNum: 2
+      listApi: getLackWarnings,
+      chartProps: {
+        containerStyle: {
+          width: '100%',
+          height: '400px',
+        },
+        options: {
+          chart: { 
+            title: '完成度 %', width: '100%',
+          },
+          circularAxis: { title: '', scale: { min: 0, max: 80 } },
+          series: {
+            solid: {
+              clockHand: false,
+            },
+            dataLabels: { visible: true, offsetY: -200, formatter: (value) => `${value} %` },
+          },
+          theme: {
+            chart: { 
+              fontFamily: 'Verdana',
+              backgroundColor: 'rgba(9, 206, 115, 0.1)',
+            },
+            // circularAxis: {
+            //   title: { fontWeight: 500, fontSize: 30, color: '#650434' },
+            //   label: { color: '#650434', fontSize: 15 },
+            //   tick: { strokeStyle: '#650434' },
+            //   strokeStyle: '#650434',
+            // },
+            series: {
+              dataLabels: {
+                fontSize: 20,
+                color: '#650434',
+                textBubble: {
+                  visible: false,
+                  backgroundColor: 'rgba(9, 206, 115, 0.1)',
+                  paddingX: 5,
+                  paddingY: 5,
+                },
+              },
+            },
+          }
+        }
+      },
+      chartData: {
+        series: [
+          {
+            name: '完成度',
+            data: [90],
+          },
+        ],
       }
     }
+  },
+  methods: {
+    createData () {
+      this.getTableData().then(() => {
+        let datas = []
+        for (let index = 0; index < this.tableData.length && index < 9; index++) {
+          const element = this.tableData[index]
+          datas[index] = {
+            '机器': element.machineCode+index,  //MatrCode
+            '时间': element.leftTime+index
+          }
+        }
+        // this.chartData = {
+        //   columns: ['机器', '时间'],
+        //   rows: datas
+        // }
+      });
+      
+    },
+  },
+  mounted () {
+    const { createData } = this
+
+    createData()
+
+    setInterval(createData, 3000)
   }
 }
 </script>
 
 <style lang="less">
-
-#water-level-chart {
+#finish-rate {
   width: 100%;
-  height: 22%;
+  // height: 33%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
   background-color: rgba(6, 30, 93, 0.5);
   border-top: 2px solid rgba(1, 153, 209, .5);
   box-sizing: border-box;
-  padding: 0px 30px;
+  padding: 0px 0px;
   margin-bottom: 10px;
 
-  .water-level-chart-title {
-    font-weight: bold;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    font-size: 20px;
-    justify-content: center;
-  }
-
-  .water-level-chart-details {
-    height: 15%;
-    display: flex;
-    justify-content: center;
-    font-size: 17px;
-    align-items: flex-end;
-
-    span {
-      font-size: 35px;
-      font-weight: bold;
-      color: #58a1ff;
-      margin: 0 5px;
-      margin-bottom: -5px;
-    }
-  }
-
-  .chart-container {
+  .dv-conical-column-chart {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .dv-water-pond-level {
-    width: 100px;
-    height: 100px;
-    border: 10px solid #19c3eb;
-    border-radius: 50%;
-
-    ellipse {
-      stroke: transparent !important;
-    }
-
-    text {
-      font-size: 40px;
-    }
   }
 }
 </style>

@@ -11,12 +11,12 @@
             <scroll-board />
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-              <water-level-chart /> 
+              <order-info /> 
               <water-level-chart /> 
               <water-level-chart /> 
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-              <spi-rate /> 
+              <aoi-rate /> 
               <spi-rate /> 
               <spi-rate /> 
         </el-col>
@@ -61,6 +61,8 @@ import cards from './cards'
 import lackWarning from './lackWarning'
 import rejectRate from './rejectRate'
 import spiRate from './spiRate'
+import aoiRate from './aoiRate'
+import orderInfo from './orderInfo'
 
 export default {
   name: 'DataView',
@@ -74,7 +76,9 @@ export default {
     cards,
     lackWarning,
     rejectRate,
-    spiRate
+    spiRate,
+    aoiRate,
+    orderInfo,
   },
   data () {
     return {}
