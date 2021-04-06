@@ -1,12 +1,13 @@
 <template>
-  <div id="reject-rate">
-    <div class="reject-rate-title">抛料预警</div>
-    <ve-bar :data="chartData" width="200px" height="200px"></ve-bar>
+  <div id="lack-warning">
+    <!-- <div class="title">AOI不良率</div> -->
+    <bar-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
-import VeBar from 'v-charts/lib/bar.common'
+import '@toast-ui/chart/dist/toastui-chart.min.css';
+import { barChart } from '@toast-ui/vue-chart';
 
 import {
   getLackWarnings
@@ -14,16 +15,90 @@ import {
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'RejectRate',
+  name: 'AoiRate',
   mixins: [infoList],
   components: {
-    VeBar,
+    'bar-chart': barChart
   },
   data () {
     return {
       listApi: getLackWarnings,
-      chartData: {
+      chartProps: {
+        containerStyle: {
+          width: '100%',
+          height: '200px',
+        },
+        options: {
+          chart: {  
+            title: {
+              text: '抛料预警',
+              align: 'center',
+            }, 
+          },
+          tooltip: {
+            visible: false,
+          },
+          legend: {
+            visible: false,
+            align: 'bottom'
+          },
+          series: {
+            stack: false,
+            dataLabels: { visible: true },
+          },
+          xAxis: { pointOnColumn: false, title: { text: '抛料量' } },
+          // yAxis: { title: 'AOI不良率' },
+          theme: {
+            // title: {
+            //   fontFamily: 'Comic Sans MS',
+            //   fontSize: 45,
+            //   fontWeight: 100,
+            //   color: '#ff416d'
+            // },
+            chart: {
+              fontFamily: 'Verdana',
+              backgroundColor: 'rgba(9, 206, 115, 0.1)',
+            },
+            series: {
+              dataLabels: {
+                visible: true,
+                stack: true,
+                fontFamily: 'Verdana',
+              //   lineWidth: 2,
+              //   textStrokeColor: '#ffffff',
+              //   shadowColor: '#ffffff',
+              //   shadowBlur: 4,
+                // stackTotal: {
+                //   fontFamily: 'Verdana',
+                //   fontWeight: 14,
+                //   color: '#ffffff',
+                //   textBubble: {
+                //     visible: true,
+                //     paddingY: 6,
+                //     borderWidth: 3,
+                //     borderColor: '#00bcd4',
+                //     borderRadius: 7,
+                //     backgroundColor: '#041367',
+                //     shadowOffsetX: 0,
+                //     shadowOffsetY: 0,
+                //     shadowBlur: 0,
+                //     shadowColor: 'rgba(0, 0, 0, 0)'
+                //   }
+                // }
+              }
+            }
+          }
+        }
       },
+      chartData: {
+        categories: ['站料1', '站料2', '站料3', '站料4', '站料5'],
+        series: [
+          {
+            name: '抛料',
+            data: [300, 400, 200, 100, 500],
+          },
+        ],
+      }
     }
   },
   methods: {
@@ -37,10 +112,10 @@ export default {
             '时间': element.leftTime+index
           }
         }
-        this.chartData = {
-          columns: ['机器', '时间'],
-          rows: datas
-        }
+        // this.chartData = {
+        //   columns: ['机器', '时间'],
+        //   rows: datas
+        // }
       });
       
     },
@@ -56,25 +131,17 @@ export default {
 </script>
 
 <style lang="less">
-#reject-rate {
+#lack-warning {
   width: 100%;
-  height: 22%;
+  // height: 33%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
   background-color: rgba(6, 30, 93, 0.5);
   border-top: 2px solid rgba(1, 153, 209, .5);
   box-sizing: border-box;
-  padding: 0px 30px;
+  padding: 0px 0px;
   margin-bottom: 10px;
-
-  .reject-rate-title {
-    font-weight: bold;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    font-size: 20px;
-  }
 
   .dv-conical-column-chart {
     flex: 1;

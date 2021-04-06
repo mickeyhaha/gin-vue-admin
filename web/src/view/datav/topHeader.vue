@@ -17,20 +17,20 @@ export default {
 #top-header {
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   flex-shrink: 0;
 
   .header-center-decoration {
     width: 40%;
-    height: 60px;
+    height: 50px;
     margin-top: 30px;
   }
 
   .header-left-decoration, .header-right-decoration {
     width: 25%;
-    height: 60px;
+    height: 50px;
   }
 
   .center-title {

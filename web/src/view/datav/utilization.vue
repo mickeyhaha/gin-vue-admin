@@ -1,12 +1,13 @@
 <template>
-  <div id="spi-rate">
-    <column-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
+  <div id="utilization">
+    <!-- <div class="title">稼动率</div> -->
+    <line-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { columnChart } from '@toast-ui/vue-chart';
+import { lineChart } from '@toast-ui/vue-chart';
 
 import {
   getLackWarnings
@@ -17,7 +18,7 @@ export default {
   name: 'AoiRate',
   mixins: [infoList],
   components: {
-    'column-chart': columnChart
+    'line-chart': lineChart
   },
   data () {
     return {
@@ -30,7 +31,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: 'SPI不良率%',
+              text: '稼动率%',
               align: 'center',
             }, 
           },
@@ -45,7 +46,7 @@ export default {
             stack: true,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '线体' } },
+          xAxis: { pointOnColumn: false, title: { text: '时间' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             // title: {
@@ -59,6 +60,7 @@ export default {
               backgroundColor: 'rgba(9, 206, 115, 0.1)',
             },
             series: {
+              showDot: true,
               dataLabels: {
                 visible: true,
                 stack: true,
@@ -90,22 +92,19 @@ export default {
         }
       },
       chartData: {
-        categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+        categories: ['13:00', '14:00', '15:00', '16:00', '17:00'],
         series: [
           {
-            name: '模糊',
+            name: 'Line1',
             data: [0.3, 0.4, 0.2, 0.1, 0.5],
-            stackGroup: 'SPI',
           },
           {
-            name: '少料',
-            data: [0.3, 0.4, 0.2, 0.1, 0.5],
-            stackGroup: 'SPI',
+            name: 'Line2',
+            data: [0.2, 0.3, 0.3, 0.2, 0.5],
           },
           {
-            name: '错点',
-            data: [0.3, 0.4, 0.2, 0.1, 0.5],
-            stackGroup: 'SPI',
+            name: 'Line3',
+            data: [0.4, 0.2, 0.1, 0.3, 0.1],
           },
         ],
       }
@@ -141,7 +140,7 @@ export default {
 </script>
 
 <style lang="less">
-#spi-rate {
+#utilization {
   width: 100%;
   // height: 33%;
   box-shadow: 0 0 3px blue;

@@ -25,43 +25,64 @@ export default {
       chartProps: {
         containerStyle: {
           width: '100%',
-          height: '400px',
+          height: '280px',
         },
         options: {
-          chart: { 
-            title: '完成度 %', width: '100%',
-          },
-          circularAxis: { title: '', scale: { min: 0, max: 80 } },
+          chart: {
+            title: {
+              text: '完成度%',
+              align: 'center',
+            }, width: '100%'},
+          circularAxis: { title: '9000/10000', scale: { min: 0, max: 100 } },
           series: {
-            solid: {
-              clockHand: false,
+            angleRange: {
+              start: 270,
+              end: 90,
             },
-            dataLabels: { visible: true, offsetY: -200, formatter: (value) => `${value} %` },
+            dataLabels: { visible: true, offsetY: -120, formatter: (value) => `${value}%` },
+          },
+          plot: {
+            bands: [
+              { range: [0, 20], color: '#e4a0c2' },
+              { range: [20, 50], color: '#dc4d94' },
+              { range: [50, 100], color: '#a90757' },
+            ],
           },
           theme: {
-            chart: { 
+            chart: {
               fontFamily: 'Verdana',
               backgroundColor: 'rgba(9, 206, 115, 0.1)',
             },
-            // circularAxis: {
-            //   title: { fontWeight: 500, fontSize: 30, color: '#650434' },
-            //   label: { color: '#650434', fontSize: 15 },
-            //   tick: { strokeStyle: '#650434' },
-            //   strokeStyle: '#650434',
-            // },
+            circularAxis: {
+              title: { fontWeight: 500, fontSize: 20, color: '#650434' },
+              label: { color: '#650434', fontSize: 15 },
+              tick: { strokeStyle: '#650434' },
+              strokeStyle: '#650434',
+            },
             series: {
+              clockHand: {
+                color: '#650434',
+                baseLine: 10,
+              },
+              pin: {
+                radius: 10,
+                color: '#650434',
+                borderWidth: 5,
+                borderColor: 'rgba(101, 4, 52, 0.3)',
+              },
               dataLabels: {
                 fontSize: 20,
-                color: '#650434',
+                color: '#fff',
                 textBubble: {
-                  visible: false,
-                  backgroundColor: 'rgba(9, 206, 115, 0.1)',
+                  visible: true,
+                  backgroundColor: '#650434',
                   paddingX: 5,
                   paddingY: 5,
                 },
               },
             },
-          }
+            plot: { bands: { barWidth: 30 } },
+          },
         }
       },
       chartData: {

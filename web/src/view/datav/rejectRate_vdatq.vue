@@ -1,5 +1,6 @@
 <template>
-  <div id="spi-rate">
+  <div id="reject-rate">
+    <div class="title">抛料率</div>
     <column-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
@@ -14,7 +15,7 @@ import {
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'AoiRate',
+  name: 'RejectRate',
   mixins: [infoList],
   components: {
     'column-chart': columnChart
@@ -22,91 +23,75 @@ export default {
   data () {
     return {
       listApi: getLackWarnings,
+      // chartData: {
+      // },
       chartProps: {
         containerStyle: {
           width: '100%',
-          height: '200px',
+          height: '100%',
         },
         options: {
-          chart: {  
-            title: {
-              text: 'SPI不良率%',
-              align: 'center',
-            }, 
-          },
-          tooltip: {
-            visible: false,
+          title: {
+            text: '抛料率%',
+            align: 'center'
           },
           legend: {
-            visible: true,
-            align: 'bottom'
+            visible: false,
+            //align: 'bottom'
           },
           series: {
             stack: true,
-            dataLabels: { visible: true },
+            dataLabels: { visible: true }
           },
-          xAxis: { pointOnColumn: false, title: { text: '线体' } },
-          // yAxis: { title: 'AOI不良率' },
           theme: {
-            // title: {
-            //   fontFamily: 'Comic Sans MS',
-            //   fontSize: 45,
-            //   fontWeight: 100,
-            //   color: '#ff416d'
-            // },
+            title: {
+              fontFamily: 'Comic Sans MS',
+              fontSize: 45,
+              fontWeight: 100,
+              color: '#ff416d'
+            },
             chart: {
               fontFamily: 'Verdana',
-              backgroundColor: 'rgba(9, 206, 115, 0.1)',
+              backgroundColor: 'rgba(9, 206, 115, 0.2)',
             },
             series: {
               dataLabels: {
                 visible: true,
                 stack: true,
-                fontFamily: 'Verdana',
-              //   lineWidth: 2,
-              //   textStrokeColor: '#ffffff',
-              //   shadowColor: '#ffffff',
-              //   shadowBlur: 4,
-                // stackTotal: {
-                //   fontFamily: 'Verdana',
-                //   fontWeight: 14,
-                //   color: '#ffffff',
-                //   textBubble: {
-                //     visible: true,
-                //     paddingY: 6,
-                //     borderWidth: 3,
-                //     borderColor: '#00bcd4',
-                //     borderRadius: 7,
-                //     backgroundColor: '#041367',
-                //     shadowOffsetX: 0,
-                //     shadowOffsetY: 0,
-                //     shadowBlur: 0,
-                //     shadowColor: 'rgba(0, 0, 0, 0)'
-                //   }
-                // }
+                fontFamily: 'monaco',
+                lineWidth: 2,
+                textStrokeColor: '#ffffff',
+                shadowColor: '#ffffff',
+                shadowBlur: 4,
+                stackTotal: {
+                  fontFamily: 'monaco',
+                  fontWeight: 14,
+                  color: '#ffffff',
+                  textBubble: {
+                    visible: true,
+                    paddingY: 6,
+                    borderWidth: 3,
+                    borderColor: '#00bcd4',
+                    borderRadius: 7,
+                    backgroundColor: '#041367',
+                    shadowOffsetX: 0,
+                    shadowOffsetY: 0,
+                    shadowBlur: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0)'
+                  }
+                }
               }
             }
           }
         }
       },
       chartData: {
-        categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+        categories: ['July', 'Aug', 'Sep', 'Oct', 'Nov'],
         series: [
           {
-            name: '模糊',
+            name: '抛料率%',
             data: [0.3, 0.4, 0.2, 0.1, 0.5],
-            stackGroup: 'SPI',
-          },
-          {
-            name: '少料',
-            data: [0.3, 0.4, 0.2, 0.1, 0.5],
-            stackGroup: 'SPI',
-          },
-          {
-            name: '错点',
-            data: [0.3, 0.4, 0.2, 0.1, 0.5],
-            stackGroup: 'SPI',
-          },
+          }
         ],
       }
     }
@@ -141,16 +126,16 @@ export default {
 </script>
 
 <style lang="less">
-#spi-rate {
+#reject-rate {
   width: 100%;
-  // height: 33%;
+  height: 22%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
   background-color: rgba(6, 30, 93, 0.5);
   border-top: 2px solid rgba(1, 153, 209, .5);
   box-sizing: border-box;
-  padding: 0px 0px;
+  padding: 0px 30px;
   margin-bottom: 10px;
 
   .dv-conical-column-chart {

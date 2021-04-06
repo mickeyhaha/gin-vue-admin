@@ -11,14 +11,14 @@
             <scroll-board />
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-              <order-info /> 
-              <water-level-chart /> 
-              <water-level-chart /> 
+            <order-info /> 
+            <water-level-chart /> 
+            <scroll-board />
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
               <aoi-rate /> 
               <spi-rate /> 
-              <spi-rate /> 
+              <utiliazation /> 
         </el-col>
       </el-row>
 
@@ -63,6 +63,7 @@ import rejectRate from './rejectRate'
 import spiRate from './spiRate'
 import aoiRate from './aoiRate'
 import orderInfo from './orderInfo'
+import utiliazation from './utilization'
 
 export default {
   name: 'DataView',
@@ -79,6 +80,7 @@ export default {
     spiRate,
     aoiRate,
     orderInfo,
+    utiliazation,
   },
   data () {
     return {}
@@ -90,10 +92,10 @@ export default {
 <style lang="less">
   .title {
     font-weight: bold;
-    height: 50px;
+    height: 30px;
     display: flex;
     align-items: center;
-    font-size: 20px;
+    font-size: 15px;
   }
 
 #data-view {
