@@ -1,20 +1,7 @@
 <template>
   <div id="scroll-board">
     <div class="title">停机原因</div>
-    <el-table
-      :data="config.data"
-      border
-      ref="multipleTable"
-      stripe
-      style="width: 100%"
-      tooltip-effect="dark"
-    >
-    <el-table-column :label="config.header[0]" prop="machine" width="120"></el-table-column> 
-    <el-table-column :label="config.header[1]" prop="type" width="120"></el-table-column> 
-    <el-table-column :label="config.header[2]" prop="position" width="120"></el-table-column> 
-    <el-table-column :label="config.header[3]" prop="reason" width="120"></el-table-column> 
-    <el-table-column :label="config.header[4]" prop="port" width="120"></el-table-column> 
-    </el-table>
+    <dv-scroll-board :config="config" />
   </div>
 </template>
 
@@ -24,19 +11,21 @@ export default {
   data () {
     return {
       config: {
+
         header: ['机器', '停机类别', '位置', '停机原因', '停机端口'],
         data: [
-          {machine: '机器1', type: '卡纸', position: '1-1', reason: '太厚', port: '1'},
-          {machine: '机器1', type: '卡纸', position: '1-1', reason: '太厚', port: '1'},
-          {machine: '机器1', type: '卡纸', position: '1-1', reason: '太厚', port: '1'},
-          {machine: '机器1', type: '卡纸', position: '1-1', reason: '太厚', port: '1'},
+          [ '机器1', '卡纸',  '1-1',  '太厚',  '1'],
+          [ '机器1', '卡纸',  '1-1',  '太厚',  '1'],
+          [ '机器1', '卡纸',  '1-1',  '太厚',  '1'],
+          [ '机器1', '卡纸',  '1-1',  '太厚',  '1'],
+          [ '机器1', '卡纸',  '1-1',  '太厚',  '1'],
+          [ '机器1', '卡纸',  '1-1',  '太厚',  '1'],
         ],
         index: true,
-        columnWidth: [50, 170, 300],
         align: ['center'],
-        rowNum: 7,
-        headerBGC: '#1981f6',
-        headerHeight: 45,
+        rowNum: 6,
+        headerBGC: '#5ca8f2',
+        headerHeight: 25,
         oddRowBGC: 'rgba(0, 44, 81, 0.8)',
         evenRowBGC: 'rgba(10, 29, 50, 0.8)'
       }
@@ -48,7 +37,7 @@ export default {
 <style lang="less">
 #scroll-board {
   width: 100%;
-  // height: 22%;
+  height: 30%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
@@ -57,41 +46,5 @@ export default {
   box-sizing: border-box;
   padding: 0px 10px;
   margin-bottom: 10px;
-}
-
-.el-table{
-/* 表格字体颜色 */
-color:white;
-/* 表格边框颜色 */
-/* border: 0.5px solid #758a99; */
-height: 500px;
-}
-/* 表格内背景颜色 */
-.el-table th, .el-table tr,.el-table td{
-border: 0;
-background-color: transparent;
-}
-/* 双数行背景颜色 */
-.el-table--striped .el-table__body tr.el-table__row--striped td {
- 
-background-color:#fff;
-background-color: rgba(148, 144, 144, 0.3)
-}
-/* 使表格背景透明 */
-.el-table th, .el-table tr {
-background-color: transparent;
-}
-/* 删除表格下横线 */
-.el-table::before {
-left: 0;
-bottom: 0;
-width: 100%;
-height: 0px;
-}
-/* 表格表头字体颜色 */
-.el-table thead {
-color: white;
-font-weight: 500;
-background-color: rgba(148, 144, 144, 0.3)
 }
 </style>

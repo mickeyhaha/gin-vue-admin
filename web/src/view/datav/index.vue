@@ -13,7 +13,7 @@
         <el-col :span="8" class="block-top-bottom-content">
             <order-info /> 
             <water-level-chart /> 
-            <scroll-board />
+            <cards />
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
               <aoi-rate /> 
@@ -64,6 +64,7 @@ import spiRate from './spiRate'
 import aoiRate from './aoiRate'
 import orderInfo from './orderInfo'
 import utiliazation from './utilization'
+import person from './person'
 
 export default {
   name: 'DataView',
@@ -81,6 +82,7 @@ export default {
     aoiRate,
     orderInfo,
     utiliazation,
+    person,
   },
   data () {
     return {}

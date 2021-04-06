@@ -1,5 +1,6 @@
 <template>
-  <div id="order-info">
+  <div id="person">
+    <div class="title">人员管理</div>
       <el-row>
         <el-col :span="12" class="block-top-bottom-content">
           工单:
@@ -34,7 +35,7 @@ import {
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'OrderInfo',
+  name: 'Person',
   mixins: [infoList],
   data () {
     return {
@@ -71,16 +72,16 @@ export default {
 </script>
 
 <style lang="less">
-#order-info {
+#person {
   width: 100%;
-  height: 20%;
+  // height: 33%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
   background-color: rgba(6, 30, 93, 0.5);
   border-top: 2px solid rgba(1, 153, 209, .5);
   box-sizing: border-box;
-  padding: 0px 0px;
+  padding: 0px 10px;
   margin-bottom: 10px;
 
   .dv-conical-column-chart {

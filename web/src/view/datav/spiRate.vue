@@ -42,7 +42,7 @@ export default {
             align: 'bottom'
           },
           series: {
-            stack: true,
+            stack: false,
             dataLabels: { visible: true },
           },
           xAxis: { pointOnColumn: false, title: { text: '线体' } },

@@ -6,11 +6,12 @@
       :key="card.title"
     >
       <div class="card-header">
-        <div class="card-header-left">{{ card.title }}</div>
+        <div class="card-header-left">{{  }}</div>
         <div class="card-header-right">{{ '0' + (i + 1) }}</div>
       </div>
+      <div class="name">人名</div>
       <dv-charts class="ring-charts" :option="card.ring" />
-      <div class="card-footer">
+      <!-- <div class="card-footer">
         <div class="card-footer-item">
           <div class="footer-title">累计金额</div>
           <div class="footer-detail">
@@ -23,7 +24,7 @@
             <dv-digital-flop :config="card.num" style="width:70%;height:35px;" />处
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -69,7 +70,7 @@ export default {
               arcLineWidth: 13,
               radius: '80%',
               data: [
-                { name: '资金占比', value: randomExtend(40, 60) }
+                { name: '', value: randomExtend(40, 60) }
               ],
               axisLabel: {
                 show: false
@@ -87,7 +88,7 @@ export default {
               },
               details: {
                 show: true,
-                formatter: '资金占比{value}%',
+                formatter: '{value}%',
                 style: {
                   fill: '#1ed3e5',
                   fontSize: 20
@@ -121,7 +122,7 @@ export default {
 #cards {
   display: flex;
   justify-content: space-between;
-  height: 45%;
+  height: 30%;
 
   .card-item {
     background-color: rgba(6, 30, 93, 0.5);
@@ -136,6 +137,7 @@ export default {
     height: 20%;
     align-items: center;
     justify-content: space-between;
+    padding-top: 10px;
 
     .card-header-left {
       font-size: 18px;
@@ -150,8 +152,19 @@ export default {
     }
   }
 
+  .name {
+    font-weight: bold;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    padding-left: 30px;
+    padding-top: 10px;
+  }
+
   .ring-charts {
     height: 55%;
+    padding-top: 10px;
   }
 
   .card-footer {

@@ -15,7 +15,7 @@ import {
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'AoiRate',
+  name: 'Utilization',
   mixins: [infoList],
   components: {
     'line-chart': lineChart
@@ -26,7 +26,7 @@ export default {
       chartProps: {
         containerStyle: {
           width: '100%',
-          height: '200px',
+          height: '190px',
         },
         options: {
           chart: {  
@@ -142,7 +142,7 @@ export default {
 <style lang="less">
 #utilization {
   width: 100%;
-  // height: 33%;
+  height: 30%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;

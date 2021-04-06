@@ -43,9 +43,9 @@ export default {
           },
           plot: {
             bands: [
-              { range: [0, 20], color: '#e4a0c2' },
-              { range: [20, 50], color: '#dc4d94' },
-              { range: [50, 100], color: '#a90757' },
+              { range: [0, 20], color: '#45a8f8' },
+              { range: [20, 50], color: '#45a8f8' },
+              { range: [50, 100], color: '#45a8f8' },
             ],
           },
           theme: {
@@ -54,28 +54,26 @@ export default {
               backgroundColor: 'rgba(9, 206, 115, 0.1)',
             },
             circularAxis: {
-              title: { fontWeight: 500, fontSize: 20, color: '#650434' },
-              label: { color: '#650434', fontSize: 15 },
-              tick: { strokeStyle: '#650434' },
-              strokeStyle: '#650434',
+              title: { fontWeight: 500, fontSize: 20},
+              label: { fontSize: 15 },
             },
             series: {
               clockHand: {
-                color: '#650434',
+                // color: '#650434',
                 baseLine: 10,
               },
               pin: {
                 radius: 10,
-                color: '#650434',
+                // color: '#650434',
                 borderWidth: 5,
-                borderColor: 'rgba(101, 4, 52, 0.3)',
+                // borderColor: 'rgba(101, 4, 52, 0.3)',
               },
               dataLabels: {
                 fontSize: 20,
-                color: '#fff',
+                // color: '#fff',
                 textBubble: {
                   visible: true,
-                  backgroundColor: '#650434',
+                  // backgroundColor: '#650434',
                   paddingX: 5,
                   paddingY: 5,
                 },
