@@ -2,7 +2,9 @@
 
 ## Project setup
 ```
+npm cache clean --force
 npm install
+npm install vue-loader vue-template-compiler
 ```
 
 ### Compiles and hot-reloads for development
