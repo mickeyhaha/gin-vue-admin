@@ -60,6 +60,7 @@ import {
   getLineCurrOrderList
 } from "@/api/PUBMOrderProduce";
 import infoList from "@/mixins/infoList";
+import { store } from '@/store/index';
 
 export default {
   name: 'OrderInfo',
@@ -75,7 +76,7 @@ export default {
       selectValue: '',
       listApi: getLineCurrOrderList,
       lineOptions: [],
-      selectItem: {}
+      selectItem: {},
     }
   },
   methods: {
@@ -99,7 +100,9 @@ export default {
         }
         this.lineOptions = options;
         this.selectValue = options[0].label;
-        this.selectItem = options[0]
+        this.selectItem = options[0];
+        store.state.selectedLine = this.selectItem;
+        // store.commit('')
       });
       
     },
@@ -111,7 +114,9 @@ export default {
           this.selectItem = element
         }
       }
-      console.log(this.selectItem)
+      store.state.selectedLine = this.selectItem;
+      // store.commit()
+      // console.log(store.state.selectedLine)
     },
   },
 

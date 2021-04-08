@@ -1,6 +1,7 @@
 <template>
   <div id="finish-rate">
     <gauge-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
+    {{this.selectItem.Qty}}
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import {
   getLackWarnings
 } from "@/api/MoniWholeView";
 import infoList from "@/mixins/infoList";
+import { store } from '@/store/index';
 
 export default {
   name: 'FinishRate',
@@ -21,6 +23,7 @@ export default {
   },
   data () {
     return {
+      selectItem : store.state.selectedLine,
       listApi: getLackWarnings,
       chartProps: {
         containerStyle: {
@@ -117,6 +120,7 @@ export default {
 
     createData()
 
+    console.log(this.selectItem)
     //setInterval(createData, 3000)
   }
 }

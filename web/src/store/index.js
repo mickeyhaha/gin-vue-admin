@@ -14,6 +14,10 @@ const vuexLocal = new VuexPersistence({
     modules: ['user']
 })
 export const store = new Vuex.Store({
+    state: {
+        count: 0,
+        selectedLine: {},
+    },
     modules: {
         user,
         router,

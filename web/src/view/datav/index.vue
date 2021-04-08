@@ -85,7 +85,8 @@ export default {
     // person,
   },
   data () {
-    return {}
+    return {
+    }
   },
   methods: {}
 }
