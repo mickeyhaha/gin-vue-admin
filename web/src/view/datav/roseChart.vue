@@ -66,7 +66,7 @@ export default {
 
     createData()
 
-    setInterval(createData, 30000)
+    //setInterval(createData, 30000)
   }
 }
 </script>

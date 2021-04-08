@@ -52,9 +52,9 @@
 
 <script>
 import topHeader from './topHeader'
-import digitalFlop from './digitalFlop'
-import rankingBoard from './rankingBoard'
-import roseChart from './roseChart'
+// import digitalFlop from './digitalFlop'
+// import rankingBoard from './rankingBoard'
+// import roseChart from './roseChart'
 import waterLevelChart from './waterLevelChart'
 import scrollBoard from './scrollBoard'
 import cards from './cards'
@@ -64,15 +64,15 @@ import spiRate from './spiRate'
 import aoiRate from './aoiRate'
 import orderInfo from './orderInfo'
 import utiliazation from './utilization'
-import person from './person'
+// import person from './person'
 
 export default {
   name: 'DataView',
   components: {
     topHeader,
-    digitalFlop,
-    rankingBoard,
-    roseChart,
+    // digitalFlop,
+    // rankingBoard,
+    // roseChart,
     waterLevelChart,
     scrollBoard,
     cards,
@@ -82,7 +82,7 @@ export default {
     aoiRate,
     orderInfo,
     utiliazation,
-    person,
+    // person,
   },
   data () {
     return {}

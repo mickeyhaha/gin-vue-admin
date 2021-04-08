@@ -98,3 +98,11 @@ export const createPUBMOrderProduce2 = (data) => {
          params
      })
  }
+
+export const getLineCurrOrderList = (params) => {
+    return service({
+        url: "/PUBMOrderProduce/getLineCurrOrderList",
+        method: 'get',
+        params
+    })
+}

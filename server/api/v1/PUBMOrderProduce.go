@@ -128,3 +128,19 @@ func GetPUBMOrderProduce2List(c *gin.Context) {
         }, "获取成功", c)
     }
 }
+
+func GetLineCurrOrderList(c *gin.Context) {
+	orderInfo := request.PUBMOrderProduce2Search{}
+	orderInfo.Status = 2
+	if err, orders, total := service.GetPUBMOrderProduce2InfoList(orderInfo); err == nil {
+		response.OkWithDetailed(response.PageResult{
+			List:     orders,
+			Total:    total,
+			Page:     orderInfo.Page,
+			PageSize: orderInfo.PageSize,
+		}, "获取成功", c)
+	} else {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	}
+}

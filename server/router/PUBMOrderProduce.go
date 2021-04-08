@@ -15,5 +15,6 @@ func InitPUBMOrderProduce2Router(Router *gin.RouterGroup) {
 		PUBMOrderProduce2Router.PUT("updatePUBMOrderProduce2", v1.UpdatePUBMOrderProduce2)    // 更新PUBMOrderProduce2
 		PUBMOrderProduce2Router.GET("findPUBMOrderProduce2", v1.FindPUBMOrderProduce2)        // 根据ID获取PUBMOrderProduce2
 		PUBMOrderProduce2Router.GET("getPUBMOrderProduce2List", v1.GetPUBMOrderProduce2List)  // 获取PUBMOrderProduce2列表
+		PUBMOrderProduce2Router.GET("getLineCurrOrderList", v1.GetLineCurrOrderList)  // 获取线体及当前工单
 	}
 }

@@ -7,7 +7,7 @@
 
 <script>
 import { checkDB } from "@/api/initdb"
-import datav from './view/datav/index.vue'
+// import datav from './view/datav/index.vue'
 
 export default {
   name: 'app',
@@ -16,7 +16,7 @@ export default {
   },
 
   components: {
-    datav
+    // datav
   },
 }
 </script>

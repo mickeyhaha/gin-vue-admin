@@ -3,7 +3,6 @@
     若作为代码出售的产品（任何涉及代码交付第三方作为后续开发）必须保留此脚本
                          或标注原作者信息
                           否则将依法维权
-*/
 
 var child_process = require("child_process");
 
@@ -21,3 +20,4 @@ switch (process.platform) {
         child_process.exec(cmd + ' ' + url);
         break;
 }
+*/

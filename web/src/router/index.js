@@ -14,6 +14,12 @@ const baseRouters = [{
     path: '/',
     redirect: '/login'
 },
+    {
+        path: "/smtboard",
+        name: 'SmtBoard',
+        component: () =>
+            import('@/view/datav/index.vue')
+    },
 {
     path: "/init",
     name: 'init',

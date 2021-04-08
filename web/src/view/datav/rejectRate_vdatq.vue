@@ -120,7 +120,7 @@ export default {
 
     createData()
 
-    setInterval(createData, 3000)
+    //setInterval(createData, 3000)
   }
 }
 </script>

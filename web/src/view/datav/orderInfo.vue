@@ -2,16 +2,26 @@
   <div id="order-info">
       <el-row>
         <el-col :span="col_span.col1" class="block-top-bottom-content">
+          线体:
+        </el-col>
+        <el-col :span="col_span.col2"  class="block-top-bottom-content">
+          <el-select v-model="selectValue" placeholder="请选择" @change="selectChanged" size="small">
+            <el-option v-for="(item, i) in lineOptions" :key="i" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="col_span.col1" class="block-top-bottom-content">
           工单:
         </el-col>
         <el-col :span="col_span.col2"  class="block-top-bottom-content">
-          P201223067-1
+          {{selectItem.WorkOrderNo}}
         </el-col>
         <el-col :span="col_span.col3"  class="block-top-bottom-content">
           计划产能(H):
         </el-col>
         <el-col :span="col_span.col4"  class="block-top-bottom-content">
-          10000
+          {{selectItem.Qty}}
         </el-col>
       </el-row>
       <el-row>
@@ -19,13 +29,13 @@
           产品:
         </el-col>
         <el-col :span="col_span.col2"  class="block-top-bottom-content">
-          P23067-1_001
+           {{selectItem.Product}}
         </el-col>
         <el-col :span="col_span.col3"  class="block-top-bottom-content">
           产品名称:
         </el-col>
         <el-col :span="col_span.col4"  class="block-top-bottom-content">
-          abcdefghik
+           {{selectItem.Product}}
         </el-col>
       </el-row>
       <el-row>
@@ -33,13 +43,13 @@
           制令单:
         </el-col>
         <el-col :span="col_span.col2"  class="block-top-bottom-content">
-          321207938
+          {{selectItem.MOrderNo}}
         </el-col>
         <el-col :span="col_span.col3"  class="block-top-bottom-content">
           面别:
         </el-col>
         <el-col :span="col_span.col4"  class="block-top-bottom-content">
-          AB
+          {{selectItem.PasteSide}}
         </el-col>
       </el-row>
   </div>
@@ -47,8 +57,8 @@
 
 <script>
 import {
-  getLackWarnings
-} from "@/api/MoniWholeView";
+  getLineCurrOrderList
+} from "@/api/PUBMOrderProduce";
 import infoList from "@/mixins/infoList";
 
 export default {
@@ -62,34 +72,55 @@ export default {
         col3: 6,
         col4: 6,
       },
-      listApi: getLackWarnings,
+      selectValue: '',
+      listApi: getLineCurrOrderList,
+      lineOptions: [],
+      selectItem: {}
     }
   },
   methods: {
     createData () {
       this.getTableData().then(() => {
-        let datas = []
-        for (let index = 0; index < this.tableData.length && index < 9; index++) {
+        // debugger
+        const options = [];
+        for (let index = 0; index < this.tableData.length; index++) {
           const element = this.tableData[index]
-          datas[index] = {
-            '机器': element.machineCode+index,  //MatrCode
-            '时间': element.leftTime+index
-          }
+          options.push({
+            'label': element.LineName,
+            'value': element.ID,
+            'LineName': element.LineName,
+            'WorkOrderNo': element.WorkOrderNo,
+            'MOrderNo': element.MOrderNo,
+            'Product': element.Product,
+            'Qty': element.Qty,
+            'QtyCompleted': element.QtyCompleted,
+            'PasteSide': element.PasteSide,
+          });
         }
-        // this.chartData = {
-        //   columns: ['机器', '时间'],
-        //   rows: datas
-        // }
+        this.lineOptions = options;
+        this.selectValue = options[0].label;
+        this.selectItem = options[0]
       });
       
     },
+
+    selectChanged(value) {
+      for (let index = 0; index < this.lineOptions.length; index++) {
+        const element = this.lineOptions[index];
+        if (element.value == value) {
+          this.selectItem = element
+        }
+      }
+      console.log(this.selectItem)
+    },
   },
+
   mounted () {
     const { createData } = this
 
     createData()
 
-    setInterval(createData, 3000)
+    //setInterval(createData, 3000)
   }
 }
 </script>
@@ -97,7 +128,7 @@ export default {
 <style lang="less">
 #order-info {
   width: 100%;
-  height: 20%;
+  height: 30%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;

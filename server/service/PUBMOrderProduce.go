@@ -69,15 +69,12 @@ func GetPUBMOrderProduce2(id uint) (err error, PUBMOrderProduce model.PUBMOrderP
 //@return: err error, list interface{}, total int64
 
 func GetPUBMOrderProduce2InfoList(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
-	if true {
-		return GetOrderListByLineName(info.LineName, info.Status)
-	}
 	//limit := info.PageSize
 	//offset := info.PageSize * (info.Page - 1)
     // 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})
     var PUBMOrderProduces []model.PUBMOrderProduce2
-	sql := "select top 10 * from PUB_MOrderProduce where 1=1 "
+	sql := "select distinct LineName, * from PUB_MOrderProduce where 1=1 "
     // 如果有条件搜索 下方会自动创建搜索语句
     if info.Status != 0 {
        sql += " and Status = " + fmt.Sprintf("%d", info.Status)
@@ -89,10 +86,10 @@ func GetPUBMOrderProduce2InfoList(info request.PUBMOrderProduce2Search) (err err
 	//err = db.Limit(limit).Offset(offset).Find(&PUBMOrderProduces).Error
 
 	err = db.Raw(sql).Scan(&PUBMOrderProduces).Error
+
 	total = int64(len(PUBMOrderProduces))
 	return err, PUBMOrderProduces, total
 }
-
 
 func GetOrderListByLineName(lineName string, status int) (err error, list interface{}, total int64)  {
 	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})
