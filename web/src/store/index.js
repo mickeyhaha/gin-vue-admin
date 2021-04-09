@@ -18,6 +18,11 @@ export const store = new Vuex.Store({
         count: 0,
         selectedLine: {},
     },
+    mutations: {
+        update(state, [key, value]) {
+            state[key] = value;
+        },
+    },
     modules: {
         user,
         router,

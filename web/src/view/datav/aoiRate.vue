@@ -10,8 +10,14 @@ import '@toast-ui/chart/dist/toastui-chart.min.css';
 import { columnChart } from '@toast-ui/vue-chart';
 
 import {
-  getLackWarnings
-} from "@/api/MoniWholeView";
+    createTS_AOI_CNT,
+    deleteTS_AOI_CNT,
+    deleteTS_AOI_CNTByIds,
+    updateTS_AOI_CNT,
+    findTS_AOI_CNT,
+    getTS_AOI_CNTList,
+    getTS_AOI_CNTList4Chart
+} from "@/api/TS_AOI_CNT";  //  此处请自行替换地址
 import infoList from "@/mixins/infoList";
 
 export default {
@@ -22,7 +28,7 @@ export default {
   },
   data () {
     return {
-      listApi: getLackWarnings,
+      listApi: getTS_AOI_CNTList4Chart,
       chartProps: {
         containerStyle: {
           width: '100%',
@@ -115,18 +121,7 @@ export default {
   methods: {
     createData () {
       this.getTableData().then(() => {
-        let datas = []
-        for (let index = 0; index < this.tableData.length && index < 9; index++) {
-          const element = this.tableData[index]
-          datas[index] = {
-            '机器': element.machineCode+index,  //MatrCode
-            '时间': element.leftTime+index
-          }
-        }
-        // this.chartData = {
-        //   columns: ['机器', '时间'],
-        //   rows: datas
-        // }
+        this.chartData = this.tableData[0];
       });
       
     },
@@ -136,7 +131,7 @@ export default {
 
     createData()
 
-    //setInterval(createData, 3000)
+    setInterval(createData, 3000)
   }
 }
 </script>

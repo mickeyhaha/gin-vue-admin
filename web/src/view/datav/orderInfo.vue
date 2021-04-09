@@ -101,8 +101,7 @@ export default {
         this.lineOptions = options;
         this.selectValue = options[0].label;
         this.selectItem = options[0];
-        store.state.selectedLine = this.selectItem;
-        // store.commit('')
+        this.$store.commit('update',['selectedLine',this.selectItem]);
       });
       
     },
@@ -114,9 +113,7 @@ export default {
           this.selectItem = element
         }
       }
-      store.state.selectedLine = this.selectItem;
-      // store.commit()
-      // console.log(store.state.selectedLine)
+      this.$store.commit('update',['selectedLine',this.selectItem]);
     },
   },
 

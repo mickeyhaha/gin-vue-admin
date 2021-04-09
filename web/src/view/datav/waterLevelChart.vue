@@ -1,7 +1,7 @@
 <template>
   <div id="finish-rate">
     <gauge-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
-    {{this.selectItem.Qty}}
+    <input class="uni-input" name="totalPrice" type="number" v-model="getRate" />
   </div>
 </template>
 
@@ -21,6 +21,19 @@ export default {
   components: {
     'gauge-chart': gaugeChart
   },
+  computed: {
+    getQty() {
+      return this.$store.state.selectedLine.Qty;
+    },
+
+    getQtyCompleted() {
+      return this.$store.state.selectedLine.QtyCompleted;
+    },
+
+    getRate() {
+      return this.$store.state.selectedLine.QtyCompleted * 100 / this.$store.state.selectedLine.Qty;
+    },
+  },
   data () {
     return {
       selectItem : store.state.selectedLine,
@@ -36,7 +49,7 @@ export default {
               text: '完成度%',
               align: 'center',
             }, width: '100%'},
-          circularAxis: { title: '9000/10000', scale: { min: 0, max: 100 } },
+          circularAxis: { title: this.$store.state.selectedLine.QtyCompleted + '/' + this.$store.state.selectedLine.Qty, scale: { min: 0, max: 100 } },
           series: {
             angleRange: {
               start: 270,
@@ -90,7 +103,7 @@ export default {
         series: [
           {
             name: '完成度',
-            data: [90],
+            data: [this.$store.state.selectedLine.QtyCompleted * 100 / this.$store.state.selectedLine.Qty],
           },
         ],
       }

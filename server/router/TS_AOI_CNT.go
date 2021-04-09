@@ -15,5 +15,6 @@ func InitTS_AOI_CNTRouter(Router *gin.RouterGroup) {
 		TS_AOI_CNTRouter.PUT("updateTS_AOI_CNT", v1.UpdateTS_AOI_CNT)    // 更新TS_AOI_CNT
 		TS_AOI_CNTRouter.GET("findTS_AOI_CNT", v1.FindTS_AOI_CNT)        // 根据ID获取TS_AOI_CNT
 		TS_AOI_CNTRouter.GET("getTS_AOI_CNTList", v1.GetTS_AOI_CNTList)  // 获取TS_AOI_CNT列表
+		TS_AOI_CNTRouter.GET("getTS_AOI_CNTList4Chart", v1.GetTS_AOI_CNTList4Chart)  // 获取TS_AOI_CNT列表4Chart
 	}
 }

@@ -17,6 +17,7 @@ type TS_AOI_CNT struct {
       IssueName  string `json:"issueName" form:"issueName" gorm:"column:IssueName;comment:IssueName;type:varchar(50);size:50;"`
       Result  int `json:"result" form:"result" gorm:"column:Result;comment:Result;type:int;"`
       AOIID  int `json:"aOIID" form:"aOIID" gorm:"column:AOIID;comment:AOIID;type:int;"`
+      LineName  string `json:"lineName" form:"lineName" gorm:"column:lineName;comment:lineName;type:string;"`
 }
 
 

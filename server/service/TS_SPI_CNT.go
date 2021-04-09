@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
@@ -73,6 +74,21 @@ func GetTS_SPI_CNTInfoList(info request.TS_SPI_CNTSearch) (err error, list inter
     // 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.TS_SPI_CNT{})
     var TSCs []model.TS_SPI_CNT
+	sql := `
+			SELECT TOP 7 a.IssueName, COUNT(1) AS Num 
+        FROM ( 
+            SELECT a.IssueName, a.SPIID, b.LineID, b.OrderNo 
+            FROM TS_SPI_Repair a WITH(NOLOCK) 
+            JOIN TS_SPI b WITH(NOLOCK) 
+            ON b.ID =a.SPIID 
+            WHERE b.Result =0 AND b.OrderNo <>'' 
+            GROUP BY a.IssueName, a.SPIID , b.LineID, b.OrderNo
+          ) a 
+        GROUP BY a.IssueName 
+        ORDER BY Num DESC;
+			`	// AND b.CreateTime >=? AND b.CreateTime <? AND a.CreateTime >=?  AND a.CreateTime <? AND b.LineID = ? AND b.OrderNo = ?
+
+	fmt.Printf(sql)
     // 如果有条件搜索 下方会自动创建搜索语句
     //if info.Count != 0 {
     //    db = db.Where("`count` > ?",info.Count)

@@ -91,10 +91,18 @@ export const createTS_AOI_CNT = (data) => {
 // @Param data body request.PageInfo true "分页获取TS_AOI_CNT列表"
 // @Success 200 {string} string "{"success":true,"data":{},"msg":"获取成功"}"
 // @Router /TAC/getTS_AOI_CNTList [get]
- export const getTS_AOI_CNTList = (params) => {
+export const getTS_AOI_CNTList = (params) => {
      return service({
          url: "/TAC/getTS_AOI_CNTList",
          method: 'get',
          params
      })
- }
+}
+
+export const getTS_AOI_CNTList4Chart = (params) => {
+    return service({
+        url: "/TAC/getTS_AOI_CNTList4Chart",
+        method: 'get',
+        params
+    })
+}
