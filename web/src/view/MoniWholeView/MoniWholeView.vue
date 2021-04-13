@@ -2,9 +2,14 @@
   <div>
     <div class="search-term">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
-        <el-form-item label="LineID">
-          <el-input placeholder="搜索条件" v-model="searchInfo.lineID"></el-input>
+        <el-form-item label="LineName">
+          <el-select v-model="searchInfo.lineID" placeholder="请选择" @change="selectChanged" size="small">
+            <el-option v-for="(item, i) in lineOptions" :key="i" :label="item.lineName" :value="item.lineID"></el-option>
+          </el-select>
         </el-form-item>    
+        <!-- <el-form-item label="LineID">
+          <el-input placeholder="搜索条件" v-model="searchInfo.lineID"></el-input>
+        </el-form-item>     -->
         <el-form-item label="机器">
           <el-input placeholder="搜索条件" v-model="searchInfo.machineCode"></el-input>
         </el-form-item>    
@@ -319,8 +324,12 @@ import {
     deleteMoniWholeViewByIds,
     updateMoniWholeView,
     findMoniWholeView,
-    getMoniWholeViewList
+    getMoniWholeViewList,
+    getRejectRateList,
 } from "@/api/MoniWholeView";  //  此处请自行替换地址
+import {
+    getPVS_Base_LineList
+} from "@/api/PVS_Base_Line";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import infoList from "@/mixins/infoList";
 export default {
@@ -328,7 +337,9 @@ export default {
   mixins: [infoList],
   data() {
     return {
-      listApi: getMoniWholeViewList,
+      lineOptions: [],
+      selectedLine: "",
+      listApi: getRejectRateList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
@@ -390,6 +401,15 @@ export default {
     }
   },
   methods: {
+    selectChanged(value) {
+      for (let index = 0; index < this.lineOptions.length; index++) {
+        const element = this.lineOptions[index];
+        if (element.value == value) {
+          this.selectItem = element
+        }
+      }
+      this.$store.commit('update',['selectedLine',this.selectItem]);
+    },
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
@@ -528,6 +548,19 @@ export default {
     }
   },
   async created() {
+    if (this.$store.state.lines.length == 0) {
+      const table = await getPVS_Base_LineList({ page: 1, pageSize: 100 })
+            if (table.code == 0) {
+                this.$store.commit('update',['lines', table.data.list]);
+                // console.log(this.$store.state.lines)
+            }
+    }
+    for (let index = 0; index < this.$store.state.lines.length; index++) {
+      const element = this.$store.state.lines[index];
+      this.lineOptions.push(element)
+    }
+    console.log(this.lineOptions)
+
     await this.getTableData();
   
     await this.getDict("int");

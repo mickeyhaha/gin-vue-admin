@@ -15,5 +15,6 @@ func InitMoniWholeViewRouter(Router *gin.RouterGroup) {
 		MoniWholeViewRouter.PUT("updateMoniWholeView", v1.UpdateMoniWholeView)    // 更新MoniWholeView
 		MoniWholeViewRouter.GET("findMoniWholeView", v1.FindMoniWholeView)        // 根据ID获取MoniWholeView
 		MoniWholeViewRouter.GET("getMoniWholeViewList", v1.GetMoniWholeViewList)  // 获取MoniWholeView列表
+		MoniWholeViewRouter.GET("getRejectRateList", v1.GetRejectRateList)  // 获取MoniWholeView列表
 	}
 }

@@ -8,11 +8,17 @@
 <script>
 import { checkDB } from "@/api/initdb"
 // import datav from './view/datav/index.vue'
+import { getPVS_Base_LineList } from '@/api/PVS_Base_Line'
 
 export default {
   name: 'app',
   async created(){
     await checkDB()
+ 
+            const table = await getPVS_Base_LineList({ page: 1, pageSize: 100 })
+            if (table.code == 0) {
+                this.$store.commit('update', ['lines', table.data.list]);
+            }
   },
 
   components: {

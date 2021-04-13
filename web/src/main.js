@@ -155,6 +155,9 @@ Vue.use(barChart)
 Vue.use(lineChart)
 Vue.use(gaugeChart)
 
+import { scrollY } from "@/utils/scrollbar.js";
+Vue.prototype.escrollY = scrollY
+
 //引入v-charts: https://github.com/ElemeFE/v-charts
 import VCharts from 'v-charts'
 Vue.use(VCharts)

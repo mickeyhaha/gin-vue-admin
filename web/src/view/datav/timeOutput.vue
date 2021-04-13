@@ -1,12 +1,13 @@
 <template>
-  <div id="aoi-rate">
-    <column-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" @selectSeries="onSelectSeries" />
+  <div id="time-output">
+    <!-- <div class="title">AOI不良率</div> -->
+    <bar-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { columnChart } from '@toast-ui/vue-chart';
+import { barChart } from '@toast-ui/vue-chart';
 
 import {
   getLackWarnings
@@ -17,7 +18,7 @@ export default {
   name: 'AoiRate',
   mixins: [infoList],
   components: {
-    'column-chart': columnChart
+    'bar-chart': barChart
   },
   data () {
     return {
@@ -30,7 +31,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '抛料率%',
+              text: '抛料预警',
               align: 'center',
             }, 
           },
@@ -42,11 +43,10 @@ export default {
             align: 'bottom'
           },
           series: {
-            selectable: true,
-            stack: false,
+            stack: true,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '线体' } },
+          xAxis: { pointOnColumn: false, title: { text: '抛料量' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             // title: {
@@ -91,22 +91,21 @@ export default {
         }
       },
       chartData: {
-        categories: ['站料1', '站料2', '站料3', '站料4', '站料5'],
+        categories: ['8:00', '9:00', '10:00', '11:00', '12:00'],
         series: [
           {
-            name: '模糊',
-            data: [0.3, 0.4, 0.2, 0.1, 0.5],
+            name: '实际产量',
+            data: [300, 400, 200, 100, 500],
+          },
+          {
+            name: '标准产量',
+            data: [320, 420, 210, 110, 520],
           },
         ],
       }
     }
   },
   methods: {
-    onSelectSeries(ev) {
-        // const { label, category, value } = ev.area[0].data;
-      console.log(ev)
-    },
-
     createData () {
       this.getTableData().then(() => {
         let datas = []
@@ -136,7 +135,7 @@ export default {
 </script>
 
 <style lang="less">
-#aoi-rate {
+#time-output {
   width: 100%;
   // height: 33%;
   box-shadow: 0 0 3px blue;

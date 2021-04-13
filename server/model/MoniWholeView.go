@@ -42,6 +42,7 @@ type MoniWholeView struct {
       ScanTime  time.Time `json:"scanTime" form:"scanTime" gorm:"column:ScanTime;comment:ScanTime;type:datetime;"`
       Remark  string `json:"remark" form:"remark" gorm:"column:Remark;comment:Remark;type:varchar(50);size:50;"`
       IsTray  *bool `json:"isTray" form:"isTray" gorm:"column:IsTray;comment:IsTray;type:tinyint;"`
+      LineName  string `json:"lineName" form:"lineName" gorm:"column:LineName;comment:LineName;type:string;"`
 }
 
 

@@ -120,7 +120,7 @@ func GetOrderListByLineId(lineID int, status int) (err error, list interface{}, 
 	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})
 	var PUBMOrderProduces []model.PUBMOrderProduce2
 
-	sql := fmt.Sprintf("select o.* from PUB_MOrderProduce o WITH(NOLOCK) join PVS_Base_line l on o.LineName = l.LineName where l.LineID = %d",
+	sql := fmt.Sprintf("select o.* from PUB_MOrderProduce o WITH(NOLOCK) join PVS_Base_line l WITH(NOLOCK) on o.LineName = l.LineName where l.LineID = %d",
 		lineID)
 	if status != 0 {
 		sql += fmt.Sprintf(" and l.status = %d", status)

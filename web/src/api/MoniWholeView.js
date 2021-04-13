@@ -106,3 +106,11 @@ export const getLackWarnings = (params) => {
         params
     })
 }
+
+export const getRejectRateList = (params) => {
+    return service({
+        url: "/MWV/getRejectRateList",
+        method: 'get',
+        params
+    })
+}
