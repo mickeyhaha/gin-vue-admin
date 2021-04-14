@@ -194,6 +194,6 @@ func GetRejectRateList(info request.MoniWholeViewSearch) (err error, list interf
 	err = db.Limit(limit).Offset(offset).Find(&MWVs).Error
 	//err = db.Raw(sql, "43").Scan(&MWVs).Error
 	total = int64(len(MWVs))
-	fmt.Printf("total: %d", total)
+	fmt.Printf("total: %d\n", total)
 	return err, MWVs, total
 }

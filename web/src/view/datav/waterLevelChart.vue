@@ -1,7 +1,7 @@
 <template>
   <div id="finish-rate">
     <gauge-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
-    <input class="uni-input" name="totalPrice" type="number" v-model="getRate" />
+    <!-- <input class="uni-input" name="totalPrice" type="number" v-model="getRate" /> -->
   </div>
 </template>
 

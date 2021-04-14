@@ -1,16 +1,73 @@
 <template>
   <div>
+    <div class="search-term">
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
+        <el-form-item label="LineID">
+          <el-input placeholder="搜索条件" v-model="searchInfo.lineID"></el-input>
+        </el-form-item>    
+        <el-form-item label="LineName">
+          <el-input placeholder="搜索条件" v-model="searchInfo.lineName"></el-input>
+        </el-form-item>    
+        <el-form-item label="LineType">
+          <el-input placeholder="搜索条件" v-model="searchInfo.lineType"></el-input>
+        </el-form-item>    
+        <el-form-item label="程式读取路径">
+          <el-input placeholder="搜索条件" v-model="searchInfo.readFilePath"></el-input>
+        </el-form-item>    
+        <el-form-item label="LineName2">
+          <el-input placeholder="搜索条件" v-model="searchInfo.lineName2"></el-input>
+        </el-form-item>    
+        <el-form-item label="制令单号">
+          <el-input placeholder="搜索条件" v-model="searchInfo.mOrderNo"></el-input>
+        </el-form-item>    
+        <el-form-item label="Remark">
+          <el-input placeholder="搜索条件" v-model="searchInfo.remark"></el-input>
+        </el-form-item>    
+            <el-form-item label="是否报警" prop="warnning">
+            <el-select v-model="searchInfo.warnning" clear placeholder="请选择">
+                <el-option
+                    key="true"
+                    label="是"
+                    value="true">
+                </el-option>
+                <el-option
+                    key="false"
+                    label="否"
+                    value="false">
+                </el-option>
+            </el-select>
+            </el-form-item>   
+        <el-form-item label="WarnningStr">
+          <el-input placeholder="搜索条件" v-model="searchInfo.warnningStr"></el-input>
+        </el-form-item>    
+        <el-form-item>
+          <el-button @click="onSubmit" type="primary">查询</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="openDialog" type="primary">新增PVS生产线表</el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-popover placement="top" v-model="deleteVisible" width="160">
+            <p>确定要删除吗？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button @click="deleteVisible = false" size="mini" type="text">取消</el-button>
+                <el-button @click="onDelete" size="mini" type="primary">确定</el-button>
+              </div>
+            <el-button icon="el-icon-delete" size="mini" slot="reference" type="danger">批量删除</el-button>
+          </el-popover>
+        </el-form-item>
+      </el-form>
+    </div>
     <el-table
       :data="tableData"
       @selection-change="handleSelectionChange"
-      @row-click="clickData"
       border
       ref="multipleTable"
       stripe
-      height="250"
-      style="width: 100%;"
+      style="width: 100%"
       tooltip-effect="dark"
     >
+    <el-table-column type="selection" width="55"></el-table-column>
     <el-table-column label="日期" width="180">
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
@@ -38,9 +95,64 @@
       <el-table-column label="按钮组">
         <template slot-scope="scope">
           <el-button class="table-button" @click="updatePVS_Base_Line(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      :current-page="page"
+      :page-size="pageSize"
+      :page-sizes="[10, 30, 50, 100]"
+      :style="{float:'right',padding:'20px'}"
+      :total="total"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
+      layout="total, sizes, prev, pager, next, jumper"
+    ></el-pagination>
+
+    <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
+      <el-form :model="formData" label-position="right" label-width="80px">
+         <el-form-item label="LineID:"><el-input v-model.number="formData.lineID" clearable placeholder="请输入"></el-input>
+      </el-form-item>
+       
+         <el-form-item label="LineName:">
+            <el-input v-model="formData.lineName" clearable placeholder="请输入" ></el-input>
+      </el-form-item>
+       
+         <el-form-item label="LineType:">
+            <el-input v-model="formData.lineType" clearable placeholder="请输入" ></el-input>
+      </el-form-item>
+       
+         <el-form-item label="程式读取路径:">
+            <el-input v-model="formData.readFilePath" clearable placeholder="请输入" ></el-input>
+      </el-form-item>
+       
+         <el-form-item label="LineName2:">
+            <el-input v-model="formData.lineName2" clearable placeholder="请输入" ></el-input>
+      </el-form-item>
+       
+         <el-form-item label="制令单号:">
+            <el-input v-model="formData.mOrderNo" clearable placeholder="请输入" ></el-input>
+      </el-form-item>
+       
+         <el-form-item label="Remark:">
+            <el-input v-model="formData.remark" clearable placeholder="请输入" ></el-input>
+      </el-form-item>
+       
+         <el-form-item label="是否报警:">
+            <el-switch active-color="#13ce66" inactive-color="#ff4949" active-text="是" inactive-text="否" v-model="formData.warnning" clearable ></el-switch>
+      </el-form-item>
+       
+         <el-form-item label="WarnningStr:">
+            <el-input v-model="formData.warnningStr" clearable placeholder="请输入" ></el-input>
+      </el-form-item>
+       </el-form>
+      <div class="dialog-footer" slot="footer">
+        <el-button @click="closeDialog">取 消</el-button>
+        <el-button @click="enterDialog" type="primary">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -55,9 +167,6 @@ import {
 } from "@/api/PVS_Base_Line";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import infoList from "@/mixins/infoList";
-import { getLines } from "@/utils/datav";
-import { mapActions } from "vuex";
-
 export default {
   name: "PVS_Base_Line",
   mixins: [infoList],
@@ -102,15 +211,11 @@ export default {
       //条件搜索前端看此方法
       onSubmit() {
         this.page = 1
-        this.pageSize = 100            
+        this.pageSize = 10             
         if (this.searchInfo.warnning==""){
           this.searchInfo.warnning=null
         }       
         this.getTableData()
-      },
-      clickData(val) {        
-        // this.$store.commit('update', ['selectedLine', val]);
-        this.$store.dispatch('setSelectedLine', val);
       },
       handleSelectionChange(val) {
         this.multipleSelection = val
@@ -214,8 +319,9 @@ export default {
     }
   },
   async created() {
-    this.tableData = await getLines();
-  }
+    await this.getTableData();
+  
+}
 };
 </script>
 

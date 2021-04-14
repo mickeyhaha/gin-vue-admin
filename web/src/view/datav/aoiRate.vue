@@ -1,7 +1,7 @@
 <template>
   <div id="aoi-rate">
     <!-- <div class="title">AOI不良率</div> -->
-    <column-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <column-chart :data="aoiRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
@@ -19,6 +19,7 @@ import {
     getTS_AOI_CNTList4Chart
 } from "@/api/TS_AOI_CNT";  //  此处请自行替换地址
 import infoList from "@/mixins/infoList";
+import { mapState } from 'vuex';
 
 export default {
   name: 'AoiRate',
@@ -26,6 +27,9 @@ export default {
   components: {
     'column-chart': columnChart
   },
+  computed: mapState(
+    ['aoiRate4Chart']
+  ),
   data () {
     return {
       listApi: getTS_AOI_CNTList4Chart,
@@ -120,9 +124,9 @@ export default {
   },
   methods: {
     createData () {
-      this.getTableData().then(() => {
-        this.chartData = this.tableData[0];
-      });
+      // this.getTableData().then(() => {
+      //   this.chartData = this.tableData[0];
+      // });
       
     },
   },
@@ -131,7 +135,7 @@ export default {
 
     createData()
 
-    setInterval(createData, 3000)
+    // setInterval(createData, 3000)
   }
 }
 </script>
