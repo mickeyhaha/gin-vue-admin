@@ -31,6 +31,12 @@ type PUBMOrderProduce2 struct {
       CreateTime  time.Time `json:"CreateTime" form:"CreateTime" gorm:"column:CreateTime;comment:;type:datetime;"`
       LMTime  time.Time `json:"LMTime" form:"LMTime" gorm:"column:LMTime;comment:最后时间;type:datetime;"`
       PanelType  int `json:"PanelType" form:"PanelType" gorm:"column:PanelType;comment:PCB类型;type:bigint;size:19;"`
+
+      // extra biz field
+      LineID  int `json:"lineID" form:"lineID" gorm:"column:LineID;comment:;type:int;"`
+      Count  int `json:"count" form:"count" gorm:"column:count;comment:Count;type:bigint;"`
+      ErrCount  int `json:"errCount" form:"errCount" gorm:"column:ErrCount;comment:ErrCount;type:bigint;"`
+      AoiErrRate  float64 `json:"aoiErrCount" form:"aoiErrCount"`
 }
 
 

@@ -18,7 +18,13 @@ const baseRouters = [{
         path: "/smtboard",
         name: 'SmtBoard',
         component: () =>
-            import('@/view/datav/index.vue')
+            import('@/view/datav/index_line.vue')
+    },
+    {
+        path: "/deptboard",
+        name: 'DeptBoard',
+        component: () =>
+            import('@/view/datav/index_dept.vue')
     },
 {
     path: "/init",

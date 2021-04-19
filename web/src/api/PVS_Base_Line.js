@@ -98,3 +98,20 @@ export const createPVS_Base_Line = (data) => {
          params
      })
  }
+
+export const getDeptLineSummary = (params) => {
+    return service({
+        url: "/PBL/getDeptLineSummary",
+        method: 'get',
+        params
+    })
+}
+
+export const getWorkOrderListByLine = (params) => {
+    console.log(params)
+    return service({
+        url: "/PBL/getWorkOrderListByLine",
+        method: 'get',
+        params
+    })
+}

@@ -7,7 +7,8 @@ import { router } from "@/store/module/router"
 import { dictionary } from "@/store/module/dictionary"
 Vue.use(Vuex)
 
-import { getPVS_Base_LineList } from '@/api/PVS_Base_Line'
+import { getPVS_Base_LineList,
+    getDeptLineSummary } from '@/api/PVS_Base_Line'
 import {
     getLackWarnings,
     getRejectRateList,
@@ -28,25 +29,11 @@ export const store = new Vuex.Store({
         selectedLine: {},
         rejectRate: [],
         aoiRate4Chart: {
-            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            categories: [],
             series: [
-                {
-                    name: '模糊',
-                    data: [0.3, 0.4, 0.2, 0.1, 0.5],
-                    stackGroup: 'AOI',
-                },
-                {
-                    name: '少料',
-                    data: [0.2, 0.3, 0.3, 0.2, 0.5],
-                    stackGroup: 'AOI',
-                },
-                {
-                    name: '错点',
-                    data: [0.4, 0.2, 0.1, 0.3, 0.1],
-                    stackGroup: 'AOI',
-                },
             ],
         },
+        deptLineSummary: [],
     },
     actions: {
         async getLines({ commit, state }) {
@@ -54,15 +41,15 @@ export const store = new Vuex.Store({
             if (res.code == 0) {
                 const lines = res.data.list
                 commit("setLines", lines)
+                console.log(lines)
                 return state.lines
             }
         },
         async getAoiRate4Chart({ commit, state }, lineName) {
-            const res = await getTS_AOI_CNTList4Chart({ page: 1, pageSize: 100 });
+            const res = await getTS_AOI_CNTList4Chart({ page: 1, pageSize: 100, lineName: lineName });
             if (res.code == 0) {
                 const aoiRate4Chart = res.data.list[0]
                 commit("setAoiRate4Chart", aoiRate4Chart)
-                console.log(aoiRate4Chart)
                 return state.aoiRate4Chart
             }
         },
@@ -75,9 +62,19 @@ export const store = new Vuex.Store({
             }
         }, 
 
-        async setSelectedLine({ commit, dispatch}, selectedLine) {
+        // 点击dept看板的线体
+        async selectLine({ commit, dispatch}, selectedLine) {
             commit('setSelectedLine', selectedLine)
-            dispatch('getAoiRate4Chart')
+            dispatch('getAoiRate4Chart', selectedLine.LineName)
+        },
+
+        async getDeptLineSummary({ commit, state }) {
+            const res = await getDeptLineSummary({ page: 1, pageSize: 100 });
+            if (res.code == 0) {
+                const deptLineSummary = res.data.list
+                commit("setDeptLineSummary", deptLineSummary)
+                return state.deptLineSummary
+            }
         },
     },
     // 无法执行异步
@@ -97,6 +94,9 @@ export const store = new Vuex.Store({
         setAoiRate4Chart(state, aoiRate4Chart) {
             state.aoiRate4Chart = aoiRate4Chart;
         },
+        setDeptLineSummary(state, deptLineSummary) {
+            state.deptLineSummary = deptLineSummary;
+        },
     },
     getters: {
         getLines(state) {
@@ -107,6 +107,9 @@ export const store = new Vuex.Store({
         },
         getSelectedLine(state) {
             return state.selectedLine
+        },
+        getDeptLineSummary(state) {
+            return state.deptLineSummary
         },
     },
     modules: {

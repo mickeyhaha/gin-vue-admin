@@ -15,10 +15,11 @@ export default {
   async created(){
     await checkDB()
  
-            const table = await getPVS_Base_LineList({ page: 1, pageSize: 100 })
-            if (table.code == 0) {
-                this.$store.commit('update', ['lines', table.data.list]);
-            }
+ // 不能在这里调用API, 因为有可能还未登录, 无法访问
+            // const table = await getPVS_Base_LineList({ page: 1, pageSize: 100 })
+            // if (table.code == 0) {
+            //     this.$store.commit('update', ['lines', table.data.list]);
+            // }
   },
 
   components: {

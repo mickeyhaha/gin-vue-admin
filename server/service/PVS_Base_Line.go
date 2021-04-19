@@ -103,7 +103,7 @@ func GetPVS_Base_LineInfoList(info request.PVS_Base_LineSearch) (err error, list
     //}
 	//err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&PBLs).Error
-	err = db.Raw("SELECT * FROM PVS_Base_Line WITH(NOLOCK)").Scan(&PBLs).Error
+	err = db.Raw("SELECT * FROM PVS_Base_Line WITH(NOLOCK) where MOrderNo != ''").Scan(&PBLs).Error
 	total = int64(len(PBLs))
 	return err, PBLs, total
 }

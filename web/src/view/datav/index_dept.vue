@@ -5,6 +5,12 @@
         <el-col :span="24"><top-header /></el-col>
       </el-row>
       <el-row>
+        <el-col :span="24"><DeptFilter /></el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="24"><DeptLineSummary /></el-col>
+      </el-row>
+      <el-row>
         <el-col :span="8" class="block-top-bottom-content">
             <reject-rate />
             <lack-warning />
@@ -21,31 +27,6 @@
               <utiliazation /> 
         </el-col>
       </el-row>
-
-      <!-- <div class="main-content">
-         <digital-flop />  
-
-        <div class="block-left-right-content">
-
-          <div class="block-top-bottom-content">
-            <reject-rate />
-            <lack-warning />
-            <scroll-board />
-          </div>
-
-          <div class="block-top-bottom-content"> 
-              <water-level-chart /> 
-              <water-level-chart /> 
-              <water-level-chart /> 
-          </div>
-
-          <div class="block-top-bottom-content"> 
-              <spi-rate /> 
-              <spi-rate /> 
-              <spi-rate /> 
-          </div>
-        </div>
-      </div> -->
     </dv-full-screen-container>
   </div>
 </template>
@@ -64,6 +45,8 @@ import spiRate from './spiRate'
 import aoiRate from './aoiRate'
 import orderInfo from './orderInfo'
 import utiliazation from './utilization'
+import DeptLineSummary from './deptLineSummary'
+import DeptFilter from './deptFilter'
 // import person from './person'
 
 export default {
@@ -82,10 +65,12 @@ export default {
     aoiRate,
     orderInfo,
     utiliazation,
+    DeptLineSummary,
+    DeptFilter,
     // person,
   },
   data () {
-    return {
+    return {  
     }
   },
   methods: {}

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
@@ -99,7 +100,7 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 	//err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&TACs).Error
 	//err = db.Raw("SELECT Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM TS_AOI WITH(NOLOCK)").Scan(&TACs).Error
-	err = db.Raw(`
+	sql := `
 		SELECT a.*, COUNT(1) AS ErrCount
 			FROM (
 					 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName
@@ -113,7 +114,25 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 				 ) a
 			GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName
 			ORDER BY IssueName, LineName;
-		`).Scan(&TACs).Error
+		`
+	if info.LineName != "" {
+		sql = fmt.Sprintf(`
+		SELECT a.*, COUNT(1) AS ErrCount
+			FROM (
+					 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName
+					 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
+							  JOIN  TS_AOI b WITH(NOLOCK)
+								   ON b.ID =a.AOIID
+							  JOIN  PVS_Base_Line line WITH(NOLOCK)
+								   ON b.LineID = line.LineID
+					 WHERE b.Result =0 AND b.OrderNo <>'' and line.LineName = '%s'
+					 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName
+				 ) a
+			GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName
+			ORDER BY IssueName;
+			`, info.LineName)
+	}
+	err = db.Raw(sql).Scan(&TACs).Error
 	total = int64(len(TACs))
 	return err, TACs, total
 }
@@ -184,4 +203,15 @@ func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list
 	}
 	chartDatas = append(chartDatas, chartData)
 	return err, chartDatas, total
+}
+
+func GetTS_AOI_CNTInfoListByLineName(lineID string) (err error, list []model.TS_AOI_CNT, total int64) {
+	db := global.GVA_DB_MSSQL.Model(&model.TS_AOI_CNT{})
+	var TACs []model.TS_AOI_CNT
+	err = db.Raw(`
+			SELECT Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM TS_AOI WITH(NOLOCK) 
+			WHERE LineID = ? and OrderNO <> ''
+		`, lineID).Scan(&TACs).Error
+	total = int64(len(TACs))
+	return err, TACs, total
 }

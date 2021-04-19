@@ -2,12 +2,12 @@ package v1
 
 import (
 	"gin-vue-admin/global"
-    "gin-vue-admin/model"
-    "gin-vue-admin/model/request"
-    "gin-vue-admin/model/response"
-    "gin-vue-admin/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
+	"gin-vue-admin/model"
+	"gin-vue-admin/model/request"
+	"gin-vue-admin/model/response"
+	"gin-vue-admin/service"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // @Tags PVS_Base_Line
@@ -128,3 +128,65 @@ func GetPVS_Base_LineList(c *gin.Context) {
         }, "获取成功", c)
     }
 }
+
+func GetDeptLineSummary(c *gin.Context) {
+	var pageInfo request.PUBMOrderProduce2Search
+	pageInfo.Status = 2
+	if err, line, total := service.GetPUBMOrderProduce2InfoList(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		// Fill aoi info
+		if err, aoiInfoList, _ := service.GetTS_AOI_CNTInfoList(request.TS_AOI_CNTSearch{}); err == nil {
+			aoiInfoArr := aoiInfoList.([]model.TS_AOI_CNT)
+			lineArr := line.([]model.PUBMOrderProduce2)
+			for i := 0; i < len(lineArr); i++ {
+				for j := 0; j < len(aoiInfoArr); j++  {
+					if lineArr[i].LineID == aoiInfoArr[j].LineID {
+						lineArr[i].ErrCount = aoiInfoArr[j].ErrCount
+						lineArr[i].Count = aoiInfoArr[j].Count
+						if lineArr[i].Count != 0 {
+							lineArr[i].AoiErrRate = (float64(lineArr[i].ErrCount) / float64(lineArr[i].Count))
+						}
+						break
+					}
+				}
+			}
+		}
+		response.OkWithDetailed(response.PageResult{
+			List:     line,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+func GetWorkOrderListByLine(c *gin.Context) {
+	var pageInfo request.PUBMOrderProduce2Search
+	_ = c.ShouldBindQuery(&pageInfo)
+
+	if err, lines, total := service.GetPUBMOrderProduce2InfoList(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		orderArr := lines.([]model.PUBMOrderProduce2)
+		lineOrderMap := make(map[string]model.PUBMOrderProduce2, 0)
+		for i:=0; i< len(orderArr); i++ {
+			if _, ok := lineOrderMap[orderArr[i].WorkOrderNo]; !ok {
+				lineOrderMap[orderArr[i].WorkOrderNo] = orderArr[i]
+			}
+		}
+		lineArr := make([]model.PUBMOrderProduce2, 0)
+		for _, value := range lineOrderMap {
+			lineArr = append(lineArr, value)
+		}
+		response.OkWithDetailed(response.PageResult{
+			List:     lineArr,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+

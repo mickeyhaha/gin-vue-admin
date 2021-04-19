@@ -74,8 +74,11 @@ func GetPUBMOrderProduce2InfoList(info request.PUBMOrderProduce2Search) (err err
     // 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})
     var PUBMOrderProduces []model.PUBMOrderProduce2
-	sql := "select distinct LineName, * from PUB_MOrderProduce where 1=1 "
+	sql := "select l.LineID, o.* from PUB_MOrderProduce o join PVS_Base_line l WITH(NOLOCK) on o.LineName = l.LineName where 1=1 "
     // 如果有条件搜索 下方会自动创建搜索语句
+	if info.LineName != "" {
+		sql += fmt.Sprintf(" and o.LineName = '%s'", info.LineName)
+	}
     if info.Status != 0 {
        sql += " and Status = " + fmt.Sprintf("%d", info.Status)
     }

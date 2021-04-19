@@ -1,11 +1,8 @@
 <template>
-  <div id="data-view">
+  <div id="data-view-line">
     <dv-full-screen-container>
       <el-row>
         <el-col :span="24"><top-header /></el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="24"><PVS_Base_line /></el-col>
       </el-row>
       <el-row>
         <el-col :span="8" class="block-top-bottom-content">
@@ -24,6 +21,31 @@
               <utiliazation /> 
         </el-col>
       </el-row>
+
+      <!-- <div class="main-content">
+         <digital-flop />  
+
+        <div class="block-left-right-content">
+
+          <div class="block-top-bottom-content">
+            <reject-rate />
+            <lack-warning />
+            <scroll-board />
+          </div>
+
+          <div class="block-top-bottom-content"> 
+              <water-level-chart /> 
+              <water-level-chart /> 
+              <water-level-chart /> 
+          </div>
+
+          <div class="block-top-bottom-content"> 
+              <spi-rate /> 
+              <spi-rate /> 
+              <spi-rate /> 
+          </div>
+        </div>
+      </div> -->
     </dv-full-screen-container>
   </div>
 </template>
@@ -42,11 +64,10 @@ import spiRate from './spiRate'
 import aoiRate from './aoiRate'
 import orderInfo from './orderInfo'
 import utiliazation from './utilization'
-import PVS_Base_line from './PVS_Base_Line'
 // import person from './person'
 
 export default {
-  name: 'DataView',
+  name: 'DataViewLine',
   components: {
     topHeader,
     // digitalFlop,
@@ -61,11 +82,10 @@ export default {
     aoiRate,
     orderInfo,
     utiliazation,
-    PVS_Base_line,
     // person,
   },
   data () {
-    return {  
+    return {
     }
   },
   methods: {}
@@ -81,7 +101,7 @@ export default {
     font-size: 15px;
   }
 
-#data-view {
+#data-view-line {
   width: 100%;
   height: 100%;
   background-color: #030409;
