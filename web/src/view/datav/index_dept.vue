@@ -11,6 +11,9 @@
         <el-col :span="24"><DeptLineSummary /></el-col>
       </el-row>
       <el-row>
+        <el-col :span="24"><TimeOutput /></el-col>
+      </el-row>
+      <el-row>
         <el-col :span="8" class="block-top-bottom-content">
             <reject-rate />
             <lack-warning />
@@ -47,6 +50,7 @@ import orderInfo from './orderInfo'
 import utiliazation from './utilization'
 import DeptLineSummary from './deptLineSummary'
 import DeptFilter from './deptFilter'
+import TimeOutput from './timeOutput'
 // import person from './person'
 
 export default {
@@ -67,6 +71,7 @@ export default {
     utiliazation,
     DeptLineSummary,
     DeptFilter,
+    TimeOutput,
     // person,
   },
   data () {

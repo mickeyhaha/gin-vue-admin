@@ -1,13 +1,13 @@
 <template>
   <div id="time-output">
-    <!-- <div class="title">AOI不良率</div> -->
-    <bar-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <!-- <div class="title">分时产量</div> -->
+    <column-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { barChart } from '@toast-ui/vue-chart';
+import { columnChart } from '@toast-ui/vue-chart';
 
 import {
   getLackWarnings
@@ -15,10 +15,10 @@ import {
 import infoList from "@/mixins/infoList";
 
 export default {
-  name: 'AoiRate',
+  name: 'TimeOutput',
   mixins: [infoList],
   components: {
-    'bar-chart': barChart
+    'column-chart': columnChart
   },
   data () {
     return {
@@ -31,7 +31,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '抛料预警',
+              text: '产量',
               align: 'center',
             }, 
           },
@@ -43,10 +43,10 @@ export default {
             align: 'bottom'
           },
           series: {
-            stack: true,
+            stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '抛料量' } },
+          xAxis: { pointOnColumn: false, title: { text: '小时' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             // title: {
@@ -91,7 +91,7 @@ export default {
         }
       },
       chartData: {
-        categories: ['8:00', '9:00', '10:00', '11:00', '12:00'],
+        categories: ['8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
         series: [
           {
             name: '实际产量',
