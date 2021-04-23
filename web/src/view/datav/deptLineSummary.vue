@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="dept-line-summary">
     <el-table
       :data="deptLineSummary"
       @selection-change="handleSelectionChange"
@@ -19,7 +19,7 @@
     <el-table-column label="LineName" prop="LineName" width="120"></el-table-column> 
     <el-table-column label="MOrderNo" prop="MOrderNo" width="120"></el-table-column> 
     <el-table-column label="WorkOrderNo" prop="WorkOrderNo" width="120"></el-table-column> 
-    <el-table-column label="Customer" prop="Customer" width="120"></el-table-column> 
+    <!-- <el-table-column label="Customer" prop="Customer" width="120"></el-table-column> 
     <el-table-column label="CustOrderNo" prop="CustOrderNo" width="120"></el-table-column> 
     <el-table-column label="MachineType" prop="MachineType" width="120"></el-table-column> 
     <el-table-column label="BOM编号" prop="BOMNo" width="120"></el-table-column> 
@@ -27,15 +27,15 @@
     <el-table-column label="产品编号" prop="Product" width="120"></el-table-column> 
     <el-table-column label="周期" prop="CycleTime" width="120"></el-table-column> 
     <el-table-column label="版面" prop="PasteSide" width="120"></el-table-column> 
-    <el-table-column label="拼版数" prop="PanelCount" width="120"></el-table-column> 
+    <el-table-column label="拼版数" prop="PanelCount" width="120"></el-table-column>  -->
     <el-table-column label="计划数量" prop="Qty" width="120"></el-table-column> 
     <el-table-column label="QtyCompletedorder" prop="QtyCompleted" width="120"></el-table-column> 
     <el-table-column label="开始时间" prop="BeginTime" width="120"></el-table-column> 
     <el-table-column label="结束时间" prop="EndTime" width="120"></el-table-column> 
-    <el-table-column label="备注" prop="Remark" width="120"></el-table-column> 
+    <!-- <el-table-column label="备注" prop="Remark" width="120"></el-table-column> 
     <el-table-column label="是否启动JIT拉动" prop="JITRunning" width="120"></el-table-column> 
     <el-table-column label="CreateTimeorder" prop="CreateTime" width="120"></el-table-column> 
-    <el-table-column label="最后时间" prop="LMTime" width="120"></el-table-column> 
+    <el-table-column label="最后时间" prop="LMTime" width="120"></el-table-column>  -->
     </el-table>
   </div>
 </template>
@@ -67,5 +67,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
+#dept-line-summary {
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 </style>

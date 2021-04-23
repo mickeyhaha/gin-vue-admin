@@ -5,7 +5,7 @@
         <el-col :span="24"><top-header /></el-col>
       </el-row>
       <el-row>
-        <el-col :span="24"><DeptFilter /></el-col>
+        <el-col :span="24" class="block-top-bottom-content"><DeptFilter /></el-col>
       </el-row>
       <el-row>
         <el-col :span="24"><DeptLineSummary /></el-col>
@@ -129,6 +129,7 @@ export default {
     // flex-direction: column;
     // box-sizing: border-box;
     padding-left: 20px;
+    padding-right: 20px;
   }
 
   .block-top-content {
