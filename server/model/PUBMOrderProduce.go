@@ -37,6 +37,7 @@ type PUBMOrderProduce2 struct {
       Count  int `json:"count" form:"count" gorm:"column:count;comment:Count;type:bigint;"`
       ErrCount  int `json:"errCount" form:"errCount" gorm:"column:ErrCount;comment:ErrCount;type:bigint;"`
       AoiErrRate  float64 `json:"aoiErrCount" form:"aoiErrCount"`
+      global.DeptFilter
 }
 
 

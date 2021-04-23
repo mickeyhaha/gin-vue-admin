@@ -118,20 +118,20 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 	if info.LineName != "" {
 		sql = fmt.Sprintf(`
 		SELECT a.*, COUNT(1) AS ErrCount
-			FROM (
-					 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName
-					 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
-							  JOIN  TS_AOI b WITH(NOLOCK)
-								   ON b.ID =a.AOIID
-							  JOIN  PVS_Base_Line line WITH(NOLOCK)
-								   ON b.LineID = line.LineID
-					 WHERE b.Result =0 AND b.OrderNo <>'' and line.LineName = '%s'
-						  AND b.CreateTime >='%s'  AND b.CreateTime <='%s'  
-						  AND a.CreateTime >='%s'  AND a.CreateTime <='%s'
-					 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName
-				 ) a
-			GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName
-			ORDER BY IssueName;
+				FROM (
+						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
+						 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
+								  JOIN  CMES3.dbo.TS_AOI b WITH(NOLOCK)
+										ON b.ID =a.AOIID
+								  JOIN  CMES3.dbo.PVS_Base_Line line WITH(NOLOCK)
+										ON b.LineID = line.LineID
+						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
+						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
+						   AND a.CreateTime >='%s'  AND a.CreateTime <= '%s'
+						 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName, cast(a.CreateTime as date)
+					 ) a
+				GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName, a.CreateTime
+				ORDER BY IssueName, LineName;
 			`, info.LineName, info.StartDate, info.EndDate, info.StartDate, info.EndDate)
 	}
 	err = db.Raw(sql).Scan(&TACs).Error
@@ -150,17 +150,18 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 //	return err, TACs, total
 //}
 
-
 func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list interface{}, total int64) {
 	err, list, total = GetTS_AOI_CNTInfoList(info)
 	TACs := list.([]model.TS_AOI_CNT)
 	var i int64
 	lines := make(map[string]struct{}, 0)
+	dateMap := make(map[string]struct{}, 0)
 	issueNames := make(map[string]struct{}, 0)
 	// line - issueName - errCount
 	lineSeries := make(map[string]map[string]int, 0)
 
 	lineArr := make([]string, 0)
+	dateArr := make([]string, 0)
 	issueNameArr := make([]string, 0)
 
 	totalCount := 0
@@ -172,6 +173,12 @@ func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list
 		if  _, ok := lines[TACs[i].LineName]; !ok {
 			lines[TACs[i].LineName] = struct{}{}
 			lineArr = append(lineArr, TACs[i].LineName)
+		}
+
+		dateStr :=  TACs[i].CreateTime.Format(global.DateBaseFmt)
+		if  _, ok := lines[dateStr]; !ok {
+			dateMap[dateStr] = struct{}{}
+			dateArr = append(dateArr, dateStr)
 		}
 
 		if  _, ok := issueNames[TACs[i].IssueName]; !ok {
@@ -200,7 +207,7 @@ func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list
 
 	chartDatas := make([]smt.ChartData, 0)
 	chartData := smt.ChartData{
-		Categories: lineArr,
+		Categories: dateArr,
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)

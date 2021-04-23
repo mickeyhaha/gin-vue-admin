@@ -7,8 +7,12 @@ import { router } from "@/store/module/router"
 import { dictionary } from "@/store/module/dictionary"
 Vue.use(Vuex)
 
-import { getPVS_Base_LineList,
-    getDeptLineSummary } from '@/api/PVS_Base_Line'
+import { 
+    getPVS_Base_LineList,
+    getDeptLineSummary,
+    getDCSSMTOutPutList4Chart,
+    getPUBMOrderProduce2InfoList4Chart,
+} from '@/api/PVS_Base_Line'
 import {
     getLackWarnings,
     getRejectRateList,
@@ -34,21 +38,21 @@ export const store = new Vuex.Store({
             // ],
             categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
             series: [
-                {
-                    name: '模糊',
-                    data: [0.3, 0.4, 0.2, 0.1, 0.5],
-                    stackGroup: 'AOI',
-                },
-                {
-                    name: '少料',
-                    data: [0.2, 0.3, 0.3, 0.2, 0.5],
-                    stackGroup: 'AOI',
-                },
-                {
-                    name: '错点',
-                    data: [0.4, 0.2, 0.1, 0.3, 0.1],
-                    stackGroup: 'AOI',
-                },
+                // {
+                //     name: '模糊',
+                //     data: [0.3, 0.4, 0.2, 0.1, 0.5],
+                //     stackGroup: 'AOI',
+                // },
+                // {
+                //     name: '少料',
+                //     data: [0.2, 0.3, 0.3, 0.2, 0.5],
+                //     stackGroup: 'AOI',
+                // },
+                // {
+                //     name: '错点',
+                //     data: [0.4, 0.2, 0.1, 0.3, 0.1],
+                //     stackGroup: 'AOI',
+                // },
             ],
         },
         rejectRate4Chart: {
@@ -63,14 +67,14 @@ export const store = new Vuex.Store({
         dateOutput4Chart: {
             categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
             series: [
-                {
-                    name: '实际产量',
-                    data: [40, 40, 20, 10, 60],
-                },
-                {
-                    name: '标准产量',
-                    data: [32, 42, 21, 11, 62],
-                },
+                // {
+                //     name: '实际产量_',
+                //     data: [40, 40, 20, 10, 60],
+                // },
+                // {
+                //     name: '标准产量_',
+                //     data: [32, 42, 21, 11, 62],
+                // },
             ],
         },
         deptLineSummary: [],
@@ -81,7 +85,6 @@ export const store = new Vuex.Store({
             if (res.code == 0) {
                 const lines = res.data.list
                 commit("setLines", lines)
-                console.log(lines)
                 return state.lines
             }
         },
@@ -115,10 +118,47 @@ export const store = new Vuex.Store({
                 return state.rejectRate
             }
         }, 
+        
+        // 获取产量1
+        async getDCSSMTOutPutList4Chart({ commit, state }, formData) {
+            const res = await getDCSSMTOutPutList4Chart({
+                page: 1, pageSize: 100,
+                lineName: formData.LineName,
+                startDate: formData.date[0],
+                endDate: formData.date[1],
+                shift: formData.shift,
+                orderNo: formData.OrderNo
+            });
+            if (res.code == 0) {
+                const dateOutput4Chart = res.data.list[0]
+                console.log(dateOutput4Chart)
+                commit("setDateOutput4Chart", dateOutput4Chart)
+                return state.dateOutput4Chart
+            }
+        }, 
+
+        // 获取产量2
+        async getPUBMOrderProduce2InfoList4Chart({ commit, state }, formData) {
+            const res = await getPUBMOrderProduce2InfoList4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.date[0],
+                endDate: formData.date[1],
+                shift: formData.shift,
+                MOrderNo: formData.OrderNo
+            });
+            if (res.code == 0) {
+                const dateOutput4Chart = res.data.list[0]
+                console.log(dateOutput4Chart)
+                commit("setDateOutput4Chart", dateOutput4Chart)
+                return state.dateOutput4Chart
+            }
+        }, 
 
         // 点击deptFilter的submit
         async submitDeptFilter({ commit, dispatch }, formData) {
             dispatch('getAoiRate4Chart', formData)
+            dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
         },
 
         // 点击deptLineSummary的一行
@@ -150,6 +190,9 @@ export const store = new Vuex.Store({
         },
         setRejectRate(state, rejectRate) {
             state.rejectRate = rejectRate;
+        },
+        setDateOutput4Chart(state, dateOutput4Chart) {
+            state.dateOutput4Chart = dateOutput4Chart;
         },
         setAoiRate4Chart(state, aoiRate4Chart) {
             state.aoiRate4Chart = aoiRate4Chart;

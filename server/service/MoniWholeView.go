@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
@@ -194,6 +193,90 @@ func GetRejectRateList(info request.MoniWholeViewSearch) (err error, list interf
 	err = db.Limit(limit).Offset(offset).Find(&MWVs).Error
 	//err = db.Raw(sql, "43").Scan(&MWVs).Error
 	total = int64(len(MWVs))
-	fmt.Printf("total: %d\n", total)
 	return err, MWVs, total
 }
+
+func GetRejectRateListByLineName(info request.MoniWholeViewSearch) (err error, list interface{}, total int64) {
+	//创建db
+	db := global.GVA_DB_MSSQL.Model(&model.MoniWholeView{})
+	var MWVs []model.MoniWholeView
+
+	sql := `
+			SELECT ID, A.LineID, B.LineName,
+				MachineCode = LTRIM(MachineCode) + '-' + LTRIM(TableNo) + '-' + LTRIM(PickPos),
+				TotalError,
+				MatrCode,
+				RejectRate
+			FROM CMES3.dbo.MoniWholeView A WITH (NOLOCK)
+					 LEFT JOIN CMES3.dbo.PVS_Base_Line B
+							   ON A.LineID = B.LineID
+			where B.LineName = 'Line04'
+			ORDER BY RejectRate DESC;
+		`
+	err = db.Raw(sql, info.LineName).Scan(&MWVs).Error
+	total = int64(len(MWVs))
+	return err, MWVs, total
+}
+//
+//func GetRejectRateList4Chart(info request.MoniWholeViewSearch) (err error, list interface{}, total int64) {
+//	if info.LineName == "" {
+//		err, list, total = GetRejectRateList(info)
+//	} else {
+//		err, list, total = GetRejectRateListByLineName(info)
+//	}
+//	TACs := list.([]model.MoniWholeView)
+//	var i int64
+//	lines := make(map[string]struct{}, 0)
+//	dateMap := make(map[string]struct{}, 0)
+//	issueNames := make(map[string]struct{}, 0)
+//	// line - issueName - errCount
+//	lineSeries := make(map[string]map[string]int, 0)
+//
+//	lineArr := make([]string, 0)
+//	dateArr := make([]string, 0)
+//	issueNameArr := make([]string, 0)
+//
+//	for i=0; i<total; i++ {
+//		if  _, ok := lines[TACs[i].LineName]; !ok {
+//			lines[TACs[i].LineName] = struct{}{}
+//			lineArr = append(lineArr, TACs[i].LineName)
+//		}
+//
+//		dateStr :=  TACs[i].CreateTime.Format(global.DateBaseFmt)
+//		if  _, ok := lines[dateStr]; !ok {
+//			dateMap[dateStr] = struct{}{}
+//			dateArr = append(dateArr, dateStr)
+//		}
+//
+//		if  _, ok := issueNames[TACs[i].IssueName]; !ok {
+//			issueNames[TACs[i].IssueName] = struct{}{}
+//			issueNameArr = append(issueNameArr, TACs[i].IssueName)
+//		}
+//
+//		if  _, ok := lineSeries[TACs[i].LineName]; !ok {
+//			lineSeries[TACs[i].LineName] = make(map[string]int, 0)
+//		}
+//		lineSeries[TACs[i].LineName][TACs[i].IssueName] = TACs[i].ErrCount
+//	}
+//
+//	series := make([]smt.Series, 0)
+//	for j:=0; j < len(issueNameArr); j++ {
+//		var data []float64
+//		for k:=0; k < len(lineArr); k++ {
+//			data = append(data, float64(lineSeries[lineArr[k]][issueNameArr[j]]) / (float64(totalCount)))
+//		}
+//		seri := smt.Series{
+//			Name: issueNameArr[j],
+//			Data: data,
+//		}
+//		series = append(series, seri)
+//	}
+//
+//	chartDatas := make([]smt.ChartData, 0)
+//	chartData := smt.ChartData{
+//		Categories: dateArr,
+//		Series: series,
+//	}
+//	chartDatas = append(chartDatas, chartData)
+//	return err, chartDatas, total
+//}

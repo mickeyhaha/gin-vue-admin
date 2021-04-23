@@ -5,6 +5,7 @@ import (
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
+	"gin-vue-admin/model/smt"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -74,7 +75,7 @@ func GetPUBMOrderProduce2InfoList(info request.PUBMOrderProduce2Search) (err err
     // 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})
     var PUBMOrderProduces []model.PUBMOrderProduce2
-	sql := "select l.LineID, o.* from PUB_MOrderProduce o join PVS_Base_line l WITH(NOLOCK) on o.LineName = l.LineName where 1=1 "
+	sql := "select l.LineID, o.* from PUB_MOrderProduce o WITH(NOLOCK) join PVS_Base_line l WITH(NOLOCK) on o.LineName = l.LineName where 1=1 "
     // 如果有条件搜索 下方会自动创建搜索语句
 	if info.LineName != "" {
 		sql += fmt.Sprintf(" and o.LineName = '%s'", info.LineName)
@@ -141,4 +142,80 @@ func GetCurrentOrderByLineId(lineID int) (err error, PMP model.PUBMOrderProduce2
 	} else {
 		return nil, model.PUBMOrderProduce2{}, 0
 	}
+}
+
+
+func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
+	// 创建db
+	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})
+	var PUBMOrderProduces []model.PUBMOrderProduce2
+
+	sql := fmt.Sprintf(`
+	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
+			sum(o.QtyCompleted) QtyCompleted
+			from CMES3.dbo.PUB_MOrderProduce o WITH(NOLOCK) join CMES3.dbo.PVS_Base_line l WITH(NOLOCK)
+			on o.LineName = l.LineName 
+			where o.CreateTime >='%s' AND o.CreateTime <='%s'
+		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)
+		`, info.StartDate, info.EndDate, info.LineName)			// TODO: 放到db.Raw里面scan不出来
+
+	err = db.Raw(sql).Scan(&PUBMOrderProduces).Error
+	total = int64(len(PUBMOrderProduces))
+	return err, PUBMOrderProduces, total
+}
+
+func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
+	err, list, total = GetPUBMOrderProduce2InfoListByRange(info)
+	entities := list.([]model.PUBMOrderProduce2)
+	var i int64
+	lines := make(map[string]struct{}, 0)
+	dateMap := make(map[string]struct{}, 0)
+	seriesNameArr := make([]string, 0)
+	seriesNameArr = append(seriesNameArr, "标准产量")
+	seriesNameArr = append(seriesNameArr, "实际产量")
+	// line - issueName - errCount
+	lineSeries := make(map[string]map[string]int, 0)
+
+	lineArr := make([]string, 0)
+	dateArr := make([]string, 0)
+
+	for i=0; i<total; i++ {
+		if  _, ok := lines[entities[i].LineName]; !ok {
+			lines[entities[i].LineName] = struct{}{}
+			lineArr = append(lineArr, entities[i].LineName)
+		}
+
+		dateStr :=  entities[i].CreateTime.Format(global.DateBaseFmt)
+		if  _, ok := lines[dateStr]; !ok {
+			dateMap[dateStr] = struct{}{}
+			dateArr = append(dateArr, dateStr)
+		}
+
+		if  _, ok := lineSeries[entities[i].LineName]; !ok {
+			lineSeries[entities[i].LineName] = make(map[string]int, 0)
+		}
+		lineSeries[entities[i].LineName]["实际产量"] = entities[i].QtyCompleted
+		lineSeries[entities[i].LineName]["标准产量"] = entities[i].QtyCompleted+100
+	}
+
+	series := make([]smt.Series, 0)
+	for j:=0; j < len(seriesNameArr); j++ {
+		var data []float64
+		for k:=0; k < len(lineArr); k++ {
+			data = append(data, float64(lineSeries[lineArr[k]][seriesNameArr[j]]))
+		}
+		seri := smt.Series{
+			Name: seriesNameArr[j],
+			Data: data,
+		}
+		series = append(series, seri)
+	}
+
+	chartDatas := make([]smt.ChartData, 0)
+	chartData := smt.ChartData{
+		Categories: dateArr,
+		Series: series,
+	}
+	chartDatas = append(chartDatas, chartData)
+	return err, chartDatas, total
 }

@@ -41,7 +41,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: 'AOI不良率%',
+              text: 'AOI不良By IssueName',
               align: 'center',
             }, 
           },

@@ -18,9 +18,7 @@ type TS_AOI_CNT struct {
       Result  int `json:"result" form:"result" gorm:"column:Result;comment:Result;type:int;"`
       AOIID  int `json:"aOIID" form:"aOIID" gorm:"column:AOIID;comment:AOIID;type:int;"`
       LineName  string `json:"lineName" form:"lineName" gorm:"column:lineName;comment:lineName;type:string;"`
-      StartDate  string `json:"startDate" form:"startDate"`
-      EndDate  string `json:"endDate" form:"endDate"`
-      Shift  int `json:"shift" form:"shift"`
+      global.DeptFilter
 }
 
 

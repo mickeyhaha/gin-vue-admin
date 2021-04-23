@@ -10,3 +10,9 @@ type GVA_MODEL struct {
 	UpdatedAt time.Time
 	//DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
+
+type DeptFilter struct {
+	StartDate  string `json:"startDate" form:"startDate"`
+	EndDate  string `json:"endDate" form:"endDate"`
+	Shift  int `json:"shift" form:"shift"`
+}

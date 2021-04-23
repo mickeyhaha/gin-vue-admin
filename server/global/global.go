@@ -18,3 +18,6 @@ var (
 	//GVA_LOG    *oplogging.Logger
 	GVA_LOG    *zap.Logger
 )
+
+//const DateBaseFmt = "2006-01-02 15:04:05"
+const DateBaseFmt = "01/02"

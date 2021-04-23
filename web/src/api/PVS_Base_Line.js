@@ -99,6 +99,7 @@ export const createPVS_Base_Line = (data) => {
      })
  }
 
+ // All smt service here
 export const getDeptLineSummary = (params) => {
     return service({
         url: "/PBL/getDeptLineSummary",
@@ -111,6 +112,22 @@ export const getWorkOrderListByLine = (params) => {
     console.log(params)
     return service({
         url: "/PBL/getWorkOrderListByLine",
+        method: 'get',
+        params
+    })
+}
+
+export const getDCSSMTOutPutList4Chart = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTOutPutList4Chart",
+        method: 'get',
+        params
+    })
+}
+
+export const getPUBMOrderProduce2InfoList4Chart = (params) => {
+    return service({
+        url: "/PBL/getPUBMOrderProduce2InfoList4Chart",
         method: 'get',
         params
     })
