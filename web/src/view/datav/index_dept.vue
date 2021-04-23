@@ -10,24 +10,27 @@
       <el-row>
         <el-col :span="24"><DeptLineSummary /></el-col>
       </el-row>
-      <el-row>
+      <!-- <el-row>
         <el-col :span="24"><TimeOutput /></el-col>
-      </el-row>
+      </el-row> -->
+      <!-- <el-row>
+        <el-col :span="24"><DateOutput /></el-col>
+      </el-row> -->
       <el-row>
         <el-col :span="8" class="block-top-bottom-content">
             <reject-rate />
-            <lack-warning />
+            <!-- <lack-warning /> -->
             <scroll-board />
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-            <order-info /> 
-            <water-level-chart /> 
-            <cards />
+            <DateOutput />
+            <!-- <water-level-chart />  -->
+            <!-- <cards /> -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
               <aoi-rate /> 
-              <spi-rate /> 
-              <utiliazation /> 
+              <!-- <spi-rate />  -->
+              <!-- <utiliazation />  -->
         </el-col>
       </el-row>
     </dv-full-screen-container>
@@ -51,7 +54,7 @@ import utiliazation from './utilization'
 import DeptLineSummary from './deptLineSummary'
 import DeptFilter from './deptFilter'
 import TimeOutput from './timeOutput'
-// import person from './person'
+import DateOutput from './dateOutput'
 
 export default {
   name: 'DataViewDept',
@@ -72,6 +75,7 @@ export default {
     DeptLineSummary,
     DeptFilter,
     TimeOutput,
+    DateOutput,
     // person,
   },
   data () {

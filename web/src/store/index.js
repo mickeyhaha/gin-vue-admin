@@ -29,8 +29,48 @@ export const store = new Vuex.Store({
         selectedLine: {},
         rejectRate: [],
         aoiRate4Chart: {
-            categories: [],
+            // categories: [],
+            // series: [
+            // ],
+            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
             series: [
+                {
+                    name: '模糊',
+                    data: [0.3, 0.4, 0.2, 0.1, 0.5],
+                    stackGroup: 'AOI',
+                },
+                {
+                    name: '少料',
+                    data: [0.2, 0.3, 0.3, 0.2, 0.5],
+                    stackGroup: 'AOI',
+                },
+                {
+                    name: '错点',
+                    data: [0.4, 0.2, 0.1, 0.3, 0.1],
+                    stackGroup: 'AOI',
+                },
+            ],
+        },
+        rejectRate4Chart: {
+            categories: ['站料1', '站料2', '站料3', '站料4', '站料5'],
+            series: [
+                {
+                    name: '模糊',
+                    data: [0.3, 0.4, 0.2, 0.1, 0.5],
+                },
+            ],
+        },
+        dateOutput4Chart: {
+            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+            series: [
+                {
+                    name: '实际产量',
+                    data: [40, 40, 20, 10, 60],
+                },
+                {
+                    name: '标准产量',
+                    data: [32, 42, 21, 11, 62],
+                },
             ],
         },
         deptLineSummary: [],
@@ -45,16 +85,30 @@ export const store = new Vuex.Store({
                 return state.lines
             }
         },
-        async getAoiRate4Chart({ commit, state }, lineName) {
-            const res = await getTS_AOI_CNTList4Chart({ page: 1, pageSize: 100, lineName: lineName });
+        async getAoiRate4Chart({ commit, state }, formData) {
+            const res = await getTS_AOI_CNTList4Chart({
+                page: 1, pageSize: 100,
+                lineName: formData.LineName,
+                startDate: formData.date[0],
+                endDate: formData.date[1],
+                shift: formData.Shift,
+                orderNo: formData.OrderNo
+            });
             if (res.code == 0) {
                 const aoiRate4Chart = res.data.list[0]
                 commit("setAoiRate4Chart", aoiRate4Chart)
                 return state.aoiRate4Chart
             }
         },
-        async getRejectRate({ commit, state }) {
-            const res = await getRejectRateList({ page: 1, pageSize: 100 });
+
+        async getRejectRate4Chart({ commit, state }, formData) {
+            const res = await getRejectRateList({ 
+                page: 1, pageSize: 100, 
+                lineName: formData.LineName,
+                startDate: formData.date[0],
+                endDate: formData.date[1],
+                shift: formData.shift,
+                orderNo: formData.OrderNo});
             if (res.code == 0) {
                 const rejectRate = res.data.list
                 commit("setRejectRate", rejectRate)
@@ -62,10 +116,16 @@ export const store = new Vuex.Store({
             }
         }, 
 
-        // 点击dept看板的线体
+        // 点击deptFilter的submit
+        async submitDeptFilter({ commit, dispatch }, formData) {
+            dispatch('getAoiRate4Chart', formData)
+        },
+
+        // 点击deptLineSummary的一行
         async selectLine({ commit, dispatch}, selectedLine) {
+            return
             commit('setSelectedLine', selectedLine)
-            dispatch('getAoiRate4Chart', selectedLine.LineName)
+            dispatch('getAoiRate4Chart', {lineName: selectedLine.LineName})
         },
 
         async getDeptLineSummary({ commit, state }) {

@@ -4,7 +4,7 @@
       <el-form ref="elForm" :model="formData" :rules="rules" size="small" label-width="100px">
         <el-col :span="4">
           <el-form-item label="线体" prop="line">
-            <el-select v-model="formData.LineID" placeholder="请选择线体" @change="lineChanged"
+            <el-select v-model="formData.LineName" placeholder="请选择线体" @change="lineChanged"
              clearable :style="{width: '100%'}">
               <el-option v-for="(item, index) in lines" :key="index" :label="item.lineName"
                 :value="item.lineName" :disabled="item.disabled"></el-option>
@@ -57,13 +57,13 @@ export default {
     return {
       formData: {
         date: null,
-        LineID: undefined,
+        LineName: undefined,
         Shift: undefined,
         OrderNo: undefined,
       },
       rules: {
         date: [{
-          required: false,
+          required: true,
           message: '日期不能为空',
           trigger: 'change'
         }],
@@ -106,6 +106,7 @@ export default {
       this.$refs['elForm'].validate(valid => {
         if (!valid) return
         // TODO 提交表单
+        this.$store.dispatch('submitDeptFilter', this.formData);
       })
     },
     resetForm() {
@@ -115,12 +116,19 @@ export default {
       const res = await getWorkOrderListByLine({ page: 1, pageSize: 100, LineName: val })
       if (res.code == 0) {
         this.orderOptions = res.data.list
-        console.log(this.orderOptions)
       }
     },
   },
 }
 
 </script>
-<style>
+
+<style lang="less">
+
+#dept-filter {
+  width: 100%;
+  height: 100%;
+  // background-color: #030409;
+  // color: #fff;
+}
 </style>

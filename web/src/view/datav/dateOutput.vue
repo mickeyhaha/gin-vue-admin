@@ -1,7 +1,7 @@
 <template>
-  <div id="aoi-rate">
-    <!-- <div class="title">AOI不良率</div> -->
-    <column-chart :data="aoiRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
+  <div id="date-output">
+    <!-- <div class="title">产量</div> -->
+    <column-chart :data="dateOutput4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
@@ -10,29 +10,23 @@ import '@toast-ui/chart/dist/toastui-chart.min.css';
 import { columnChart } from '@toast-ui/vue-chart';
 
 import {
-    createTS_AOI_CNT,
-    deleteTS_AOI_CNT,
-    deleteTS_AOI_CNTByIds,
-    updateTS_AOI_CNT,
-    findTS_AOI_CNT,
-    getTS_AOI_CNTList,
-    getTS_AOI_CNTList4Chart
-} from "@/api/TS_AOI_CNT";  //  此处请自行替换地址
+  getLackWarnings
+} from "@/api/MoniWholeView";
 import infoList from "@/mixins/infoList";
 import { mapState } from 'vuex';
 
 export default {
-  name: 'AoiRate',
+  name: 'DateOutput',
   mixins: [infoList],
   components: {
     'column-chart': columnChart
   },
   computed: mapState(
-    ['aoiRate4Chart']
+    ['dateOutput4Chart']
   ),
   data () {
     return {
-      listApi: getTS_AOI_CNTList4Chart,
+      listApi: getLackWarnings,
       chartProps: {
         containerStyle: {
           width: '100%',
@@ -41,7 +35,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: 'AOI不良率%',
+              text: '产量',
               align: 'center',
             }, 
           },
@@ -49,14 +43,14 @@ export default {
             visible: false,
           },
           legend: {
-            visible: true,
+            visible: false,
             align: 'bottom'
           },
           series: {
             stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '线体' } },
+          xAxis: { pointOnColumn: false, title: { text: '天' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             // title: {
@@ -101,22 +95,15 @@ export default {
         }
       },
       // chartData: {
-      //   categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+      //   categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
       //   series: [
       //     {
-      //       name: '模糊',
-      //       data: [0.3, 0.4, 0.2, 0.1, 0.5],
-      //       stackGroup: 'AOI',
+      //       name: '实际产量',
+      //       data: [40, 40, 20, 10, 50],
       //     },
       //     {
-      //       name: '少料',
-      //       data: [0.2, 0.3, 0.3, 0.2, 0.5],
-      //       stackGroup: 'AOI',
-      //     },
-      //     {
-      //       name: '错点',
-      //       data: [0.4, 0.2, 0.1, 0.3, 0.1],
-      //       stackGroup: 'AOI',
+      //       name: '标准产量',
+      //       data: [32, 42, 21, 11, 52],
       //     },
       //   ],
       // }
@@ -124,9 +111,20 @@ export default {
   },
   methods: {
     createData () {
-      // this.getTableData().then(() => {
-      //   this.chartData = this.tableData[0];
-      // });
+      this.getTableData().then(() => {
+        let datas = []
+        for (let index = 0; index < this.tableData.length && index < 9; index++) {
+          const element = this.tableData[index]
+          datas[index] = {
+            '机器': element.machineCode+index,  //MatrCode
+            '时间': element.leftTime+index
+          }
+        }
+        // this.chartData = {
+        //   columns: ['机器', '时间'],
+        //   rows: datas
+        // }
+      });
       
     },
   },
@@ -135,13 +133,13 @@ export default {
 
     createData()
 
-    // setInterval(createData, 3000)
+    //setInterval(createData, 3000)
   }
 }
 </script>
 
 <style lang="less">
-#aoi-rate {
+#date-output {
   width: 100%;
   // height: 33%;
   box-shadow: 0 0 3px blue;

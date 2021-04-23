@@ -126,11 +126,13 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 							  JOIN  PVS_Base_Line line WITH(NOLOCK)
 								   ON b.LineID = line.LineID
 					 WHERE b.Result =0 AND b.OrderNo <>'' and line.LineName = '%s'
+						  AND b.CreateTime >='%s'  AND b.CreateTime <='%s'  
+						  AND a.CreateTime >='%s'  AND a.CreateTime <='%s'
 					 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName
 				 ) a
 			GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName
 			ORDER BY IssueName;
-			`, info.LineName)
+			`, info.LineName, info.StartDate, info.EndDate, info.StartDate, info.EndDate)
 	}
 	err = db.Raw(sql).Scan(&TACs).Error
 	total = int64(len(TACs))

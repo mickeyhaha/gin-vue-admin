@@ -158,7 +158,7 @@ Vue.use(gaugeChart)
 import { scrollY } from "@/utils/scrollbar.js";
 Vue.prototype.escrollY = scrollY
 
-//引入v-charts: https://github.com/ElemeFE/v-charts
+//引入v-charts: https://github.com/ElemeFE/v-charts: 支持markLine, markArea, markPoint
 import VCharts from 'v-charts'
 Vue.use(VCharts)
 
