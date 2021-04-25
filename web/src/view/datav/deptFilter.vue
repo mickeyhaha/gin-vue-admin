@@ -1,9 +1,9 @@
 <template>
   <div id="dept-filter">
-    <el-row :gutter="15">
+    <el-row>
       <el-form ref="elForm" :model="formData" :rules="rules" size="small" label-width="100px">
         <el-col :span="4">
-          <el-form-item label="线体" prop="line">
+          <el-form-item label="线体" prop="line" class="item">
             <el-select v-model="formData.LineName" placeholder="请选择线体" @change="lineChanged"
              clearable :style="{width: '100%'}">
               <el-option v-for="(item, index) in lines" :key="index" :label="item.lineName"
@@ -12,14 +12,14 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="日期" prop="date">
+          <el-form-item label="日期" prop="date" class="item">
             <el-date-picker type="daterange" v-model="formData.date" format="yyyy-MM-dd"
               value-format="yyyy-MM-dd" :style="{width: '100%'}" start-placeholder="开始日期"
               end-placeholder="结束日期" range-separator="至" clearable></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="班别" prop="shift">
+          <el-form-item label="班别" prop="shift" class="item">
             <el-select v-model="formData.Shift" placeholder="请选择班别" clearable :style="{width: '100%'}">
               <el-option v-for="(item, index) in shiftOption" :key="index" :label="item.label"
                 :value="item.value" :disabled="item.disabled"></el-option>
@@ -27,7 +27,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="工单" prop="order">
+          <el-form-item label="工单" prop="order" class="item">
             <el-select v-model="formData.OrderNo" placeholder="请选择工单" clearable :style="{width: '100%'}">
               <el-option v-for="(item, index) in orderOptions" :key="index" :label="item.WorkOrderNo"
                 :value="item.WorkOrderNo" :disabled="item.disabled"></el-option>
@@ -36,7 +36,7 @@
         </el-col>
         <el-col :span="6">
           <el-form-item size="small">
-            <el-button type="primary" @click="submitForm">提交</el-button>
+            <el-button type="primary" @click="submitForm">查询</el-button>
             <el-button @click="resetForm">重置</el-button>
           </el-form-item>
         </el-col>
@@ -124,11 +124,16 @@ export default {
 </script>
 
 <style lang="less">
-
 #dept-filter {
   width: 100%;
-  height: 100%;
+  height: 30px;
   // background-color: #030409;
-  // color: #fff;
+  display: flex;
+  // padding: 0px 10px 10px 10px;    // top, right, bottom, left; top/bottom, right/left
+  margin-bottom: 10px;
+
+  .item .el-form-item__label {
+    color: #fff;
+  }
 }
 </style>

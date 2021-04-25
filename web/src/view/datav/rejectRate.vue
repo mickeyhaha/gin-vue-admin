@@ -50,7 +50,7 @@ export default {
             stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '线体' } },
+          xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             // title: {
@@ -142,7 +142,7 @@ export default {
 <style lang="less">
 #aoi-rate {
   width: 100%;
-  // height: 33%;
+  // height: 100%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;

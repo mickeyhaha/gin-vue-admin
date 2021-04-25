@@ -1,7 +1,6 @@
 <template>
-  <div id="date-output">
-    <!-- <div class="title">产量</div> -->
-    <column-chart :data="dateOutput4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
+  <div id="aoi-rate">
+    <column-chart :data="rejectRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" @selectSeries="onSelectSeries" />
   </div>
 </template>
 
@@ -16,13 +15,13 @@ import infoList from "@/mixins/infoList";
 import { mapState } from 'vuex';
 
 export default {
-  name: 'DateOutput',
+  name: 'AoiRate',
   mixins: [infoList],
   components: {
     'column-chart': columnChart
   },
   computed: mapState(
-    ['dateOutput4Chart']
+    ['rejectRate4Chart']
   ),
   data () {
     return {
@@ -35,7 +34,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '产量',
+              text: '抛料率%',
               align: 'center',
             }, 
           },
@@ -47,10 +46,11 @@ export default {
             align: 'bottom'
           },
           series: {
+            selectable: true,
             stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '日期' } },
+          xAxis: { pointOnColumn: false, title: { text: '线体' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             // title: {
@@ -95,21 +95,22 @@ export default {
         }
       },
       // chartData: {
-      //   categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+      //   categories: ['站料1', '站料2', '站料3', '站料4', '站料5'],
       //   series: [
       //     {
-      //       name: '实际产量',
-      //       data: [40, 40, 20, 10, 50],
-      //     },
-      //     {
-      //       name: '标准产量',
-      //       data: [32, 42, 21, 11, 52],
+      //       name: '模糊',
+      //       data: [0.3, 0.4, 0.2, 0.1, 0.5],
       //     },
       //   ],
       // }
     }
   },
   methods: {
+    onSelectSeries(ev) {
+        // const { label, category, value } = ev.area[0].data;
+      console.log(ev)
+    },
+
     createData () {
       this.getTableData().then(() => {
         let datas = []
@@ -139,9 +140,9 @@ export default {
 </script>
 
 <style lang="less">
-#date-output {
+#aoi-rate {
   width: 100%;
-  // height: 33%;
+  // height: 100%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;

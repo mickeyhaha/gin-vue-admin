@@ -1,4 +1,5 @@
 import service from '@/utils/request'
+import { deprecate } from 'util';
 
 // @Tags PVS_Base_Line
 // @Summary 创建PVS_Base_Line
@@ -128,6 +129,23 @@ export const getDCSSMTOutPutList4Chart = (params) => {
 export const getPUBMOrderProduce2InfoList4Chart = (params) => {
     return service({
         url: "/PBL/getPUBMOrderProduce2InfoList4Chart",
+        method: 'get',
+        params
+    })
+}
+
+// @deprecated
+export const getDCSSMTRejectRate4Chart = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTRejectRate4Chart",
+        method: 'get',
+        params
+    })
+}
+
+export const getDCSSMTConsumeAndRejectRate4Chart = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTConsumeAndRejectRate4Chart",
         method: 'get',
         params
     })

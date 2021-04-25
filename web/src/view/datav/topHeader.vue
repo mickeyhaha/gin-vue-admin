@@ -24,13 +24,13 @@ export default {
 
   .header-center-decoration {
     width: 40%;
-    height: 50px;
+    height: 40px;
     margin-top: 30px;
   }
 
   .header-left-decoration, .header-right-decoration {
     width: 25%;
-    height: 50px;
+    height: 40px;
   }
 
   .center-title {

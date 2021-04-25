@@ -123,9 +123,8 @@ func GetDCSSMTOutPutInfoListByLine(info request.DCSSMTOutPutSearch) (err error, 
 	}
 	if !info.CreateTime.IsZero() {
 		sql += fmt.Sprintf(" and CreateTime = '%s'", info.LineName)
-		db = db.Where("`CreateTime` = ?",info.CreateTime)
 	}
-	sql += " group by cast(a.CreateTime as date)"
+	sql += " group by cast(CreateTime as date)"
 	err = db.Raw(sql).Scan(&DSOs).Error
 	total = int64(len(DSOs))
 	return err, DSOs, total
@@ -133,12 +132,12 @@ func GetDCSSMTOutPutInfoListByLine(info request.DCSSMTOutPutSearch) (err error, 
 
 
 func GetDCSSMTOutPutInfoList4Chart(info request.DCSSMTOutPutSearch) (err error, list interface{}, total int64) {
-	err, list, total = GetDCSSMTOutPutInfoList(info)
+	err, list, total = GetDCSSMTOutPutInfoListByLine(info)
 	entities := list.([]model.DCSSMTOutPut)
 	var i int64
 	lines := make(map[string]struct{}, 0)
 	dateMap := make(map[string]struct{}, 0)
-	seriesNameArr := make([]string, 2)
+	seriesNameArr := make([]string, 0)
 	seriesNameArr = append(seriesNameArr, "标准产量")
 	seriesNameArr = append(seriesNameArr, "实际产量")
 	// line - issueName - errCount

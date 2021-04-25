@@ -4,38 +4,39 @@
       :data="deptLineSummary"
       @selection-change="handleSelectionChange"
       @row-click="clickData"
-      border
       ref="multipleTable"
-      stripe
       height="200"
-      style="width: 100%;"
       tooltip-effect="dark"
     >
-    <el-table-column label="LineID" prop="lineID" width="120"></el-table-column> 
-    <el-table-column label="AOI不良数" prop="errCount" width="120"></el-table-column> 
-    <el-table-column label="AOI总数" prop="count" width="120"></el-table-column> 
-    <el-table-column label="AOI不良率" prop="aoiErrCount" width="120"></el-table-column> 
+    <el-table-column label="LineID" prop="lineID" ></el-table-column> 
+    <el-table-column label="AOI不良数" prop="errCount" ></el-table-column> 
+    <el-table-column label="AOI总数" prop="count" ></el-table-column> 
+    <el-table-column label="AOI不良率" prop="aoiErrCount" ></el-table-column> 
 
-    <el-table-column label="LineName" prop="LineName" width="120"></el-table-column> 
-    <el-table-column label="MOrderNo" prop="MOrderNo" width="120"></el-table-column> 
-    <el-table-column label="WorkOrderNo" prop="WorkOrderNo" width="120"></el-table-column> 
-    <!-- <el-table-column label="Customer" prop="Customer" width="120"></el-table-column> 
-    <el-table-column label="CustOrderNo" prop="CustOrderNo" width="120"></el-table-column> 
-    <el-table-column label="MachineType" prop="MachineType" width="120"></el-table-column> 
-    <el-table-column label="BOM编号" prop="BOMNo" width="120"></el-table-column> 
-    <el-table-column label="BOM版本" prop="BOMVersion" width="120"></el-table-column> 
-    <el-table-column label="产品编号" prop="Product" width="120"></el-table-column> 
-    <el-table-column label="周期" prop="CycleTime" width="120"></el-table-column> 
-    <el-table-column label="版面" prop="PasteSide" width="120"></el-table-column> 
-    <el-table-column label="拼版数" prop="PanelCount" width="120"></el-table-column>  -->
-    <el-table-column label="计划数量" prop="Qty" width="120"></el-table-column> 
-    <el-table-column label="QtyCompletedorder" prop="QtyCompleted" width="120"></el-table-column> 
-    <el-table-column label="开始时间" prop="BeginTime" width="120"></el-table-column> 
-    <el-table-column label="结束时间" prop="EndTime" width="120"></el-table-column> 
-    <!-- <el-table-column label="备注" prop="Remark" width="120"></el-table-column> 
-    <el-table-column label="是否启动JIT拉动" prop="JITRunning" width="120"></el-table-column> 
-    <el-table-column label="CreateTimeorder" prop="CreateTime" width="120"></el-table-column> 
-    <el-table-column label="最后时间" prop="LMTime" width="120"></el-table-column>  -->
+    <el-table-column label="LineName" prop="LineName" ></el-table-column> 
+    <el-table-column label="MOrderNo" prop="MOrderNo" ></el-table-column> 
+    <el-table-column label="WorkOrderNo" prop="WorkOrderNo" ></el-table-column> 
+    <!-- <el-table-column label="Customer" prop="Customer" ></el-table-column> 
+    <el-table-column label="CustOrderNo" prop="CustOrderNo" ></el-table-column> 
+    <el-table-column label="MachineType" prop="MachineType" ></el-table-column> 
+    <el-table-column label="BOM编号" prop="BOMNo" ></el-table-column> 
+    <el-table-column label="BOM版本" prop="BOMVersion" ></el-table-column> 
+    <el-table-column label="产品编号" prop="Product" ></el-table-column> 
+    <el-table-column label="周期" prop="CycleTime" ></el-table-column> 
+    <el-table-column label="版面" prop="PasteSide" ></el-table-column> 
+    <el-table-column label="拼版数" prop="PanelCount" ></el-table-column>  -->
+    <el-table-column label="计划数量" prop="Qty" ></el-table-column> 
+    <el-table-column label="完成数量" prop="QtyCompleted" ></el-table-column> 
+    <el-table-column label="开始时间">
+        <template slot-scope="scope">{{ scope.row.BeginTime|formatDate }}</template>
+    </el-table-column> 
+    <el-table-column label="结束时间">
+        <template slot-scope="scope">{{ scope.row.EndTime|formatDate }}</template>
+    </el-table-column> 
+    <!-- <el-table-column label="备注" prop="Remark" ></el-table-column> 
+    <el-table-column label="是否启动JIT拉动" prop="JITRunning" ></el-table-column> 
+    <el-table-column label="CreateTimeorder" prop="CreateTime" ></el-table-column> 
+    <el-table-column label="最后时间" prop="LMTime" ></el-table-column>  -->
     </el-table>
   </div>
 </template>
@@ -43,6 +44,7 @@
 <script>
 import { mapState } from "vuex";
 import { store } from '@/store/index'
+import { formatTimeToStr } from "@/utils/date";
 
 export default {
   name: "DeptLineSummary",
@@ -52,6 +54,16 @@ export default {
   data() {
     return {
     };
+  },
+  filters: {
+    formatDate: function(time) {
+      if (time != null && time != "") {
+        var date = new Date(time);
+        return formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
+      } else {
+        return "";
+      }
+    }
   },
   methods: {
       clickData(val) {
@@ -73,5 +85,24 @@ export default {
   box-sizing: border-box;
   padding-left: 20px;
   padding-right: 20px;
+
+  .el-table__header tr,
+  .el-table__header th {
+    //此处设置表头样式
+    padding: 0;
+    height: 30px;
+    line-height: 20px;
+    background-color: #519ef0;
+    color: #fff;
+  }
+  
+  .el-table__body tr,
+  .el-table__body td {
+    //单元格样式
+    padding: 0;
+    height: 30px;
+    line-height: 20px;
+    background-color: #e2f9ef;
+  }
 }
 </style>

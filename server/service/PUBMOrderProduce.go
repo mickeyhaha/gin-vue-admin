@@ -144,7 +144,7 @@ func GetCurrentOrderByLineId(lineID int) (err error, PMP model.PUBMOrderProduce2
 	}
 }
 
-
+//Sample
 func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
 	// 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})

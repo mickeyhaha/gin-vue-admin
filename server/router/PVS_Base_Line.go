@@ -19,7 +19,8 @@ func InitPVS_Base_LineRouter(Router *gin.RouterGroup) {
 		// All smt router here
 		PVS_Base_LineRouter.GET("getDeptLineSummary", v1.GetDeptLineSummary)
 		PVS_Base_LineRouter.GET("getWorkOrderListByLine", v1.GetWorkOrderListByLine)
-		PVS_Base_LineRouter.GET("getDCSSMTOutPutList4Chart", v1.GetDCSSMTOutPutList4Chart)  // TODO 获取产量
+		PVS_Base_LineRouter.GET("getDCSSMTOutPutList4Chart", v1.GetDCSSMTOutPutList4Chart)  // TODO 获取产量_bak
 		PVS_Base_LineRouter.GET("getPUBMOrderProduce2InfoList4Chart", v1.GetPUBMOrderProduce2InfoList4Chart)  // 获取产量
+		PVS_Base_LineRouter.GET("getDCSSMTConsumeAndRejectRate4Chart", v1.GetDCSSMTConsumeAndRejectRate4Chart)  // 获取抛料率
 	}
 }

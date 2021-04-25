@@ -37,14 +37,14 @@ export default {
 <style lang="less">
 #scroll-board {
   width: 100%;
-  height: 30%;
+  // height: 100%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
   background-color: rgba(6, 30, 93, 0.5);
   border-top: 2px solid rgba(1, 153, 209, .5);
   box-sizing: border-box;
-  padding: 0px 10px;
-  margin-bottom: 10px;
+  padding: 0px 10px 10px 10px;    // top, right, bottom, left; top/bottom, right/left
+  margin-top: 20px;
 }
 </style>
