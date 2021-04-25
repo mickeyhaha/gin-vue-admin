@@ -13,6 +13,8 @@ import {
     getDCSSMTOutPutList4Chart,
     getPUBMOrderProduce2InfoList4Chart,
     getDCSSMTConsumeAndRejectRate4Chart,
+    getDCSSMTMachineEvent4Chart,
+    getDCSSMTRunTime4Chart,
 } from '@/api/PVS_Base_Line'
 import {
     getLackWarnings,
@@ -78,6 +80,32 @@ export const store = new Vuex.Store({
                 // },
             ],
         },
+        dateMachineEvent4Chart: {
+            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+            series: [
+                // {
+                //     name: '实际产量_',
+                //     data: [40, 40, 20, 10, 60],
+                // },
+                // {
+                //     name: '标准产量_',
+                //     data: [32, 42, 21, 11, 62],
+                // },
+            ],
+        },
+        dateRunTime4Chart: {
+            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+            series: [
+                // {
+                //     name: '实际产量_',
+                //     data: [40, 40, 20, 10, 60],
+                // },
+                // {
+                //     name: '标准产量_',
+                //     data: [32, 42, 21, 11, 62],
+                // },
+            ],
+        },
         deptLineSummary: [],
     },
     actions: {
@@ -121,6 +149,38 @@ export const store = new Vuex.Store({
                 return state.rejectRate
             }
         }, 
+
+        async getDCSSMTMachineEvent4Chart({ commit, state }, formData) {
+            const res = await getDCSSMTMachineEvent4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.date[0],
+                endDate: formData.date[1],
+                shift: formData.shift,
+                MOrderNo: formData.OrderNo
+            });
+            if (res.code == 0) {
+                const chartData = res.data.list[0]
+                commit("setDateMachineEvent4Chart", chartData)
+                return state.dateMachineEvent4Chart
+            }
+        }, 
+
+        async getDCSSMTRunTime4Chart({ commit, state }, formData) {
+            const res = await getDCSSMTRunTime4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.date[0],
+                endDate: formData.date[1],
+                shift: formData.shift,
+                MOrderNo: formData.OrderNo
+            });
+            if (res.code == 0) {
+                const chartData = res.data.list[0]
+                commit("setDateRunTime4Chart", chartData)
+                return state.dateRunTime4Chart
+            }
+        }, 
         
         // 获取产量1
         async getDCSSMTOutPutList4Chart({ commit, state }, formData) {
@@ -161,6 +221,8 @@ export const store = new Vuex.Store({
             dispatch('getAoiRate4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
             dispatch('getRejectRate4Chart', formData)
+            dispatch('getDCSSMTMachineEvent4Chart', formData)
+            dispatch('getDCSSMTRunTime4Chart', formData)
         },
 
         // 点击deptLineSummary的一行
@@ -192,6 +254,12 @@ export const store = new Vuex.Store({
         },
         setRejectRate4Chart(state, rejectRate4Chart) {
             state.rejectRate4Chart = rejectRate4Chart;
+        }, 
+        setDateMachineEvent4Chart(state, dateMachineEvent4Chart) {
+            state.dateMachineEvent4Chart = dateMachineEvent4Chart;
+        },
+        setDateRunTime4Chart(state, dateRunTime4Chart) {
+            state.dateRunTime4Chart = dateRunTime4Chart;
         },
         setDateOutput4Chart(state, dateOutput4Chart) {
             state.dateOutput4Chart = dateOutput4Chart;

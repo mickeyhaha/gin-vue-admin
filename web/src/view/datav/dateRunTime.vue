@@ -1,32 +1,24 @@
 <template>
-  <div id="date-output">
-    <!-- <div class="title">产量</div> -->
-    <column-chart :data="dateOutput4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
+  <div id="date-runtime">
+    <column-chart :data="dateRunTime4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
 import { columnChart } from '@toast-ui/vue-chart';
-
-import {
-  getLackWarnings
-} from "@/api/MoniWholeView";
-import infoList from "@/mixins/infoList";
 import { mapState } from 'vuex';
 
 export default {
-  name: 'DateOutput',
-  mixins: [infoList],
+  name: 'DateRunTime',
   components: {
     'column-chart': columnChart
   },
   computed: mapState(
-    ['dateOutput4Chart']
+    ['dateRunTime4Chart']
   ),
   data () {
     return {
-      listApi: getLackWarnings,
       chartProps: {
         containerStyle: {
           width: '100%',
@@ -35,7 +27,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '产量(件)',
+              text: '停机时长(s)',
               align: 'center',
             }, 
           },
@@ -111,21 +103,6 @@ export default {
   },
   methods: {
     createData () {
-      this.getTableData().then(() => {
-        let datas = []
-        for (let index = 0; index < this.tableData.length && index < 9; index++) {
-          const element = this.tableData[index]
-          datas[index] = {
-            '机器': element.machineCode+index,  //MatrCode
-            '时间': element.leftTime+index
-          }
-        }
-        // this.chartData = {
-        //   columns: ['机器', '时间'],
-        //   rows: datas
-        // }
-      });
-      
     },
   },
   mounted () {
@@ -139,7 +116,7 @@ export default {
 </script>
 
 <style lang="less">
-#date-output {
+#date-runtime {
   width: 100%;
   // height: 33%;
   box-shadow: 0 0 3px blue;

@@ -18,11 +18,6 @@
       </el-row> -->
       <el-row>
         <el-col :span="8" class="block-top-bottom-content">
-            <reject-rate />
-            <!-- <lack-warning /> -->
-            <scroll-board />
-        </el-col>
-        <el-col :span="8" class="block-top-bottom-content">
             <DateOutput />
             <!-- <water-level-chart />  -->
             <!-- <cards /> -->
@@ -31,6 +26,22 @@
               <aoi-rate /> 
               <!-- <spi-rate />  -->
               <!-- <utiliazation />  -->
+        </el-col>
+        <el-col :span="8" class="block-top-bottom-content">
+            <reject-rate />
+            <!-- <lack-warning /> -->
+            <!-- <scroll-board /> -->
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="8" class="block-top-bottom-content">
+            <DateMachineEvent />
+        </el-col>
+        <el-col :span="8" class="block-top-bottom-content">
+              <DateRunTime /> 
+        </el-col>
+        <el-col :span="8" class="block-top-bottom-content">
+            <!-- <scroll-board /> -->
         </el-col>
       </el-row>
     </dv-full-screen-container>
@@ -55,6 +66,8 @@ import DeptLineSummary from './deptLineSummary'
 import DeptFilter from './deptFilter'
 import TimeOutput from './timeOutput'
 import DateOutput from './dateOutput'
+import DateMachineEvent from "./dateMachineEvent";
+import DateRunTime from "./dateRunTime";
 
 export default {
   name: 'DataViewDept',
@@ -76,6 +89,8 @@ export default {
     DeptFilter,
     TimeOutput,
     DateOutput,
+    DateMachineEvent,
+    DateRunTime,
     // person,
   },
   data () {

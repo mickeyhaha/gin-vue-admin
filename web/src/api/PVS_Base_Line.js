@@ -150,3 +150,19 @@ export const getDCSSMTConsumeAndRejectRate4Chart = (params) => {
         params
     })
 }
+
+export const getDCSSMTMachineEvent4Chart = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTMachineEvent4Chart",
+        method: 'get',
+        params
+    })
+}
+
+export const getDCSSMTRunTime4Chart = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTRunTime4Chart",
+        method: 'get',
+        params
+    })
+}

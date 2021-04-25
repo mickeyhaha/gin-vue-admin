@@ -34,7 +34,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '抛料率%',
+              text: '抛料率(%)',
               align: 'center',
             }, 
           },
@@ -42,7 +42,7 @@ export default {
             visible: false,
           },
           legend: {
-            visible: false,
+            visible: true,
             align: 'bottom'
           },
           series: {

@@ -41,7 +41,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: 'AOI不良By IssueName',
+              text: 'AOI不良(次)',
               align: 'center',
             }, 
           },
@@ -56,7 +56,7 @@ export default {
             stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '线体' } },
+          xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             // title: {
