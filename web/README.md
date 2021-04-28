@@ -1,5 +1,3 @@
-# qm-plus-vue-page
-
 ## Project setup
 ```
 npm cache clean --force
