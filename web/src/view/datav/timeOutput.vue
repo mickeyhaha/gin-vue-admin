@@ -1,13 +1,13 @@
 <template>
   <div id="time-output">
     <!-- <div class="title">分时产量</div> -->
-    <column-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <bar-chart :data="chartData" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { columnChart } from '@toast-ui/vue-chart';
+import { barChart } from '@toast-ui/vue-chart';
 
 import {
   getLackWarnings
@@ -18,7 +18,7 @@ export default {
   name: 'TimeOutput',
   mixins: [infoList],
   components: {
-    'column-chart': columnChart
+    'bar-chart': barChart
   },
   data () {
     return {
@@ -26,7 +26,7 @@ export default {
       chartProps: {
         containerStyle: {
           width: '100%',
-          height: '200px',
+          height: '100%',
         },
         options: {
           chart: {  
@@ -137,7 +137,7 @@ export default {
 <style lang="less">
 #time-output {
   width: 100%;
-  // height: 33%;
+  height: 100%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;

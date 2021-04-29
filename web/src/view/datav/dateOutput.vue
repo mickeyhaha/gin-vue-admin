@@ -53,18 +53,67 @@ export default {
           xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
-            // title: {
-            //   fontFamily: 'Comic Sans MS',
-            //   fontSize: 45,
-            //   fontWeight: 100,
-            //   color: '#ff416d'
-            // },
+            title: {
+              fontWeight: 'bold',
+              fontSize: 15,
+              color: '#ffffff',
+            },
+            xAxis: {
+              title: {
+                color: '#ffffff'
+              },
+              label: {
+                fontSize: 11,
+                fontWeight: 700,
+                color: '#ffffff'
+              },
+              // width: 2,
+              color: '#ffffff'
+            },
+            yAxis: [
+              {
+                title: {
+                  fontSize: 17,
+                  fontWeight: 400,
+                  color: '#ffffff'
+                },
+                label: {
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: '#ffffff'
+                },
+                // width: 3,
+                color: '#ffffff'
+              },
+              {
+                title: {
+                  fontSize: 13,
+                  fontWeight: 600,
+                  color: '#ffffff'
+                },
+                label: {
+                  fontSize: 11,
+                  fontWeight: 700,
+                  color: '#ffffff'
+                },
+                width: 3,
+                color: '#ffffff'
+              }
+            ],
+            legend: {
+              label: {
+                // fontSize: 15,
+                // fontWeight: 700,
+                color: '#ffffff'
+              }
+            },
             chart: {
               fontFamily: 'Verdana',
-              backgroundColor: 'rgba(9, 206, 115, 0.1)',
+              backgroundColor: '#12396a',//rgba(9, 206, 115, 0.1)
             },
             series: {
               dataLabels: {
+                color: '#ffffff',
                 visible: true,
                 stack: true,
                 fontFamily: 'Verdana',

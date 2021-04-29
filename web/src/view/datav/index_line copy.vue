@@ -6,21 +6,19 @@
       </el-row>
       <el-row>
         <el-col :span="8" class="block-top-bottom-content">
-            <TimeOutput />
+            <reject-rate />
+            <lack-warning />
+            <scroll-board />
         </el-col>
-        
-        <el-col :span="16" class="block-top-bottom-content">
-          <el-row :span="24">
-            <el-col :span="12">
-              <water-level-chart /> 
-            </el-col>
-            <el-col :span="12">
-              <order-info /> 
-            </el-col>
-          </el-row>
-          <el-row :span="16">
-                <aoi-rate /> 
-          </el-row>
+        <el-col :span="8" class="block-top-bottom-content">
+            <order-info /> 
+            <water-level-chart /> 
+            <cards />
+        </el-col>
+        <el-col :span="8" class="block-top-bottom-content">
+              <aoi-rate /> 
+              <spi-rate /> 
+              <utiliazation /> 
         </el-col>
       </el-row>
 
@@ -66,8 +64,6 @@ import spiRate from './spiRate'
 import aoiRate from './aoiRate'
 import orderInfo from './orderInfo'
 import utiliazation from './utilization'
-import TimeOutput from './timeOutput'
-
 // import person from './person'
 
 export default {
@@ -86,7 +82,6 @@ export default {
     aoiRate,
     orderInfo,
     utiliazation,
-    TimeOutput,
     // person,
   },
   data () {

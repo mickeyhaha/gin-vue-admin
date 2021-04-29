@@ -1,9 +1,20 @@
 <template>
   <div id="data-view-dept">
     <dv-full-screen-container>
-      <el-row>
+      <div class="top">
+          <div class="left" style="text-align: left;">
+              <img class="img" src="./img/logo.png">
+          </div>
+          <div class="middle">
+              <p class="center-title">车间看板</p>
+          </div>
+          <div class="right" style="text-align: right; padding-right:10px">
+            <span>{{date}}</span>
+          </div>
+      </div>
+      <!-- <el-row>
         <el-col :span="24"><top-header /></el-col>
-      </el-row>
+      </el-row> -->
       <el-row>
         <el-col :span="24"><DeptFilter /></el-col>
       </el-row>
@@ -35,13 +46,13 @@
       </el-row>
       <el-row>
         <el-col :span="8" class="block-top-bottom-content">
-            <DateMachineEvent />
-        </el-col>
-        <el-col :span="8" class="block-top-bottom-content">
               <DateRunTime /> 
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-            <!-- <scroll-board /> -->
+            <StopReason />
+        </el-col>
+        <el-col :span="8" class="block-top-bottom-content">
+            <DateMachineEvent />
         </el-col>
       </el-row>
     </dv-full-screen-container>
@@ -49,6 +60,7 @@
 </template>
 
 <script>
+import { formatTimeToStr } from "@/utils/date";
 import topHeader from './topHeader'
 // import digitalFlop from './digitalFlop'
 // import rankingBoard from './rankingBoard'
@@ -68,6 +80,7 @@ import TimeOutput from './timeOutput'
 import DateOutput from './dateOutput'
 import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
+import StopReason from "./stopReason"
 
 export default {
   name: 'DataViewDept',
@@ -91,12 +104,21 @@ export default {
     DateOutput,
     DateMachineEvent,
     DateRunTime,
+    StopReason,
     // person,
   },
   data () {
     return {  
+      date: '',
     }
   },
+  created() {
+            let target = new Date("2019-6-6").getTime(); //获取目标时间戳
+            setInterval(() => {
+                let date = new Date();
+                this.date = formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
+            }, 1000)
+        },
   methods: {}
 }
 </script>
@@ -122,6 +144,49 @@ export default {
     box-shadow: 0 0 3px blue;
     display: flex;
     flex-direction: column;
+  }
+  
+  // top header
+.top {
+    background-image: url('./img/bg_top.png');
+    background-size: 100% 100%;
+    width: 100%;
+    background-size:cover;
+    height: 6%;
+}
+.left img{
+    height:70%;
+    width:auto;
+    text-align: left;
+}
+.right{
+    float: right !important;
+    font-size:15;
+}
+.middle{
+    margin-left:23%;
+    font-weight: 700;
+}
+.top div *{
+    position: relative;
+    top: 10%;
+}
+.top > div{
+    float:left;
+    text-align: center;
+    height:100%;
+    width:18%;
+    color: #fff;
+    line-height: 40px;
+}
+
+  .center-title {
+    position: absolute;
+    font-size: 25px;
+    font-weight: bold;
+    left: 50%;
+    top: 15px;
+    transform: translateX(-50%);
   }
 
   .main-content {

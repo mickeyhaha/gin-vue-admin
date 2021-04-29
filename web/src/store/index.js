@@ -39,71 +39,81 @@ export const store = new Vuex.Store({
             // categories: [],
             // series: [
             // ],
-            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
             series: [
-                // {
-                //     name: '模糊',
-                //     data: [0.3, 0.4, 0.2, 0.1, 0.5],
-                //     stackGroup: 'AOI',
-                // },
-                // {
-                //     name: '少料',
-                //     data: [0.2, 0.3, 0.3, 0.2, 0.5],
-                //     stackGroup: 'AOI',
-                // },
-                // {
-                //     name: '错点',
-                //     data: [0.4, 0.2, 0.1, 0.3, 0.1],
-                //     stackGroup: 'AOI',
-                // },
+                {
+                    name: '不良',
+                    data: [320, 420, 210, 110, 620],
+                },
             ],
         },
         rejectRate4Chart: {
-            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
             series: [
-                // {
-                //     name: '模糊',
-                //     data: [0.3, 0.4, 0.2, 0.1, 0.5],
-                // },
+                {
+                    name: '抛料率',
+                    data: [0.3, 0.4, 0.2, 0.1, 0.5],
+                },
             ],
         },
         dateOutput4Chart: {
-            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
             series: [
-                // {
-                //     name: '实际产量_',
-                //     data: [40, 40, 20, 10, 60],
-                // },
-                // {
-                //     name: '标准产量_',
-                //     data: [32, 42, 21, 11, 62],
-                // },
+                {
+                    name: '实际产量',
+                    data: [400, 400, 200, 100, 600],
+                },
+                {
+                    name: '标准产量',
+                    data: [320, 420, 210, 110, 620],
+                },
             ],
         },
         dateMachineEvent4Chart: {
-            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
             series: [
-                // {
-                //     name: '实际产量_',
-                //     data: [40, 40, 20, 10, 60],
-                // },
-                // {
-                //     name: '标准产量_',
-                //     data: [32, 42, 21, 11, 62],
-                // },
+                {
+                    name: '卡料',
+                    data: [40, 40, 20, 10, 60],
+                },
+                {
+                    name: '报警',
+                    data: [32, 42, 21, 11, 62],
+                },
             ],
         },
         dateRunTime4Chart: {
-            categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
             series: [
-                // {
-                //     name: '实际产量_',
-                //     data: [40, 40, 20, 10, 60],
-                // },
-                // {
-                //     name: '标准产量_',
-                //     data: [32, 42, 21, 11, 62],
-                // },
+                {
+                    name: '异常停机',
+                    data: [40, 40, 20, 10, 60],
+                },
+                {
+                    name: '空闲停机',
+                    data: [32, 42, 21, 11, 62],
+                },
+            ],
+        },
+        stopReason4Chart: {
+            categories: ['停机分布'],
+            series: [
+                {
+                    name: '异常停机',
+                    data: 40,
+                },
+                {
+                    name: '空闲停机',
+                    data: 32,
+                },
+                {
+                    name: '错误停机',
+                    data: 32,
+                },
+                {
+                    name: '卡料停机',
+                    data: 32,
+                },
             ],
         },
         deptLineSummary: [],
@@ -218,11 +228,11 @@ export const store = new Vuex.Store({
 
         // 点击deptFilter的submit
         async submitDeptFilter({ commit, dispatch }, formData) {
-            dispatch('getAoiRate4Chart', formData)
-            dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
-            dispatch('getRejectRate4Chart', formData)
-            dispatch('getDCSSMTMachineEvent4Chart', formData)
-            dispatch('getDCSSMTRunTime4Chart', formData)
+            // dispatch('getAoiRate4Chart', formData)
+            // dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
+            // dispatch('getRejectRate4Chart', formData)
+            // dispatch('getDCSSMTMachineEvent4Chart', formData)
+            // dispatch('getDCSSMTRunTime4Chart', formData)
         },
 
         // 点击deptLineSummary的一行

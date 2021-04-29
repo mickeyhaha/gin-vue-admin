@@ -8,14 +8,16 @@
       height="200"
       tooltip-effect="dark"
     >
-    <el-table-column label="LineID" prop="lineID" ></el-table-column> 
+    <!-- <el-table-column label="LineID" prop="lineID" ></el-table-column>  -->
+    <el-table-column label="线体名称" prop="LineName" ></el-table-column> 
+    <el-table-column label="工单" prop="WorkOrderNo" ></el-table-column> 
+    <el-table-column label="制令单" prop="MOrderNo" ></el-table-column> 
+    <el-table-column label="计划产量" prop="Qty" ></el-table-column> 
+    <el-table-column label="已完成" prop="QtyCompleted" ></el-table-column> 
     <el-table-column label="AOI不良数" prop="errCount" ></el-table-column> 
     <el-table-column label="AOI总数" prop="count" ></el-table-column> 
-    <el-table-column label="AOI不良率" prop="aoiErrCount" ></el-table-column> 
+    <!-- <el-table-column label="AOI不良率" prop="aoiErrCount" ></el-table-column>  -->
 
-    <el-table-column label="LineName" prop="LineName" ></el-table-column> 
-    <el-table-column label="MOrderNo" prop="MOrderNo" ></el-table-column> 
-    <el-table-column label="WorkOrderNo" prop="WorkOrderNo" ></el-table-column> 
     <!-- <el-table-column label="Customer" prop="Customer" ></el-table-column> 
     <el-table-column label="CustOrderNo" prop="CustOrderNo" ></el-table-column> 
     <el-table-column label="MachineType" prop="MachineType" ></el-table-column> 
@@ -25,8 +27,6 @@
     <el-table-column label="周期" prop="CycleTime" ></el-table-column> 
     <el-table-column label="版面" prop="PasteSide" ></el-table-column> 
     <el-table-column label="拼版数" prop="PanelCount" ></el-table-column>  -->
-    <el-table-column label="计划数量" prop="Qty" ></el-table-column> 
-    <el-table-column label="完成数量" prop="QtyCompleted" ></el-table-column> 
     <el-table-column label="开始时间">
         <template slot-scope="scope">{{ scope.row.BeginTime|formatDate }}</template>
     </el-table-column> 
@@ -98,11 +98,13 @@ export default {
   
   .el-table__body tr,
   .el-table__body td {
+    // background-image: './img/bg.png';
     //单元格样式
     padding: 0;
     height: 30px;
     line-height: 20px;
-    background-color: #e2f9ef;
+    color: #fff;
+    background-color: #12396a;
   }
 }
 </style>

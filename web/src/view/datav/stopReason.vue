@@ -1,31 +1,24 @@
 <template>
-  <div id="aoi-rate">
-    <area-chart :data="rejectRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" @selectSeries="onSelectSeries" />
+  <div id="stop-reason">
+    <pie-chart :data="stopReason4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { areaChart } from '@toast-ui/vue-chart';
-
-import {
-  getLackWarnings
-} from "@/api/MoniWholeView";
-import infoList from "@/mixins/infoList";
+import { pieChart } from '@toast-ui/vue-chart';
 import { mapState } from 'vuex';
 
 export default {
-  name: 'AoiRate',
-  mixins: [infoList],
+  name: 'StopReason',
   components: {
-    'area-chart': areaChart
+    'pie-chart': pieChart
   },
   computed: mapState(
-    ['rejectRate4Chart']
+    ['stopReason4Chart']
   ),
   data () {
     return {
-      listApi: getLackWarnings,
       chartProps: {
         containerStyle: {
           width: '100%',
@@ -34,7 +27,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '抛料率(%)',
+              text: '停机分布(s)',
               align: 'center',
             }, 
           },
@@ -43,10 +36,13 @@ export default {
           },
           legend: {
             visible: true,
-            align: 'bottom'
+            align: 'right'
           },
           series: {
-            selectable: true,
+              radiusRange: {
+                inner: '40%',
+                outer: '100%',
+              },
             stack: false,
             dataLabels: { visible: true },
           },
@@ -114,9 +110,14 @@ export default {
             series: {
               dataLabels: {
                 color: '#ffffff',
+                pieSeriesName: {
+                  visible: true,
+                  anchor: 'center'
+                },
                 visible: true,
                 stack: true,
                 fontFamily: 'Verdana',
+                fontSize: 10,
               //   lineWidth: 2,
               //   textStrokeColor: '#ffffff',
               //   shadowColor: '#ffffff',
@@ -144,38 +145,22 @@ export default {
         }
       },
       // chartData: {
-      //   categories: ['站料1', '站料2', '站料3', '站料4', '站料5'],
+      //   categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
       //   series: [
       //     {
-      //       name: '模糊',
-      //       data: [0.3, 0.4, 0.2, 0.1, 0.5],
+      //       name: '实际产量',
+      //       data: [40, 40, 20, 10, 50],
+      //     },
+      //     {
+      //       name: '标准产量',
+      //       data: [32, 42, 21, 11, 52],
       //     },
       //   ],
       // }
     }
   },
   methods: {
-    onSelectSeries(ev) {
-        // const { label, category, value } = ev.area[0].data;
-      console.log(ev)
-    },
-
     createData () {
-      this.getTableData().then(() => {
-        let datas = []
-        for (let index = 0; index < this.tableData.length && index < 9; index++) {
-          const element = this.tableData[index]
-          datas[index] = {
-            '机器': element.machineCode+index,  //MatrCode
-            '时间': element.leftTime+index
-          }
-        }
-        // this.chartData = {
-        //   columns: ['机器', '时间'],
-        //   rows: datas
-        // }
-      });
-      
     },
   },
   mounted () {
@@ -189,9 +174,9 @@ export default {
 </script>
 
 <style lang="less">
-#aoi-rate {
+#date-runtime {
   width: 100%;
-  // height: 100%;
+  // height: 33%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;
