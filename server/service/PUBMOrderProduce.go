@@ -157,7 +157,7 @@ func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (
 			on o.LineName = l.LineName 
 			where o.CreateTime >='%s' AND o.CreateTime <='%s'
 		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)
-		`, info.StartDate, info.EndDate, info.LineName)			// TODO: 放到db.Raw里面scan不出来
+	`, info.StartDate, info.EndDate, info.LineName)			// 放到db.Raw里面scan不出来
 
 	err = db.Raw(sql).Scan(&PUBMOrderProduces).Error
 	total = int64(len(PUBMOrderProduces))

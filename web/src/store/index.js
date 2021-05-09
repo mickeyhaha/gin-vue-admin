@@ -134,7 +134,7 @@ export const store = new Vuex.Store({
                 startDate: formData.date[0],
                 endDate: formData.date[1],
                 shift: formData.Shift,
-                orderNo: formData.OrderNo
+                workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0) {
                 const aoiRate4Chart = res.data.list[0]
@@ -150,8 +150,8 @@ export const store = new Vuex.Store({
                 LineName: formData.LineName,
                 startDate: formData.date[0],
                 endDate: formData.date[1],
-                shift: formData.shift,
-                MOrderNo: formData.OrderNo
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0) {
                 const rejectRate = res.data.list[0]
@@ -166,8 +166,8 @@ export const store = new Vuex.Store({
                 LineName: formData.LineName,
                 startDate: formData.date[0],
                 endDate: formData.date[1],
-                shift: formData.shift,
-                MOrderNo: formData.OrderNo
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0) {
                 const chartData = res.data.list[0]
@@ -182,8 +182,8 @@ export const store = new Vuex.Store({
                 LineName: formData.LineName,
                 startDate: formData.date[0],
                 endDate: formData.date[1],
-                shift: formData.shift,
-                MOrderNo: formData.OrderNo
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0) {
                 const chartData = res.data.list[0]
@@ -199,8 +199,8 @@ export const store = new Vuex.Store({
                 lineName: formData.LineName,
                 startDate: formData.date[0],
                 endDate: formData.date[1],
-                shift: formData.shift,
-                orderNo: formData.OrderNo
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0) {
                 const dateOutput4Chart = res.data.list[0]
@@ -216,8 +216,8 @@ export const store = new Vuex.Store({
                 LineName: formData.LineName,
                 startDate: formData.date[0],
                 endDate: formData.date[1],
-                shift: formData.shift,
-                MOrderNo: formData.OrderNo
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0) {
                 const dateOutput4Chart = res.data.list[0]
@@ -228,11 +228,18 @@ export const store = new Vuex.Store({
 
         // 点击deptFilter的submit
         async submitDeptFilter({ commit, dispatch }, formData) {
-            // dispatch('getAoiRate4Chart', formData)
-            // dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
-            // dispatch('getRejectRate4Chart', formData)
-            // dispatch('getDCSSMTMachineEvent4Chart', formData)
-            // dispatch('getDCSSMTRunTime4Chart', formData)
+            if (formData.Shift == 1) {
+                formData.date[0] += " 08:00:00"
+                formData.date[1] += " 18:59:59"
+            } else if (formData.Shift == 2) {
+                formData.date[0] += " 19:00:00"
+                formData.date[1] += " 07:59:59"
+            }
+            dispatch('getAoiRate4Chart', formData)
+            dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
+            dispatch('getRejectRate4Chart', formData)
+            dispatch('getDCSSMTMachineEvent4Chart', formData)
+            dispatch('getDCSSMTRunTime4Chart', formData)
         },
 
         // 点击deptLineSummary的一行

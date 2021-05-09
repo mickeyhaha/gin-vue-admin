@@ -26,15 +26,15 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
+        <!-- <el-col :span="4">
           <el-form-item label="工单" prop="order" class="item">
-            <el-select v-model="formData.OrderNo" placeholder="请选择工单" clearable :style="{width: '100%'}">
+            <el-select v-model="formData.WorkOrderNo" placeholder="请选择工单" clearable :style="{width: '100%'}">
               <el-option v-for="(item, index) in orderOptions" :key="index" :label="item.WorkOrderNo"
                 :value="item.WorkOrderNo" :disabled="item.disabled"></el-option>
             </el-select>
           </el-form-item>
-        </el-col>
-        <el-col :span="6">
+        </el-col> -->
+        <el-col :span="10">
           <el-form-item size="small">
             <el-button type="primary" @click="submitForm">查询</el-button>
             <el-button @click="resetForm">重置</el-button>
@@ -59,7 +59,7 @@ export default {
         date: null,
         LineName: undefined,
         Shift: undefined,
-        OrderNo: undefined,
+        WorkOrderNo: undefined,
       },
       rules: {
         date: [{
