@@ -106,6 +106,24 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
 		`, info.StartDate, info.EndDate, info.LineName)
 
+	if info.Shift == 1 {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
+				   count(1) as Count
+			from CMES3.dbo.DCS_SMT_MachineEvent o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
+		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
+	} else if info.Shift == 2 {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
+				   count(1) as Count
+			from CMES3.dbo.DCS_SMT_MachineEvent o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
+		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)
+	}
+
 	err = db.Raw(sql).Scan(&DSMEs).Error
 	total = int64(len(DSMEs))
 	return err, DSMEs, total
@@ -154,7 +172,7 @@ func GetDCSSMTMachineEvent4Chart(info request.DCSSMTMachineEventSearch) (err err
 	}
 
 	series := make([]smt.Series, 0)
-	for j:=0; j < len(issueNameArr); j++ {
+	for j:=0; j < len(issueNameArr) && len(dateArr) > 0; j++ {
 		var data []float64
 		for k:=0; k < len(lineArr); k++ {
 			data = append(data, float64(lineSeries[lineArr[k]][issueNameArr[j]]) / (float64(totalCount)))

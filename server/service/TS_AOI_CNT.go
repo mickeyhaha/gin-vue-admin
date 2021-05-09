@@ -75,31 +75,6 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
     // 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.TS_AOI_CNT{})
     var TACs []model.TS_AOI_CNT
-    // 如果有条件搜索 下方会自动创建搜索语句
-    //if info.Count != 0 {
-    //    db = db.Where("`count` > ?",info.Count)
-    //}
-    //if info.ErrCount != 0 {
-    //    db = db.Where("`ErrCount` > ?",info.ErrCount)
-    //}
-    //if info.LineID != 0 {
-    //    db = db.Where("`LineID` = ?",info.LineID)
-    //}
-    //if info.OrderNo != "" {
-    //    db = db.Where("`OrderNo` <> ?",info.OrderNo)
-    //}
-    //if info.IssueName != "" {
-    //    db = db.Where("`IssueName` = ?",info.IssueName)
-    //}
-    //if info.Result != 0 {
-    //    db = db.Where("`Result` = ?",info.Result)
-    //}
-    //if info.AOIID != 0 {
-    //    db = db.Where("`AOIID` = ?",info.AOIID)
-    //}
-	//err = db.Count(&total).Error
-	//err = db.Limit(limit).Offset(offset).Find(&TACs).Error
-	//err = db.Raw("SELECT Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM TS_AOI WITH(NOLOCK)").Scan(&TACs).Error
 	sql := `
 		SELECT a.*, COUNT(1) AS ErrCount
 			FROM (
@@ -133,6 +108,44 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 				GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName, a.CreateTime
 				ORDER BY IssueName, LineName;
 			`, info.LineName, info.StartDate, info.EndDate, info.StartDate, info.EndDate)
+
+		if info.Shift == 1 {
+			sql = fmt.Sprintf(`
+				SELECT a.*, COUNT(1) AS ErrCount
+				FROM (
+						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
+						 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
+								  JOIN  CMES3.dbo.TS_AOI b WITH(NOLOCK)
+										ON b.ID =a.AOIID
+								  JOIN  CMES3.dbo.PVS_Base_Line line WITH(NOLOCK)
+										ON b.LineID = line.LineID
+						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
+						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
+						   AND a.CreateTime >='%s'  AND a.CreateTime <= '%s' and DATENAME(hh, a.CreateTime) BETWEEN %d AND %d
+						 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName, cast(a.CreateTime as date)
+					 ) a
+				GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName, a.CreateTime
+				ORDER BY IssueName, LineName;
+			`, info.LineName, info.StartDate, info.EndDate, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour)
+		} else if info.Shift == 2 {
+			sql = fmt.Sprintf(`
+				SELECT a.*, COUNT(1) AS ErrCount
+				FROM (
+						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
+						 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
+								  JOIN  CMES3.dbo.TS_AOI b WITH(NOLOCK)
+										ON b.ID =a.AOIID
+								  JOIN  CMES3.dbo.PVS_Base_Line line WITH(NOLOCK)
+										ON b.LineID = line.LineID
+						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
+						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
+						   AND a.CreateTime >='%s'  AND a.CreateTime <= '%s' and DATENAME(hh, a.CreateTime) BETWEEN %d AND %d
+						 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName, cast(a.CreateTime as date)
+					 ) a
+				GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName, a.CreateTime
+				ORDER BY IssueName, LineName;
+			`, info.LineName, info.StartDate, info.EndDate, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour)
+		}
 	}
 	err = db.Raw(sql).Scan(&TACs).Error
 	total = int64(len(TACs))

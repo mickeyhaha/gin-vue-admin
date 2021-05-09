@@ -159,6 +159,26 @@ func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (
 		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)
 	`, info.StartDate, info.EndDate, info.LineName)			// 放到db.Raw里面scan不出来
 
+	if info.Shift == 1 {
+		sql = fmt.Sprintf(`
+	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
+			sum(o.QtyCompleted) QtyCompleted
+			from CMES3.dbo.PUB_MOrderProduce o WITH(NOLOCK) join CMES3.dbo.PVS_Base_line l WITH(NOLOCK)
+			on o.LineName = l.LineName 
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)
+		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
+	} else if info.Shift == 2 {
+		sql = fmt.Sprintf(`
+	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
+			sum(o.QtyCompleted) QtyCompleted
+			from CMES3.dbo.PUB_MOrderProduce o WITH(NOLOCK) join CMES3.dbo.PVS_Base_line l WITH(NOLOCK)
+			on o.LineName = l.LineName 
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)
+		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)
+	}
+
 	err = db.Raw(sql).Scan(&PUBMOrderProduces).Error
 	total = int64(len(PUBMOrderProduces))
 	return err, PUBMOrderProduces, total
@@ -171,7 +191,7 @@ func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (e
 	lines := make(map[string]struct{}, 0)
 	dateMap := make(map[string]struct{}, 0)
 	seriesNameArr := make([]string, 0)
-	seriesNameArr = append(seriesNameArr, "标准产量")
+	//seriesNameArr = append(seriesNameArr, "标准产量")
 	seriesNameArr = append(seriesNameArr, "实际产量")
 	// line - issueName - errCount
 	lineSeries := make(map[string]map[string]int, 0)
@@ -195,11 +215,11 @@ func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (e
 			lineSeries[entities[i].LineName] = make(map[string]int, 0)
 		}
 		lineSeries[entities[i].LineName]["实际产量"] = entities[i].QtyCompleted
-		lineSeries[entities[i].LineName]["标准产量"] = entities[i].QtyCompleted+100
+		//lineSeries[entities[i].LineName]["标准产量"] = entities[i].QtyCompleted+100
 	}
 
 	series := make([]smt.Series, 0)
-	for j:=0; j < len(seriesNameArr); j++ {
+	for j:=0; j < len(seriesNameArr) && len(dateArr) > 0; j++ {
 		var data []float64
 		for k:=0; k < len(lineArr); k++ {
 			data = append(data, float64(lineSeries[lineArr[k]][seriesNameArr[j]]))

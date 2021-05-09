@@ -131,8 +131,8 @@ export const store = new Vuex.Store({
             const res = await getTS_AOI_CNTList4Chart({
                 page: 1, pageSize: 100,
                 lineName: formData.LineName,
-                startDate: formData.date[0],
-                endDate: formData.date[1],
+                startDate: formData.startDate,
+                endDate: formData.endDate,
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
@@ -148,11 +148,12 @@ export const store = new Vuex.Store({
             const res = await getDCSSMTConsumeAndRejectRate4Chart({ 
                 page: 1, pageSize: 100,
                 LineName: formData.LineName,
-                startDate: formData.date[0],
-                endDate: formData.date[1],
+                startDate: formData.startDate,
+                endDate: formData.endDate,
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
+            console.log(res.data.list[0])
             if (res.code == 0) {
                 const rejectRate = res.data.list[0]
                 commit("setRejectRate4Chart", rejectRate)
@@ -164,8 +165,8 @@ export const store = new Vuex.Store({
             const res = await getDCSSMTMachineEvent4Chart({
                 page: 1, pageSize: 100,
                 LineName: formData.LineName,
-                startDate: formData.date[0],
-                endDate: formData.date[1],
+                startDate: formData.startDate,
+                endDate: formData.endDate,
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
@@ -180,8 +181,8 @@ export const store = new Vuex.Store({
             const res = await getDCSSMTRunTime4Chart({
                 page: 1, pageSize: 100,
                 LineName: formData.LineName,
-                startDate: formData.date[0],
-                endDate: formData.date[1],
+                startDate: formData.startDate,
+                endDate: formData.endDate,
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
@@ -197,8 +198,8 @@ export const store = new Vuex.Store({
             const res = await getDCSSMTOutPutList4Chart({
                 page: 1, pageSize: 100,
                 lineName: formData.LineName,
-                startDate: formData.date[0],
-                endDate: formData.date[1],
+                startDate: formData.startDate,
+                endDate: formData.endDate,
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
@@ -214,8 +215,8 @@ export const store = new Vuex.Store({
             const res = await getPUBMOrderProduce2InfoList4Chart({
                 page: 1, pageSize: 100,
                 LineName: formData.LineName,
-                startDate: formData.date[0],
-                endDate: formData.date[1],
+                startDate: formData.startDate,
+                endDate: formData.endDate,
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
@@ -228,13 +229,8 @@ export const store = new Vuex.Store({
 
         // 点击deptFilter的submit
         async submitDeptFilter({ commit, dispatch }, formData) {
-            if (formData.Shift == 1) {
-                formData.date[0] += " 08:00:00"
-                formData.date[1] += " 18:59:59"
-            } else if (formData.Shift == 2) {
-                formData.date[0] += " 19:00:00"
-                formData.date[1] += " 07:59:59"
-            }
+            formData.startDate = formData.date[0]
+            formData.endDate = formData.date[1]
             dispatch('getAoiRate4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
             dispatch('getRejectRate4Chart', formData)

@@ -166,7 +166,7 @@ func GetDCSSMTOutPutInfoList4Chart(info request.DCSSMTOutPutSearch) (err error, 
 	}
 
 	series := make([]smt.Series, 0)
-	for j:=0; j < len(seriesNameArr); j++ {
+	for j:=0; j < len(seriesNameArr) && len(dateArr) > 0; j++ {
 		var data []float64
 		for k:=0; k < len(lineArr); k++ {
 			data = append(data, float64(lineSeries[lineArr[k]][seriesNameArr[j]]))

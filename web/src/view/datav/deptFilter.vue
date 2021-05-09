@@ -3,7 +3,7 @@
     <el-row>
       <el-form ref="elForm" :model="formData" :rules="rules" size="small" label-width="100px">
         <el-col :span="4">
-          <el-form-item label="线体" prop="line" class="item">
+          <el-form-item label="线体" prop="LineName" class="item">
             <el-select v-model="formData.LineName" placeholder="请选择线体" @change="lineChanged"
              clearable :style="{width: '100%'}">
               <el-option v-for="(item, index) in lines" :key="index" :label="item.lineName"
@@ -19,7 +19,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="班别" prop="shift" class="item">
+          <el-form-item label="班别" prop="Shift" class="item">
             <el-select v-model="formData.Shift" placeholder="请选择班别" clearable :style="{width: '100%'}">
               <el-option v-for="(item, index) in shiftOption" :key="index" :label="item.label"
                 :value="item.value" :disabled="item.disabled"></el-option>
@@ -67,17 +67,17 @@ export default {
           message: '日期不能为空',
           trigger: 'change'
         }],
-        line: [{
-          required: false,
+        LineName: [{
+          required: true,
           message: '请选择线体',
           trigger: 'change'
         }],
-        shift: [{
+        Shift: [{
           required: false,
           message: '请选择班别',
           trigger: 'change'
         }],
-        order: [{
+        WorkOrderNo: [{
           required: false,
           message: '请选择工单',
           trigger: 'change'

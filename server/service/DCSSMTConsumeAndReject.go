@@ -126,6 +126,24 @@ func GetDCSSMTConsumeAndRejectRateByLine(info request.DCSSMTConsumeAndRejectSear
 		 	and o.LineName = '%s' group by o.LineName, cast(o.CreateTime as date)
 		`, info.StartDate, info.EndDate, info.LineName)
 
+	if info.Shift == 1 {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, 
+			sum(o.PickError) PickError, sum(o.IdentError) IdentError, sum(o.OtherError) OtherError, sum(o.PlacedQty) PlacedQty
+			from CMES3.dbo.DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+		 	and o.LineName = '%s' group by o.LineName, cast(o.CreateTime as date)
+		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
+	} else if info.Shift == 2 {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, 
+			sum(o.PickError) PickError, sum(o.IdentError) IdentError, sum(o.OtherError) OtherError, sum(o.PlacedQty) PlacedQty
+			from CMES3.dbo.DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+		 	and o.LineName = '%s' group by o.LineName, cast(o.CreateTime as date)
+		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)
+	}
+
 	err = db.Raw(sql).Scan(&DSRs).Error
 	total = int64(len(DSRs))
 	return err, DSRs, total
@@ -172,7 +190,7 @@ func GetDCSSMTConsumeAndRejectRate4Chart(info request.DCSSMTConsumeAndRejectSear
 	}
 
 	series := make([]smt.Series, 0)
-	for j:=0; j < len(seriesNameArr); j++ {
+	for j:=0; j < len(seriesNameArr) && len(dateArr) > 0; j++ {
 		var data []float64
 		for k:=0; k < len(lineArr); k++ {
 			data = append(data, float64(lineSeries[lineArr[k]][seriesNameArr[j]]))

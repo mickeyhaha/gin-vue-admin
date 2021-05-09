@@ -101,6 +101,24 @@ func GetDCSSMTRunTimeByRange(info request.DCSSMTRunTimeSearch) (err error, list 
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), TimeCode
 		`, info.StartDate, info.EndDate, info.LineName)
 
+	if info.Shift == 1 {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, TimeCode,
+				   sum(TimeValue) as TimeValue
+			from CMES3.dbo.DCS_SMT_Runtime o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), TimeCode
+		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
+	} else if info.Shift == 2 {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, TimeCode,
+				   sum(TimeValue) as TimeValue
+			from CMES3.dbo.DCS_SMT_Runtime o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), TimeCode
+		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)
+	}
+
 	err = db.Raw(sql).Scan(&DSRTs).Error
 	total = int64(len(DSRTs))
 	return err, DSRTs, total
@@ -149,7 +167,7 @@ func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list i
 	}
 
 	series := make([]smt.Series, 0)
-	for j:=0; j < len(issueNameArr); j++ {
+	for j:=0; j < len(issueNameArr) && len(dateArr) > 0; j++ {
 		var data []float64
 		for k:=0; k < len(lineArr); k++ {
 			data = append(data, float64(lineSeries[lineArr[k]][issueNameArr[j]]))
