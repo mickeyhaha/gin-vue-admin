@@ -189,6 +189,7 @@ export const store = new Vuex.Store({
             if (res.code == 0) {
                 const chartData = res.data.list[0]
                 commit("setDateRunTime4Chart", chartData)
+                commit("setStopReason4Chart", res.data.list[1])
                 return state.dateRunTime4Chart
             }
         }, 
@@ -238,6 +239,17 @@ export const store = new Vuex.Store({
             dispatch('getDCSSMTRunTime4Chart', formData)
         },
 
+        // 定时刷新dept_dashboard
+        async refreshDeptDashboard({ commit, dispatch }, formData) {
+            formData.startDate = formData.date[0]
+            formData.endDate = formData.date[1]
+            dispatch('getAoiRate4Chart', formData)
+            dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
+            dispatch('getRejectRate4Chart', formData)
+            dispatch('getDCSSMTMachineEvent4Chart', formData)
+            dispatch('getDCSSMTRunTime4Chart', formData)
+        },
+
         // 点击deptLineSummary的一行
         async selectLine({ commit, dispatch}, selectedLine) {
             return
@@ -273,6 +285,9 @@ export const store = new Vuex.Store({
         },
         setDateRunTime4Chart(state, dateRunTime4Chart) {
             state.dateRunTime4Chart = dateRunTime4Chart;
+        },
+        setStopReason4Chart(state, stopReason4Chart) {
+            state.stopReason4Chart = stopReason4Chart;
         },
         setDateOutput4Chart(state, dateOutput4Chart) {
             state.dateOutput4Chart = dateOutput4Chart;

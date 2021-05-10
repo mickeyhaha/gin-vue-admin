@@ -185,5 +185,31 @@ func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list i
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
+
+	/// 停机分布
+	cateArr := make([]string, 0)
+	cateArr = append(cateArr, "停机分布")
+
+	series2 := make([]smt.PieSeries, 0)
+	for j:=0; j < len(issueNameArr) && len(dateArr) > 0; j++ {
+		//var data []float64
+		total := 0.0
+		for k:=0; k < len(lineArr); k++ {
+			total += float64(lineSeries[lineArr[k]][issueNameArr[j]])
+		}
+		//data = append(data, total)
+		seri := smt.PieSeries{
+			Name: issueNameArr[j],
+			Data: total,
+		}
+		series2 = append(series2, seri)
+	}
+
+	chartData2 := smt.ChartData {
+		Categories: cateArr,
+		Series: series2,
+	}
+	chartDatas = append(chartDatas, chartData2)
+
 	return err, chartDatas, total
 }

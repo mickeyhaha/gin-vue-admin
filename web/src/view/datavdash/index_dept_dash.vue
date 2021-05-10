@@ -6,7 +6,7 @@
               <img class="img" src="./img/logo.png">
           </div>
           <div class="middle">
-              <p class="center-title">报表查询</p>
+              <p class="center-title">看板</p>
           </div>
           <div class="right" style="text-align: right; padding-right:10px">
             <span>{{date}}</span>
@@ -14,10 +14,10 @@
       </div>
       <!-- <el-row>
         <el-col :span="24"><top-header /></el-col>
-      </el-row> -->
+      </el-row> 
       <el-row>
         <el-col :span="24"><DeptFilter /></el-col>
-      </el-row>
+      </el-row>-->
       <el-row>
         <el-col :span="24"><DeptLineSummary /></el-col>
       </el-row>
@@ -110,6 +110,12 @@ export default {
   data () {
     return {  
       date: '',
+      formData: {
+        date: null,
+        LineName: undefined,
+        Shift: undefined,
+        WorkOrderNo: undefined,
+      },
     }
   },
   created() {
@@ -118,8 +124,19 @@ export default {
                 let date = new Date();
                 this.date = formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
             }, 1000)
-        },
-  methods: {}
+  },
+  methods: {
+    createData () {
+      this.$store.dispatch('refreshDeptDashboard', this.formData);
+    },
+  },
+  mounted () {
+    const { createData } = this
+
+    createData()
+
+    setInterval(createData, 3000)
+  }
 }
 </script>
 
