@@ -39,7 +39,7 @@
               <!-- <utiliazation />  -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-            <reject-rate />
+            <RejectRate />
             <!-- <lack-warning /> -->
             <!-- <scroll-board /> -->
         </el-col>
@@ -61,22 +61,9 @@
 
 <script>
 import { formatTimeToStr } from "@/utils/date";
-import topHeader from './topHeader'
-// import digitalFlop from './digitalFlop'
-// import rankingBoard from './rankingBoard'
-// import roseChart from './roseChart'
-import waterLevelChart from './waterLevelChart'
-import scrollBoard from './scrollBoard'
-import cards from './cards'
-import lackWarning from './lackWarning'
-import rejectRate from './rejectRate'
-import spiRate from './spiRate'
+import RejectRate from './rejectRate'
 import aoiRate from './aoiRate'
-import orderInfo from './orderInfo'
-import utiliazation from './utilization'
 import DeptLineSummary from './deptLineSummary'
-import DeptFilter from './deptFilter'
-import TimeOutput from './timeOutput'
 import DateOutput from './dateOutput'
 import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
@@ -85,27 +72,13 @@ import StopReason from "./stopReason"
 export default {
   name: 'DataViewDept',
   components: {
-    topHeader,
-    // digitalFlop,
-    // rankingBoard,
-    // roseChart,
-    waterLevelChart,
-    scrollBoard,
-    cards,
-    lackWarning,
-    rejectRate,
-    spiRate,
     aoiRate,
-    orderInfo,
-    utiliazation,
+    RejectRate,
     DeptLineSummary,
-    DeptFilter,
-    TimeOutput,
     DateOutput,
     DateMachineEvent,
     DateRunTime,
     StopReason,
-    // person,
   },
   data () {
     return {  
@@ -119,7 +92,6 @@ export default {
     }
   },
   created() {
-            let target = new Date("2019-6-6").getTime(); //获取目标时间戳
             setInterval(() => {
                 let date = new Date();
                 this.date = formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");

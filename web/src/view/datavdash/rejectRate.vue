@@ -1,5 +1,5 @@
 <template>
-  <div id="aoi-rate">
+  <div id="reject-rate">
     <area-chart :data="rejectRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" @selectSeries="onSelectSeries" />
   </div>
 </template>
@@ -15,7 +15,7 @@ import infoList from "@/mixins/infoList";
 import { mapState } from 'vuex';
 
 export default {
-  name: 'AoiRate',
+  name: 'RejectRate',
   mixins: [infoList],
   components: {
     'area-chart': areaChart
@@ -189,7 +189,7 @@ export default {
 </script>
 
 <style lang="less">
-#aoi-rate {
+#reject-rate {
   width: 100%;
   // height: 100%;
   box-shadow: 0 0 3px blue;

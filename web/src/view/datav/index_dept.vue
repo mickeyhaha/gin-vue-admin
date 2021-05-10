@@ -39,7 +39,7 @@
               <!-- <utiliazation />  -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-            <reject-rate />
+            <RejectRate />
             <!-- <lack-warning /> -->
             <!-- <scroll-board /> -->
         </el-col>
@@ -69,7 +69,7 @@ import waterLevelChart from './waterLevelChart'
 import scrollBoard from './scrollBoard'
 import cards from './cards'
 import lackWarning from './lackWarning'
-import rejectRate from './rejectRate'
+import RejectRate from './rejectRate'
 import spiRate from './spiRate'
 import aoiRate from './aoiRate'
 import orderInfo from './orderInfo'
@@ -93,7 +93,7 @@ export default {
     scrollBoard,
     cards,
     lackWarning,
-    rejectRate,
+    RejectRate,
     spiRate,
     aoiRate,
     orderInfo,
@@ -113,7 +113,7 @@ export default {
     }
   },
   created() {
-            let target = new Date("2019-6-6").getTime(); //获取目标时间戳
+            // let target = new Date("2019-6-6").getTime(); //获取目标时间戳
             setInterval(() => {
                 let date = new Date();
                 this.date = formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
