@@ -380,6 +380,7 @@ export const store = new Vuex.Store({
             if (res.code == 0) {
                 const chartData = res.data.list[2]
                 commit("setDateRunTime4ChartDash", chartData)
+                // 整体停机分布
                 commit("setStopReason4ChartDash", res.data.list[1])
                 return state.dateRunTime4ChartDash
             }

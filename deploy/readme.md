@@ -6,5 +6,7 @@
 
 4. 将web/dist.zip 解压，放到http服务器根目录
 
-5. 启动server/main.exe
+5. 修改server/config.yaml的mysql部分，修改用户名密码
+
+6. 启动server/main.exe
 

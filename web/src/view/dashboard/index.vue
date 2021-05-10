@@ -57,7 +57,7 @@
         </el-col>
       </div>
     </el-row>
-    <el-row>
+    <!-- <el-row>
       <el-card shadow="hover">
           <h2>
             使用教学：<a style="color:#409EFF"  target="view_window" href="https://www.bilibili.com/video/BV1fV411y7dT/">https://www.bilibili.com/video/BV1fV411y7dT/</a>
@@ -68,7 +68,7 @@
           </h2>
           <div></div>
       </el-card>
-    </el-row>
+    </el-row> -->
     <div class="shadow">
       <el-row :gutter="20">
         <el-col
