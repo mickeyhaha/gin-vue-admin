@@ -15,11 +15,13 @@ import {
     getDCSSMTConsumeAndRejectRate4Chart,
     getDCSSMTMachineEvent4Chart,
     getDCSSMTRunTime4Chart,
+    getDCSSMTOutPutList4ChartDash,
+    getPUBMOrderProduce2InfoList4ChartDash,
+    getDCSSMTConsumeAndRejectRate4ChartDash,
+    getDCSSMTMachineEvent4ChartDash,
+    getDCSSMTRunTime4ChartDash,
 } from '@/api/PVS_Base_Line'
-import {
-    getLackWarnings,
-    getRejectRateList,
-} from "@/api/MoniWholeView";
+import { formatTimeToStr } from "@/utils/date";
 import {
     getTS_AOI_CNTList4Chart,
 } from "@/api/TS_AOI_CNT";
@@ -117,6 +119,85 @@ export const store = new Vuex.Store({
             ],
         },
         deptLineSummary: [],
+
+        //////// dept dash
+        aoiRate4ChartDash: {
+            // categories: [],
+            // series: [
+            // ],
+            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            series: [
+                {
+                    name: '不良',
+                    data: [320, 420, 210, 110, 620],
+                },
+            ],
+        },
+        rejectRate4ChartDash: {
+            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            series: [
+                {
+                    name: '抛料率',
+                    data: [0.3, 0.4, 0.2, 0.1, 0.5],
+                },
+            ],
+        },
+        dateOutput4ChartDash: {
+            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            series: [
+                {
+                    name: '实际产量',
+                    data: [400, 400, 200, 100, 600],
+                },
+            ],
+        },
+        dateMachineEvent4ChartDash: {
+            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            series: [
+                {
+                    name: '卡料',
+                    data: [40, 40, 20, 10, 60],
+                },
+                {
+                    name: '报警',
+                    data: [32, 42, 21, 11, 62],
+                },
+            ],
+        },
+        dateRunTime4ChartDash: {
+            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            series: [
+                {
+                    name: '异常停机',
+                    data: [40, 40, 20, 10, 60],
+                },
+                {
+                    name: '空闲停机',
+                    data: [32, 42, 21, 11, 62],
+                },
+            ],
+        },
+        stopReason4ChartDash: {
+            categories: ['停机分布'],
+            series: [
+                {
+                    name: '异常停机',
+                    data: 40,
+                },
+                {
+                    name: '空闲停机',
+                    data: 32,
+                },
+                {
+                    name: '错误停机',
+                    data: 32,
+                },
+                {
+                    name: '卡料停机',
+                    data: 32,
+                },
+            ],
+        },
     },
     actions: {
         async getLines({ commit, state }) {
@@ -153,7 +234,6 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            console.log(res.data.list[0])
             if (res.code == 0) {
                 const rejectRate = res.data.list[0]
                 commit("setRejectRate4Chart", rejectRate)
@@ -239,15 +319,101 @@ export const store = new Vuex.Store({
             dispatch('getDCSSMTRunTime4Chart', formData)
         },
 
+        async getAoiRate4ChartDash({ commit, state }, formData) {
+            const res = await getTS_AOI_CNTList4Chart({
+                page: 1, pageSize: 100,
+                lineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0) {
+                const aoiRate4Chart = res.data.list[1]
+                commit("setAoiRate4ChartDash", aoiRate4Chart)
+                return state.aoiRate4ChartDash
+            }
+        },
+
+        // 抛料率
+        async getRejectRate4ChartDash({ commit, state }, formData) {
+            const res = await getDCSSMTConsumeAndRejectRate4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0) {
+                const rejectRate = res.data.list[1]
+                commit("setRejectRate4ChartDash", rejectRate)
+                return state.rejectRateDash
+            }
+        },
+
+        async getDCSSMTMachineEvent4ChartDash({ commit, state }, formData) {
+            const res = await getDCSSMTMachineEvent4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0) {
+                const chartData = res.data.list[1]
+                commit("setDateMachineEvent4ChartDash", chartData)
+                return state.dateMachineEvent4ChartDash
+            }
+        },
+
+        async getDCSSMTRunTime4ChartDash({ commit, state }, formData) {
+            const res = await getDCSSMTRunTime4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0) {
+                const chartData = res.data.list[2]
+                commit("setDateRunTime4ChartDash", chartData)
+                commit("setStopReason4ChartDash", res.data.list[1])
+                return state.dateRunTime4ChartDash
+            }
+        },
+
+        async getPUBMOrderProduce2InfoList4ChartDash({ commit, state }, formData) {
+            const res = await getPUBMOrderProduce2InfoList4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0) {
+                const dateOutput4Chart = res.data.list[1]
+                commit("setDateOutput4ChartDash", dateOutput4Chart)
+                return state.dateOutput4ChartDash
+            }
+        }, 
+
         // 定时刷新dept_dashboard
         async refreshDeptDashboard({ commit, dispatch }, formData) {
-            formData.startDate = formData.date[0]
-            formData.endDate = formData.date[1]
-            dispatch('getAoiRate4Chart', formData)
-            dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
-            dispatch('getRejectRate4Chart', formData)
-            dispatch('getDCSSMTMachineEvent4Chart', formData)
-            dispatch('getDCSSMTRunTime4Chart', formData)
+            const date = new Date();
+            let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
+            // formData.startDate = dateStr + " 00:00:00"
+            formData.startDate = "2021-03-01" + " 00:00:00"
+            formData.endDate = dateStr + " 23:59:59"
+            dispatch('getDeptLineSummary')
+            dispatch('getAoiRate4ChartDash', formData)
+            dispatch('getPUBMOrderProduce2InfoList4ChartDash', formData)
+            dispatch('getRejectRate4ChartDash', formData)
+            dispatch('getDCSSMTMachineEvent4ChartDash', formData)
+            dispatch('getDCSSMTRunTime4ChartDash', formData)
         },
 
         // 点击deptLineSummary的一行
@@ -297,6 +463,24 @@ export const store = new Vuex.Store({
         },
         setDeptLineSummary(state, deptLineSummary) {
             state.deptLineSummary = deptLineSummary;
+        },
+        setRejectRate4ChartDash(state, rejectRate4Chart) {
+            state.rejectRate4ChartDash = rejectRate4Chart;
+        },
+        setDateMachineEvent4ChartDash(state, dateMachineEvent4Chart) {
+            state.dateMachineEvent4ChartDash = dateMachineEvent4Chart;
+        },
+        setDateRunTime4ChartDash(state, dateRunTime4Chart) {
+            state.dateRunTime4ChartDash = dateRunTime4Chart;
+        },
+        setStopReason4ChartDash(state, stopReason4Chart) {
+            state.stopReason4ChartDash = stopReason4Chart;
+        },
+        setDateOutput4ChartDash(state, dateOutput4Chart) {
+            state.dateOutput4ChartDash = dateOutput4Chart;
+        },
+        setAoiRate4ChartDash(state, aoiRate4Chart) {
+            state.aoiRate4ChartDash = aoiRate4Chart;
         },
     },
     getters: {

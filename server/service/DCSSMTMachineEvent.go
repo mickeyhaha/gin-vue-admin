@@ -106,6 +106,16 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
 		`, info.StartDate, info.EndDate, info.LineName)
 
+	if info.LineName == "" {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
+				   count(1) as Count
+			from CMES3.dbo.DCS_SMT_MachineEvent o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s'
+			group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
+		`, info.StartDate, info.EndDate)
+	}
+
 	if info.Shift == 1 {
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
@@ -190,5 +200,11 @@ func GetDCSSMTMachineEvent4Chart(info request.DCSSMTMachineEventSearch) (err err
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
+
+	chartData2 := smt.ChartData{
+		Categories: lineArr,
+		Series: series,
+	}
+	chartDatas = append(chartDatas, chartData2)
 	return err, chartDatas, total
 }

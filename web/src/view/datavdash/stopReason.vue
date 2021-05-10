@@ -1,6 +1,6 @@
 <template>
   <div id="stop-reason">
-    <pie-chart :data="stopReason4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <pie-chart :data="stopReason4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
     'pie-chart': pieChart
   },
   computed: mapState(
-    ['stopReason4Chart']
+    ['stopReason4ChartDash']
   ),
   data () {
     return {

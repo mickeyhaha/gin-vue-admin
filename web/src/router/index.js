@@ -26,6 +26,12 @@ const baseRouters = [{
         component: () =>
             import('@/view/datav/index_dept.vue')
     },
+    {
+        path: "/deptdashboard",
+        name: 'DeptDashboard',
+        component: () =>
+            import('@/view/datavdash/index_dept_dash.vue')
+    },
 {
     path: "/init",
     name: 'init',

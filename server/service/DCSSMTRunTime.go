@@ -101,6 +101,16 @@ func GetDCSSMTRunTimeByRange(info request.DCSSMTRunTimeSearch) (err error, list 
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), TimeCode
 		`, info.StartDate, info.EndDate, info.LineName)
 
+	if info.LineName == "" {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, TimeCode,
+				   sum(TimeValue) as TimeValue
+			from CMES3.dbo.DCS_SMT_Runtime o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s'
+			 group by  o.LineName, cast(o.CreateTime as date), TimeCode
+		`, info.StartDate, info.EndDate)
+	}
+
 	if info.Shift == 1 {
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, TimeCode,
@@ -210,6 +220,12 @@ func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list i
 		Series: series2,
 	}
 	chartDatas = append(chartDatas, chartData2)
+
+	chartData3 := smt.ChartData{
+		Categories: lineArr,
+		Series: series,
+	}
+	chartDatas = append(chartDatas, chartData3)
 
 	return err, chartDatas, total
 }

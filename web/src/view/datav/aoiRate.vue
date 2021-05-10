@@ -8,22 +8,10 @@
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
 import { lineChart } from '@toast-ui/vue-chart';
-
-import {
-    createTS_AOI_CNT,
-    deleteTS_AOI_CNT,
-    deleteTS_AOI_CNTByIds,
-    updateTS_AOI_CNT,
-    findTS_AOI_CNT,
-    getTS_AOI_CNTList,
-    getTS_AOI_CNTList4Chart
-} from "@/api/TS_AOI_CNT";  //  此处请自行替换地址
-import infoList from "@/mixins/infoList";
 import { mapState } from 'vuex';
 
 export default {
   name: 'AoiRate',
-  mixins: [infoList],
   components: {
     'line-chart': lineChart
   },
@@ -32,7 +20,6 @@ export default {
   ),
   data () {
     return {
-      listApi: getTS_AOI_CNTList4Chart,
       chartProps: {
         containerStyle: {
           width: '100%',

@@ -1,6 +1,6 @@
 <template>
   <div id="date-runtime">
-    <column-chart :data="dateRunTime4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <column-chart :data="dateRunTime4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
     'column-chart': columnChart
   },
   computed: mapState(
-    ['dateRunTime4Chart']
+    ['dateRunTime4ChartDash']
   ),
   data () {
     return {
@@ -42,7 +42,7 @@ export default {
             stack: true,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '日期' } },
+          // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             title: {

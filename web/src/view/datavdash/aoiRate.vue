@@ -1,38 +1,25 @@
 <template>
   <div id="aoi-rate">
     <!-- <div class="title">AOI不良率</div> -->
-    <line-chart :data="aoiRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <bar-chart :data="aoiRate4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { lineChart } from '@toast-ui/vue-chart';
-
-import {
-    createTS_AOI_CNT,
-    deleteTS_AOI_CNT,
-    deleteTS_AOI_CNTByIds,
-    updateTS_AOI_CNT,
-    findTS_AOI_CNT,
-    getTS_AOI_CNTList,
-    getTS_AOI_CNTList4Chart
-} from "@/api/TS_AOI_CNT";  //  此处请自行替换地址
-import infoList from "@/mixins/infoList";
+import { barChart } from '@toast-ui/vue-chart';
 import { mapState } from 'vuex';
 
 export default {
   name: 'AoiRate',
-  mixins: [infoList],
   components: {
-    'line-chart': lineChart
+    'bar-chart': barChart
   },
   computed: mapState(
-    ['aoiRate4Chart']
+    ['aoiRate4ChartDash']
   ),
   data () {
     return {
-      listApi: getTS_AOI_CNTList4Chart,
       chartProps: {
         containerStyle: {
           width: '100%',
@@ -56,7 +43,7 @@ export default {
             stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '日期' } },
+          // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             title: {

@@ -6,7 +6,7 @@
               <img class="img" src="./img/logo.png">
           </div>
           <div class="middle">
-              <p class="center-title">看板</p>
+              <p class="center-title">车间看板</p>
           </div>
           <div class="right" style="text-align: right; padding-right:10px">
             <span>{{date}}</span>
@@ -107,7 +107,7 @@ export default {
 
     createData()
 
-    setInterval(createData, 3000)
+    setInterval(createData, 30000)
   }
 }
 </script>
