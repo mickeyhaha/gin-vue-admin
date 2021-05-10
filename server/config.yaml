@@ -48,10 +48,12 @@ local:
   path: uploads/file
 mysql:
   path: 127.0.0.1:3306
+  #path: 192.168.11.129:3306
   config: charset=utf8mb4&parseTime=True&loc=Local
   db-name: gva
   username: root
   password: root
+  #password: innotech_TEST!123
   max-idle-conns: 0
   max-open-conns: 0
   log-mode: false
