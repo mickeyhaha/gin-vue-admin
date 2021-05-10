@@ -10,7 +10,8 @@ function resolve(dir) {
 module.exports = {
     // 基础配置 详情看文档
     runtimeCompiler: true,
-    publicPath: './',
+    publicPath: process.env.NODE_ENV === 'development' ? './' : '/abt/gin-vue-admin/dist',
+    // publicPath: './',
     outputDir: 'dist',
     assetsDir: 'static',
     lintOnSave: process.env.NODE_ENV === 'development',
