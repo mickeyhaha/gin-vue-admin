@@ -145,8 +145,8 @@ import dataV from '@jiaminghi/data-view'
 Vue.use(dataV)
 
 //引入echarts
-//import echarts from 'echarts'
-//Vue.prototype.$echarts = echarts;
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts;
 
 //引入toastui-chart: https://github.com/nhn/tui.chart/tree/main/apps/vue-chart
 import '@toast-ui/chart/dist/toastui-chart.min.css';
