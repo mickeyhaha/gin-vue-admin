@@ -153,7 +153,7 @@ func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (
 	sql := fmt.Sprintf(`
 	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
 			sum(o.QtyCompleted) QtyCompleted
-			from CMES3.dbo.PUB_MOrderProduce o WITH(NOLOCK) join CMES3.dbo.PVS_Base_line l WITH(NOLOCK)
+			from PUB_MOrderProduce o WITH(NOLOCK) join PVS_Base_line l WITH(NOLOCK)
 			on o.LineName = l.LineName 
 			where o.CreateTime >='%s' AND o.CreateTime <='%s'
 		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)
@@ -163,7 +163,7 @@ func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (
 		sql = fmt.Sprintf(`
 	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
 			sum(o.QtyCompleted) QtyCompleted
-			from CMES3.dbo.PUB_MOrderProduce o WITH(NOLOCK) join CMES3.dbo.PVS_Base_line l WITH(NOLOCK)
+			from PUB_MOrderProduce o WITH(NOLOCK) join PVS_Base_line l WITH(NOLOCK)
 			on o.LineName = l.LineName 
 			where o.CreateTime >='%s' AND o.CreateTime <='%s'
 		    group by  l.LineID, o.LineName, cast(o.CreateTime as date)
@@ -174,7 +174,7 @@ func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (
 		sql = fmt.Sprintf(`
 	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
 			sum(o.QtyCompleted) QtyCompleted
-			from CMES3.dbo.PUB_MOrderProduce o WITH(NOLOCK) join CMES3.dbo.PVS_Base_line l WITH(NOLOCK)
+			from PUB_MOrderProduce o WITH(NOLOCK) join PVS_Base_line l WITH(NOLOCK)
 			on o.LineName = l.LineName 
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
 		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)
@@ -183,7 +183,7 @@ func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (
 		sql = fmt.Sprintf(`
 	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
 			sum(o.QtyCompleted) QtyCompleted
-			from CMES3.dbo.PUB_MOrderProduce o WITH(NOLOCK) join CMES3.dbo.PVS_Base_line l WITH(NOLOCK)
+			from PUB_MOrderProduce o WITH(NOLOCK) join PVS_Base_line l WITH(NOLOCK)
 			on o.LineName = l.LineName 
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
 		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)

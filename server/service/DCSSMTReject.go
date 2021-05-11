@@ -132,7 +132,7 @@ func GetDCSSMTRejectInfoListByLine(info request.DCSSMTRejectSearch) (err error, 
 	sql := fmt.Sprintf(`
 	     select o.LineName, cast(o.AddTime as date) AddTime, 
 			sum(o.PickError) PickError, sum(o.IdentError) IdentError, sum(o.OtherError) OtherError
-			from CMES3.dbo.DCS_SMT_Reject o WITH(NOLOCK)
+			from DCS_SMT_Reject o WITH(NOLOCK)
 			where o.AddTime >='%s' AND o.AddTime <='%s'
 		 	and o.LineName = '%s' group by o.LineName, cast(o.AddTime as date)
 		`, info.StartDate, info.EndDate, info.LineName)

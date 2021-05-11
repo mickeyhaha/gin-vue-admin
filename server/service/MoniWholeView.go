@@ -207,8 +207,8 @@ func GetRejectRateListByLineName(info request.MoniWholeViewSearch) (err error, l
 				TotalError,
 				MatrCode,
 				RejectRate
-			FROM CMES3.dbo.MoniWholeView A WITH (NOLOCK)
-					 LEFT JOIN CMES3.dbo.PVS_Base_Line B
+			FROM MoniWholeView A WITH (NOLOCK)
+					 LEFT JOIN PVS_Base_Line B
 							   ON A.LineID = B.LineID
 			where B.LineName = 'Line04'
 			ORDER BY RejectRate DESC;

@@ -97,7 +97,7 @@ func GetTS_VI_CNTInfoList(info request.TS_VI_CNTSearch) (err error, list interfa
     //}
 	//err = db.Count(&total).Error
 	//err = db.Limit(limit).Offset(offset).Find(&TVCs).Error
-	err = db.Raw("SELECT Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM CMES3.dbo.TS_VI WITH(NOLOCK)").Scan(&TVCs).Error
+	err = db.Raw("SELECT Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM TS_VI WITH(NOLOCK)").Scan(&TVCs).Error
 	total = int64(len(TVCs))
 	return err, TVCs, total
 }

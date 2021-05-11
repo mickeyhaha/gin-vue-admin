@@ -121,7 +121,7 @@ func GetDCSSMTConsumeAndRejectRateByLine(info request.DCSSMTConsumeAndRejectSear
 	sql := fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, 
 			sum(o.PickError) PickError, sum(o.IdentError) IdentError, sum(o.OtherError) OtherError, sum(o.PlacedQty) PlacedQty
-			from CMES3.dbo.DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
+			from DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s'
 		 	and o.LineName = '%s' group by o.LineName, cast(o.CreateTime as date)
 		`, info.StartDate, info.EndDate, info.LineName)
@@ -130,7 +130,7 @@ func GetDCSSMTConsumeAndRejectRateByLine(info request.DCSSMTConsumeAndRejectSear
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, 
 			sum(o.PickError) PickError, sum(o.IdentError) IdentError, sum(o.OtherError) OtherError, sum(o.PlacedQty) PlacedQty
-			from CMES3.dbo.DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
+			from DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s'
 			group by o.LineName, cast(o.CreateTime as date)
 		`, info.StartDate, info.EndDate)
@@ -140,7 +140,7 @@ func GetDCSSMTConsumeAndRejectRateByLine(info request.DCSSMTConsumeAndRejectSear
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, 
 			sum(o.PickError) PickError, sum(o.IdentError) IdentError, sum(o.OtherError) OtherError, sum(o.PlacedQty) PlacedQty
-			from CMES3.dbo.DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
+			from DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
 		 	and o.LineName = '%s' group by o.LineName, cast(o.CreateTime as date)
 		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
@@ -148,7 +148,7 @@ func GetDCSSMTConsumeAndRejectRateByLine(info request.DCSSMTConsumeAndRejectSear
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, 
 			sum(o.PickError) PickError, sum(o.IdentError) IdentError, sum(o.OtherError) OtherError, sum(o.PlacedQty) PlacedQty
-			from CMES3.dbo.DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
+			from DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
 		 	and o.LineName = '%s' group by o.LineName, cast(o.CreateTime as date)
 		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)

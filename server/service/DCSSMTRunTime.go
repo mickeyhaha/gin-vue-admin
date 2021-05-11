@@ -96,7 +96,7 @@ func GetDCSSMTRunTimeByRange(info request.DCSSMTRunTimeSearch) (err error, list 
 	sql := fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, TimeCode,
 				   sum(TimeValue) as TimeValue
-			from CMES3.dbo.DCS_SMT_Runtime o WITH(NOLOCK)
+			from DCS_SMT_Runtime o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s'
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), TimeCode
 		`, info.StartDate, info.EndDate, info.LineName)
@@ -105,7 +105,7 @@ func GetDCSSMTRunTimeByRange(info request.DCSSMTRunTimeSearch) (err error, list 
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, TimeCode,
 				   sum(TimeValue) as TimeValue
-			from CMES3.dbo.DCS_SMT_Runtime o WITH(NOLOCK)
+			from DCS_SMT_Runtime o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s'
 			 group by  o.LineName, cast(o.CreateTime as date), TimeCode
 		`, info.StartDate, info.EndDate)
@@ -115,7 +115,7 @@ func GetDCSSMTRunTimeByRange(info request.DCSSMTRunTimeSearch) (err error, list 
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, TimeCode,
 				   sum(TimeValue) as TimeValue
-			from CMES3.dbo.DCS_SMT_Runtime o WITH(NOLOCK)
+			from DCS_SMT_Runtime o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), TimeCode
 		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
@@ -123,7 +123,7 @@ func GetDCSSMTRunTimeByRange(info request.DCSSMTRunTimeSearch) (err error, list 
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, TimeCode,
 				   sum(TimeValue) as TimeValue
-			from CMES3.dbo.DCS_SMT_Runtime o WITH(NOLOCK)
+			from DCS_SMT_Runtime o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), TimeCode
 		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)

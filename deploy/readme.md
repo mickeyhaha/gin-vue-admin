@@ -1,4 +1,4 @@
-1. 安装并初始化msyql
+1. 安装并初始化msyql 5.7.* Community Server: https://www.cnblogs.com/ericli-ericli/p/6916285.html
 
 2. CREATE DATABASE IF NOT EXISTS gva DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 

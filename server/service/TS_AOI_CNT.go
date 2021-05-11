@@ -79,7 +79,7 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 		SELECT a.*, COUNT(1) AS ErrCount
 			FROM (
 					 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName
-					 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
+					 FROM TS_AOI_Repair a WITH(NOLOCK)
 							  JOIN  TS_AOI b WITH(NOLOCK)
 								   ON b.ID =a.AOIID
 							  JOIN  PVS_Base_Line line WITH(NOLOCK)
@@ -95,10 +95,10 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 		SELECT a.*, COUNT(1) AS ErrCount
 				FROM (
 						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
-						 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
-								  JOIN  CMES3.dbo.TS_AOI b WITH(NOLOCK)
+						 FROM TS_AOI_Repair a WITH(NOLOCK)
+								  JOIN  TS_AOI b WITH(NOLOCK)
 										ON b.ID =a.AOIID
-								  JOIN  CMES3.dbo.PVS_Base_Line line WITH(NOLOCK)
+								  JOIN  PVS_Base_Line line WITH(NOLOCK)
 										ON b.LineID = line.LineID
 						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
 						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
@@ -114,10 +114,10 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 				SELECT a.*, COUNT(1) AS ErrCount
 				FROM (
 						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
-						 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
-								  JOIN  CMES3.dbo.TS_AOI b WITH(NOLOCK)
+						 FROM TS_AOI_Repair a WITH(NOLOCK)
+								  JOIN  TS_AOI b WITH(NOLOCK)
 										ON b.ID =a.AOIID
-								  JOIN  CMES3.dbo.PVS_Base_Line line WITH(NOLOCK)
+								  JOIN  PVS_Base_Line line WITH(NOLOCK)
 										ON b.LineID = line.LineID
 						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
 						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
@@ -132,10 +132,10 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 				SELECT a.*, COUNT(1) AS ErrCount
 				FROM (
 						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
-						 FROM CMES3.dbo.TS_AOI_Repair a WITH(NOLOCK)
-								  JOIN  CMES3.dbo.TS_AOI b WITH(NOLOCK)
+						 FROM TS_AOI_Repair a WITH(NOLOCK)
+								  JOIN  TS_AOI b WITH(NOLOCK)
 										ON b.ID =a.AOIID
-								  JOIN  CMES3.dbo.PVS_Base_Line line WITH(NOLOCK)
+								  JOIN  PVS_Base_Line line WITH(NOLOCK)
 										ON b.LineID = line.LineID
 						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
 						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
