@@ -224,6 +224,12 @@ func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
+
+	chartData2 := smt.ChartData{
+		Categories: lineArr,
+		Series: series,
+	}
+	chartDatas = append(chartDatas, chartData2)
 	return err, chartDatas, total
 }
 

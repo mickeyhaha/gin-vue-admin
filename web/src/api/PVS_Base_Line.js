@@ -166,3 +166,43 @@ export const getDCSSMTRunTime4Chart = (params) => {
         params
     })
 }
+
+export const getDCSSMTOutPutList4ChartDash = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTOutPutList4ChartDash",
+        method: 'get',
+        params
+    })
+}
+
+export const getPUBMOrderProduce2InfoList4ChartDash = (params) => {
+    return service({
+        url: "/PBL/getPUBMOrderProduce2InfoList4ChartDash",
+        method: 'get',
+        params
+    })
+}
+
+export const getDCSSMTConsumeAndRejectRate4ChartDash = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTConsumeAndRejectRate4ChartDash",
+        method: 'get',
+        params
+    })
+}
+
+export const getDCSSMTMachineEvent4ChartDash = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTMachineEvent4ChartDash",
+        method: 'get',
+        params
+    })
+}
+
+export const getDCSSMTRunTime4ChartDash = (params) => {
+    return service({
+        url: "/PBL/getDCSSMTRunTime4ChartDash",
+        method: 'get',
+        params
+    })
+}

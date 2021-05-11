@@ -1,7 +1,7 @@
 <template>
   <div id="date-machineevent">
     <!-- <div class="title">产量</div> -->
-    <column-chart :data="dateMachineEvent4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <column-chart :data="dateMachineEvent4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
     'column-chart': columnChart
   },
   computed: mapState(
-    ['dateMachineEvent4Chart']
+    ['dateMachineEvent4ChartDash']
   ),
   data () {
     return {
@@ -43,7 +43,7 @@ export default {
             stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '日期' } },
+          // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             title: {

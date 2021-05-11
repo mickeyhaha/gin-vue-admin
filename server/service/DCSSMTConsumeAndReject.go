@@ -126,6 +126,16 @@ func GetDCSSMTConsumeAndRejectRateByLine(info request.DCSSMTConsumeAndRejectSear
 		 	and o.LineName = '%s' group by o.LineName, cast(o.CreateTime as date)
 		`, info.StartDate, info.EndDate, info.LineName)
 
+	if info.LineName == "" {
+		sql = fmt.Sprintf(`
+	     select o.LineName, cast(o.CreateTime as date) CreateTime, 
+			sum(o.PickError) PickError, sum(o.IdentError) IdentError, sum(o.OtherError) OtherError, sum(o.PlacedQty) PlacedQty
+			from CMES3.dbo.DCS_SMT_ConsumeAndReject o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s'
+			group by o.LineName, cast(o.CreateTime as date)
+		`, info.StartDate, info.EndDate)
+	}
+
 	if info.Shift == 1 {
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, 
@@ -208,5 +218,11 @@ func GetDCSSMTConsumeAndRejectRate4Chart(info request.DCSSMTConsumeAndRejectSear
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
+
+	chartData2 := smt.ChartData{
+		Categories: lineArr,
+		Series: series,
+	}
+	chartDatas = append(chartDatas, chartData2)
 	return err, chartDatas, total
 }

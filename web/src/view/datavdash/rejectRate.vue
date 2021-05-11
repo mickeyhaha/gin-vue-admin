@@ -1,31 +1,24 @@
 <template>
   <div id="reject-rate">
-    <area-chart :data="rejectRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" @selectSeries="onSelectSeries" />
+    <bar-chart :data="rejectRate4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" @selectSeries="onSelectSeries" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { areaChart } from '@toast-ui/vue-chart';
-
-import {
-  getLackWarnings
-} from "@/api/MoniWholeView";
-import infoList from "@/mixins/infoList";
+import { barChart } from '@toast-ui/vue-chart';
 import { mapState } from 'vuex';
 
 export default {
   name: 'RejectRate',
-  mixins: [infoList],
   components: {
-    'area-chart': areaChart
+    'bar-chart': barChart
   },
   computed: mapState(
-    ['rejectRate4Chart']
+    ['rejectRate4ChartDash']
   ),
   data () {
     return {
-      listApi: getLackWarnings,
       chartProps: {
         containerStyle: {
           width: '100%',
@@ -50,7 +43,7 @@ export default {
             stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '日期' } },
+          // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             title: {
@@ -156,26 +149,9 @@ export default {
   },
   methods: {
     onSelectSeries(ev) {
-        // const { label, category, value } = ev.area[0].data;
-      console.log(ev)
     },
 
     createData () {
-      this.getTableData().then(() => {
-        let datas = []
-        for (let index = 0; index < this.tableData.length && index < 9; index++) {
-          const element = this.tableData[index]
-          datas[index] = {
-            '机器': element.machineCode+index,  //MatrCode
-            '时间': element.leftTime+index
-          }
-        }
-        // this.chartData = {
-        //   columns: ['机器', '时间'],
-        //   rows: datas
-        // }
-      });
-      
     },
   },
   mounted () {

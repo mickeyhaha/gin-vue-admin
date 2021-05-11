@@ -159,6 +159,17 @@ func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (
 		 and o.LineName = '%s' group by  l.LineID, o.LineName, cast(o.CreateTime as date)
 	`, info.StartDate, info.EndDate, info.LineName)			// 放到db.Raw里面scan不出来
 
+	if info.LineName == "" {
+		sql = fmt.Sprintf(`
+	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
+			sum(o.QtyCompleted) QtyCompleted
+			from CMES3.dbo.PUB_MOrderProduce o WITH(NOLOCK) join CMES3.dbo.PVS_Base_line l WITH(NOLOCK)
+			on o.LineName = l.LineName 
+			where o.CreateTime >='%s' AND o.CreateTime <='%s'
+		    group by  l.LineID, o.LineName, cast(o.CreateTime as date)
+	`, info.StartDate, info.EndDate)
+	}
+
 	if info.Shift == 1 {
 		sql = fmt.Sprintf(`
 	     select l.LineID, o.LineName, cast(o.CreateTime as date) CreateTime, 
@@ -237,5 +248,11 @@ func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (e
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
+
+	chartData2 := smt.ChartData{
+		Categories: lineArr,
+		Series: series,
+	}
+	chartDatas = append(chartDatas, chartData2)
 	return err, chartDatas, total
 }
