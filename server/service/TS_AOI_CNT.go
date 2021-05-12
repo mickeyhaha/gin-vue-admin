@@ -164,6 +164,10 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 //}
 
 func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list interface{}, total int64) {
+	// TODO
+	if true {
+		return nil, make([]smt.ChartData, 0), 0
+	}
 	err, list, total = GetTS_AOI_CNTInfoList(info)
 	TACs := list.([]model.TS_AOI_CNT)
 	var i int64

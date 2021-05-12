@@ -125,13 +125,8 @@ export const store = new Vuex.Store({
             // categories: [],
             // series: [
             // ],
-            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
-            series: [
-                {
-                    name: '不良',
-                    data: [320, 420, 210, 110, 620],
-                },
-            ],
+            categories: [],
+            series: [],
         },
         rejectRate4ChartDash: {
             categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
@@ -202,7 +197,7 @@ export const store = new Vuex.Store({
     actions: {
         async getLines({ commit, state }) {
             const res = await getPVS_Base_LineList({ page: 1, pageSize: 100 });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const lines = res.data.list
                 commit("setLines", lines)
                 return state.lines
@@ -217,7 +212,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const aoiRate4Chart = res.data.list[0]
                 commit("setAoiRate4Chart", aoiRate4Chart)
                 return state.aoiRate4Chart
@@ -234,7 +229,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const rejectRate = res.data.list[0]
                 commit("setRejectRate4Chart", rejectRate)
                 return state.rejectRate
@@ -250,7 +245,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const chartData = res.data.list[0]
                 commit("setDateMachineEvent4Chart", chartData)
                 return state.dateMachineEvent4Chart
@@ -266,7 +261,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const chartData = res.data.list[0]
                 commit("setDateRunTime4Chart", chartData)
                 commit("setStopReason4Chart", res.data.list[1])
@@ -284,7 +279,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const dateOutput4Chart = res.data.list[0]
                 commit("setDateOutput4Chart", dateOutput4Chart)
                 return state.dateOutput4Chart
@@ -301,7 +296,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const dateOutput4Chart = res.data.list[0]
                 commit("setDateOutput4Chart", dateOutput4Chart)
                 return state.dateOutput4Chart
@@ -328,7 +323,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const aoiRate4Chart = res.data.list[1]
                 commit("setAoiRate4ChartDash", aoiRate4Chart)
                 return state.aoiRate4ChartDash
@@ -345,7 +340,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const rejectRate = res.data.list[1]
                 commit("setRejectRate4ChartDash", rejectRate)
                 return state.rejectRateDash
@@ -361,7 +356,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const chartData = res.data.list[1]
                 commit("setDateMachineEvent4ChartDash", chartData)
                 return state.dateMachineEvent4ChartDash
@@ -377,7 +372,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const chartData = res.data.list[2]
                 commit("setDateRunTime4ChartDash", chartData)
                 // 整体停机分布
@@ -395,7 +390,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const dateOutput4Chart = res.data.list[1]
                 commit("setDateOutput4ChartDash", dateOutput4Chart)
                 return state.dateOutput4ChartDash
@@ -426,7 +421,7 @@ export const store = new Vuex.Store({
 
         async getDeptLineSummary({ commit, state }) {
             const res = await getDeptLineSummary({ page: 1, pageSize: 100 });
-            if (res.code == 0) {
+            if (res.code == 0 && res.data.total != 0) {
                 const deptLineSummary = res.data.list
                 commit("setDeptLineSummary", deptLineSummary)
                 return state.deptLineSummary

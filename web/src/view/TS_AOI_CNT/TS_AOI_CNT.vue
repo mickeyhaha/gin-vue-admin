@@ -134,7 +134,6 @@ import {
     deleteTS_AOI_CNTByIds,
     updateTS_AOI_CNT,
     findTS_AOI_CNT,
-    getTS_AOI_CNTList
 } from "@/api/TS_AOI_CNT";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import infoList from "@/mixins/infoList";
@@ -143,7 +142,6 @@ export default {
   mixins: [infoList],
   data() {
     return {
-      listApi: getTS_AOI_CNTList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
