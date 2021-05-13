@@ -78,17 +78,17 @@ module.exports = {
                             if(buildConf.title) {
                                 args[0].title = buildConf.title
                             }
-                            if(buildConf.cdns.length > 0) {
-                                args[0].cdns = buildConf.cdns.map(conf => {
-                                    if (conf.path) {
-                                        conf.js = `${buildConf.baseCdnUrl}${conf.path}`
-                                    } else {
-                                        conf.js = `${buildConf.baseCdnUrl}/${conf.name}/${packageConf.dependencies[conf.name].replace('^', '')}/${conf.name}.min.js`
-                                    }
+                            // if(buildConf.cdns.length > 0) {
+                            //     args[0].cdns = buildConf.cdns.map(conf => {
+                            //         if (conf.path) {
+                            //             conf.js = `${buildConf.baseCdnUrl}${conf.path}`
+                            //         } else {
+                            //             conf.js = `${buildConf.baseCdnUrl}/${conf.name}/${packageConf.dependencies[conf.name].replace('^', '')}/${conf.name}.min.js`
+                            //         }
 
-                                    return conf
-                                })
-                            }
+                            //         return conf
+                            //     })
+                            // }
                             return args
                         })
 

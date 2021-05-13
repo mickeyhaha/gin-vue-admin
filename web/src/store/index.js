@@ -122,9 +122,6 @@ export const store = new Vuex.Store({
 
         //////// dept dash
         aoiRate4ChartDash: {
-            // categories: [],
-            // series: [
-            // ],
             categories: [],
             series: [],
         },
@@ -405,11 +402,12 @@ export const store = new Vuex.Store({
             formData.startDate = "2021-03-01" + " 00:00:00"
             formData.endDate = dateStr + " 23:59:59"
             dispatch('getDeptLineSummary')
-            dispatch('getAoiRate4ChartDash', formData)
+            // // TODO
+            // // dispatch('getAoiRate4ChartDash', formData)
             dispatch('getPUBMOrderProduce2InfoList4ChartDash', formData)
-            dispatch('getRejectRate4ChartDash', formData)
-            dispatch('getDCSSMTMachineEvent4ChartDash', formData)
-            dispatch('getDCSSMTRunTime4ChartDash', formData)
+            // dispatch('getRejectRate4ChartDash', formData)
+            // dispatch('getDCSSMTMachineEvent4ChartDash', formData)
+            // dispatch('getDCSSMTRunTime4ChartDash', formData)
         },
 
         // 点击deptLineSummary的一行
