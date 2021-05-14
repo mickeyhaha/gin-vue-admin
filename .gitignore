@@ -5,6 +5,8 @@
 /deploy/server
 gin-vue-admin
 nohup.out
+dist.zip
+main.exe
 
 .DS_Store
 
