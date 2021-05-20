@@ -41,81 +41,81 @@ export const store = new Vuex.Store({
             // categories: [],
             // series: [
             // ],
-            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
+            categories: [],   //'4/18', '4/19', '4/20', '4/21', '4/22'
             series: [
-                {
-                    name: '不良',
-                    data: [320, 420, 210, 110, 620],
-                },
+                // {
+                //     name: '不良',
+                //     data: [320, 420, 210, 110, 620],
+                // },
             ],
         },
         rejectRate4Chart: {
-            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
+            categories: [],
             series: [
-                {
-                    name: '抛料率',
-                    data: [0.3, 0.4, 0.2, 0.1, 0.5],
-                },
+                // {
+                //     name: '抛料率',
+                //     data: [0.3, 0.4, 0.2, 0.1, 0.5],
+                // },
             ],
         },
         dateOutput4Chart: {
-            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
+            categories: [],
             series: [
-                {
-                    name: '实际产量',
-                    data: [400, 400, 200, 100, 600],
-                },
-                {
-                    name: '标准产量',
-                    data: [320, 420, 210, 110, 620],
-                },
+                // {
+                //     name: '实际产量',
+                //     data: [400, 400, 200, 100, 600],
+                // },
+                // {
+                //     name: '标准产量',
+                //     data: [320, 420, 210, 110, 620],
+                // },
             ],
         },
         dateMachineEvent4Chart: {
-            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
+            categories: [],
             series: [
-                {
-                    name: '卡料',
-                    data: [40, 40, 20, 10, 60],
-                },
-                {
-                    name: '报警',
-                    data: [32, 42, 21, 11, 62],
-                },
+                // {
+                //     name: '卡料',
+                //     data: [40, 40, 20, 10, 60],
+                // },
+                // {
+                //     name: '报警',
+                //     data: [32, 42, 21, 11, 62],
+                // },
             ],
         },
         dateRunTime4Chart: {
-            categories: ['4/18', '4/19', '4/20', '4/21', '4/22'],
+            categories: [],
             series: [
-                {
-                    name: '异常停机',
-                    data: [40, 40, 20, 10, 60],
-                },
-                {
-                    name: '空闲停机',
-                    data: [32, 42, 21, 11, 62],
-                },
+                // {
+                //     name: '异常停机',
+                //     data: [40, 40, 20, 10, 60],
+                // },
+                // {
+                //     name: '空闲停机',
+                //     data: [32, 42, 21, 11, 62],
+                // },
             ],
         },
         stopReason4Chart: {
-            categories: ['停机分布'],
+            categories: [],     //'停机分布'
             series: [
-                {
-                    name: '异常停机',
-                    data: 40,
-                },
-                {
-                    name: '空闲停机',
-                    data: 32,
-                },
-                {
-                    name: '错误停机',
-                    data: 32,
-                },
-                {
-                    name: '卡料停机',
-                    data: 32,
-                },
+                // {
+                //     name: '异常停机',
+                //     data: 40,
+                // },
+                // {
+                //     name: '空闲停机',
+                //     data: 32,
+                // },
+                // {
+                //     name: '错误停机',
+                //     data: 32,
+                // },
+                // {
+                //     name: '卡料停机',
+                //     data: 32,
+                // },
             ],
         },
         deptLineSummary: [],
@@ -126,68 +126,68 @@ export const store = new Vuex.Store({
             series: [],
         },
         rejectRate4ChartDash: {
-            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            categories: [],     //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
             series: [
-                {
-                    name: '抛料率',
-                    data: [0.3, 0.4, 0.2, 0.1, 0.5],
-                },
+                // {
+                //     name: '抛料率',
+                //     data: [0.3, 0.4, 0.2, 0.1, 0.5],
+                // },
             ],
         },
         dateOutput4ChartDash: {
-            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            categories: [], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
             series: [
-                {
-                    name: '实际产量',
-                    data: [400, 400, 200, 100, 600],
-                },
+                // {
+                //     name: '实际产量',
+                //     data: [400, 400, 200, 100, 600],
+                // },
             ],
         },
         dateMachineEvent4ChartDash: {
-            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            categories: [], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
             series: [
-                {
-                    name: '卡料',
-                    data: [40, 40, 20, 10, 60],
-                },
-                {
-                    name: '报警',
-                    data: [32, 42, 21, 11, 62],
-                },
+                // {
+                //     name: '卡料',
+                //     data: [40, 40, 20, 10, 60],
+                // },
+                // {
+                //     name: '报警',
+                //     data: [32, 42, 21, 11, 62],
+                // },
             ],
         },
         dateRunTime4ChartDash: {
-            categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
+            categories: [],// 'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
             series: [
-                {
-                    name: '异常停机',
-                    data: [40, 40, 20, 10, 60],
-                },
-                {
-                    name: '空闲停机',
-                    data: [32, 42, 21, 11, 62],
-                },
+                // {
+                //     name: '异常停机',
+                //     data: [40, 40, 20, 10, 60],
+                // },
+                // {
+                //     name: '空闲停机',
+                //     data: [32, 42, 21, 11, 62],
+                // },
             ],
         },
         stopReason4ChartDash: {
-            categories: ['停机分布'],
+            categories: [],//'停机分布'
             series: [
-                {
-                    name: '异常停机',
-                    data: 40,
-                },
-                {
-                    name: '空闲停机',
-                    data: 32,
-                },
-                {
-                    name: '错误停机',
-                    data: 32,
-                },
-                {
-                    name: '卡料停机',
-                    data: 32,
-                },
+                // {
+                //     name: '异常停机',
+                //     data: 40,
+                // },
+                // {
+                //     name: '空闲停机',
+                //     data: 32,
+                // },
+                // {
+                //     name: '错误停机',
+                //     data: 32,
+                // },
+                // {
+                //     name: '卡料停机',
+                //     data: 32,
+                // },
             ],
         },
     },
@@ -337,6 +337,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
+            console.log(res.data)
             if (res.code == 0 && res.data.total != 0) {
                 const rejectRate = res.data.list[1]
                 commit("setRejectRate4ChartDash", rejectRate)
@@ -401,7 +402,7 @@ export const store = new Vuex.Store({
             // formData.startDate = dateStr + " 00:00:00"
             formData.startDate = "2021-03-01" + " 00:00:00"
             formData.endDate = dateStr + " 23:59:59"
-            console.log("version_1.1")
+            console.log("version_1.4")
             dispatch('getDeptLineSummary')
             // TODO
             // dispatch('getAoiRate4ChartDash', formData)

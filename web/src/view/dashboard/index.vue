@@ -26,7 +26,7 @@
         </el-col>
         <el-col :xs="24" :lg='8' :md="8">
           <div class="car-right">
-            <el-row>
+            <!-- <el-row>
               <el-col :span="8"
                 ><div class="car-item">
                   <span class="flow"><i class="el-icon-s-grid"></i></span>
@@ -52,7 +52,7 @@
                   <b>98%</b>
                 </div></el-col
               >
-            </el-row>
+            </el-row> -->
           </div>
         </el-col>
       </div>
@@ -129,24 +129,24 @@ export default {
           name: "menu",
           color: "#b37feb",
         },
-        {
-          label: "代码生成器",
-          icon: "el-icon el-icon-cpu",
-          name: "autoCode",
-          color: "#ffd666",
-        },
-        {
-          label: "表单生成器",
-          icon: "el-icon el-icon-document-checked",
-          name: "formCreate",
-          color: "#ff85c0",
-        },
-        {
-          label: "关于我们",
-          icon: "el-icon el-icon-user",
-          name: "about",
-          color: "#5cdbd3",
-        },
+        // {
+        //   label: "代码生成器",
+        //   icon: "el-icon el-icon-cpu",
+        //   name: "autoCode",
+        //   color: "#ffd666",
+        // },
+        // {
+        //   label: "表单生成器",
+        //   icon: "el-icon el-icon-document-checked",
+        //   name: "formCreate",
+        //   color: "#ff85c0",
+        // },
+        // {
+        //   label: "关于我们",
+        //   icon: "el-icon el-icon-user",
+        //   name: "about",
+        //   color: "#5cdbd3",
+        // },
       ],
     };
   },

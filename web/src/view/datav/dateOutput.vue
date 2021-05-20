@@ -160,20 +160,20 @@ export default {
   },
   methods: {
     createData () {
-      this.getTableData().then(() => {
-        let datas = []
-        for (let index = 0; index < this.tableData.length && index < 9; index++) {
-          const element = this.tableData[index]
-          datas[index] = {
-            '机器': element.machineCode+index,  //MatrCode
-            '时间': element.leftTime+index
-          }
-        }
+      // this.getTableData().then(() => {
+        // let datas = []
+        // for (let index = 0; index < this.tableData.length && index < 9; index++) {
+        //   const element = this.tableData[index]
+        //   datas[index] = {
+        //     '机器': element.machineCode+index,  //MatrCode
+        //     '时间': element.leftTime+index
+        //   }
+        // }
         // this.chartData = {
         //   columns: ['机器', '时间'],
         //   rows: datas
         // }
-      });
+      // });
       
     },
   },

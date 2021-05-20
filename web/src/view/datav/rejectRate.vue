@@ -159,31 +159,6 @@ export default {
         // const { label, category, value } = ev.area[0].data;
       console.log(ev)
     },
-
-    createData () {
-      this.getTableData().then(() => {
-        let datas = []
-        for (let index = 0; index < this.tableData.length && index < 9; index++) {
-          const element = this.tableData[index]
-          datas[index] = {
-            '机器': element.machineCode+index,  //MatrCode
-            '时间': element.leftTime+index
-          }
-        }
-        // this.chartData = {
-        //   columns: ['机器', '时间'],
-        //   rows: datas
-        // }
-      });
-      
-    },
-  },
-  mounted () {
-    const { createData } = this
-
-    createData()
-
-    //setInterval(createData, 3000)
   }
 }
 </script>
