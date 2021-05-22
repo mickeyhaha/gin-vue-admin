@@ -304,7 +304,8 @@ export const store = new Vuex.Store({
         async submitDeptFilter({ commit, dispatch }, formData) {
             formData.startDate = formData.date[0]
             formData.endDate = formData.date[1]
-            dispatch('getAoiRate4Chart', formData)
+            // TODO
+            // dispatch('getAoiRate4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
             dispatch('getRejectRate4Chart', formData)
             dispatch('getDCSSMTMachineEvent4Chart', formData)

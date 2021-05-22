@@ -1,12 +1,12 @@
 <template>
   <div id="reject-rate">
-    <area-chart :data="rejectRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" @selectSeries="onSelectSeries" />
+    <column-chart :data="rejectRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" @selectSeries="onSelectSeries" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { areaChart } from '@toast-ui/vue-chart';
+import { columnChart } from '@toast-ui/vue-chart';
 
 import {
   getLackWarnings
@@ -18,7 +18,7 @@ export default {
   name: 'RejectRate',
   mixins: [infoList],
   components: {
-    'area-chart': areaChart
+    'column-chart': columnChart
   },
   computed: mapState(
     ['rejectRate4Chart']
