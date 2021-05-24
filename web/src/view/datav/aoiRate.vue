@@ -1,19 +1,19 @@
 <template>
   <div id="aoi-rate">
     <!-- <div class="title">AOI不良率</div> -->
-    <line-chart :data="aoiRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <bar-chart :data="aoiRate4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { lineChart } from '@toast-ui/vue-chart';
+import { barChart } from '@toast-ui/vue-chart';
 import { mapState } from 'vuex';
 
 export default {
   name: 'AoiRate',
   components: {
-    'line-chart': lineChart
+    'bar-chart': barChart
   },
   computed: mapState(
     ['aoiRate4Chart']
