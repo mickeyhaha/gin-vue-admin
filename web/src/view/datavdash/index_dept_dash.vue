@@ -18,42 +18,11 @@
       <el-row>
         <el-col :span="24"><DeptFilter /></el-col>
       </el-row>-->
-      <el-row>
+      <!-- <el-row>
         <el-col :span="24"><DeptLineSummary /></el-col>
-      </el-row>
-      <!-- <el-row>
-        <el-col :span="24"><TimeOutput /></el-col>
-      </el-row> -->
-      <!-- <el-row>
-        <el-col :span="24"><DateOutput /></el-col>
       </el-row> -->
       <el-row>
-        <el-col :span="8" class="block-top-bottom-content">
-            <DateOutput />
-            <!-- <water-level-chart />  -->
-            <!-- <cards /> -->
-        </el-col>
-        <el-col :span="8" class="block-top-bottom-content">
-              <aoi-rate /> 
-              <!-- <spi-rate />  -->
-              <!-- <utiliazation />  -->
-        </el-col>
-        <el-col :span="8" class="block-top-bottom-content">
-            <RejectRate />
-            <!-- <lack-warning /> -->
-            <!-- <scroll-board /> -->
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8" class="block-top-bottom-content">
-              <DateRunTime /> 
-        </el-col>
-        <el-col :span="8" class="block-top-bottom-content">
-            <StopReason />
-        </el-col>
-        <el-col :span="8" class="block-top-bottom-content">
-            <DateMachineEvent />
-        </el-col>
+        <el-col :span="24"><chinaMap /></el-col>
       </el-row>
     </dv-full-screen-container>
   </div>
@@ -68,6 +37,7 @@ import DateOutput from './dateOutput'
 import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
 import StopReason from "./stopReason"
+import chinaMap from "./chinaMap"
 
 export default {
   name: 'DataViewDept',
@@ -79,6 +49,7 @@ export default {
     DateMachineEvent,
     DateRunTime,
     StopReason,
+    chinaMap,
   },
   data () {
     return {  
