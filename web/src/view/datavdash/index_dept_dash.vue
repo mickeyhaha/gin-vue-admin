@@ -21,8 +21,11 @@
       <!-- <el-row>
         <el-col :span="24"><DeptLineSummary /></el-col>
       </el-row> -->
-      <el-row>
+      <!-- <el-row>
         <el-col :span="24"><chinaMap /></el-col>
+      </el-row>   -->
+      <el-row>
+        <el-col :span="24"><MyMap /></el-col>
       </el-row>
     </dv-full-screen-container>
   </div>
@@ -38,6 +41,7 @@ import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
 import StopReason from "./stopReason"
 import chinaMap from "./chinaMap"
+import MyMap from "./baiduMap"
 
 export default {
   name: 'DataViewDept',
@@ -50,6 +54,7 @@ export default {
     DateRunTime,
     StopReason,
     chinaMap,
+    MyMap,
   },
   data () {
     return {  

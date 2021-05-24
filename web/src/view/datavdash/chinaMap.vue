@@ -164,8 +164,6 @@ function initMapData(mapJson) {
   //   coord[0] = rect.x + Math.random() * rect.width;
   //   coord[1] = rect.y + Math.random() * rect.height;
   // // }
-  debugger
-
 
   return mapData;
 }

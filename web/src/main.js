@@ -164,6 +164,13 @@ Vue.prototype.escrollY = scrollY
 import VCharts from 'v-charts'
 Vue.use(VCharts)
 
+// Baidu map
+import BaiduMap from 'vue-baidu-map'
+Vue.use(BaiduMap, {
+    /* Visit http://lbsyun.baidu.com/apiconsole/key for details about app key. */
+    ak: '4TDvXuiEdQCc6QOgm2XgvPvKClkqFGmX'
+  })
+
 export default new Vue({
     render: h => h(App),
     router,
