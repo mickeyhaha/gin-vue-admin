@@ -400,9 +400,9 @@ export const store = new Vuex.Store({
             const date = new Date();
             let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
             // formData.startDate = dateStr + " 00:00:00"
-            formData.startDate = "2021-03-01" + " 00:00:00"
+            formData.startDate = dateStr + " 00:00:00"
             formData.endDate = dateStr + " 23:59:59"
-            console.log("version_1.4")
+            console.log("version_1.5")
             dispatch('getDeptLineSummary')
             // TODO
             // dispatch('getAoiRate4ChartDash', formData)
