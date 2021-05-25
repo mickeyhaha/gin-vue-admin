@@ -32,6 +32,12 @@ const baseRouters = [{
         component: () =>
             import('@/view/datavdash/index_dept_dash.vue')
     },
+    {
+        path: "/devicedash",
+        name: 'DeviceDash',
+        component: () =>
+            import('@/view/devicedash/deviceDash.vue')
+    },
 {
     path: "/init",
     name: 'init',

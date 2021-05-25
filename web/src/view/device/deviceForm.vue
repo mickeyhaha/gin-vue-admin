@@ -29,7 +29,7 @@
                   <el-input-number v-model="formData.latitude" :precision="2" clearable></el-input-number>
            </el-form-item>
            
-             <el-form-item label="placeId字段:"><el-input v-model.number="formData.placeId" clearable placeholder="请输入"></el-input>
+             <el-form-item label="placeId字段:"><el-input v-model="formData.placeId" clearable placeholder="请输入"></el-input>
           </el-form-item>
            
              <el-form-item label="placeName字段:"><el-input v-model.number="formData.placeName" clearable placeholder="请输入"></el-input>

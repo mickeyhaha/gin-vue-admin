@@ -23,7 +23,7 @@ type Device struct {
       TempMin  float64 `json:"tempMin" form:"tempMin" gorm:"column:temp_min;comment:;type:float;"`
       TempAvg  float64 `json:"tempAvg" form:"tempAvg" gorm:"column:temp_avg;comment:;type:float;"`
       Threshold  float64 `json:"threshold" form:"threshold" gorm:"column:threshold;comment:;type:float;"`
-      OpId  int `json:"opId" form:"opId" gorm:"column:op_id;comment:;type:bigint;size:19;"`
+      OpId  string `json:"opId" form:"opId" gorm:"column:op_id;comment:;type:varchar(128);"`
       OpName  string `json:"opName" form:"opName" gorm:"column:op_name;comment:opName;type:varchar(128);size:128;"`
 }
 

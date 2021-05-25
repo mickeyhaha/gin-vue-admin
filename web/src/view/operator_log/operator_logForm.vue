@@ -1,7 +1,7 @@
 <template>
 <div>
     <el-form :model="formData" label-position="right" label-width="80px">
-             <el-form-item label="操作员ID:"><el-input v-model.number="formData.op_id" clearable placeholder="请输入"></el-input>
+             <el-form-item label="操作员ID:"><el-input v-model="formData.op_id" clearable placeholder="请输入"></el-input>
           </el-form-item>
            
              <el-form-item label="操作员姓名:">

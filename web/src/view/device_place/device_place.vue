@@ -1,18 +1,21 @@
 <template>
   <div>
     <div class="search-term">
-      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">  
-        <el-form-item label="操作员姓名">
-          <el-input placeholder="搜索条件" v-model="searchInfo.op_name"></el-input>
+      <el-form :inline="true" :model="searchInfo" class="demo-form-inline">
+        <el-form-item label="设备ID">
+          <el-input placeholder="搜索条件" v-model="searchInfo.placeId"></el-input>
         </el-form-item>    
-        <el-form-item label="操作">
-          <el-input placeholder="搜索条件" v-model="searchInfo.action"></el-input>
+        <el-form-item label="位置名称">
+          <el-input placeholder="搜索条件" v-model="searchInfo.placeName"></el-input>
+        </el-form-item>    
+        <el-form-item label="状态">
+          <el-input placeholder="搜索条件" v-model="searchInfo.status"></el-input>
         </el-form-item>        
         <el-form-item>
           <el-button @click="onSubmit" type="primary">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button @click="openDialog" type="primary">新增操作日志</el-button>
+          <el-button @click="openDialog" type="primary">新增设备间</el-button>
         </el-form-item>
         <el-form-item>
           <el-popover placement="top" v-model="deleteVisible" width="160">
@@ -40,19 +43,23 @@
          <template slot-scope="scope">{{scope.row.CreatedAt|formatDate}}</template>
     </el-table-column>
     
-    <el-table-column label="操作员ID" prop="op_id" width="120"></el-table-column> 
+    <el-table-column label="设备ID" prop="placeId" width="120"></el-table-column> 
     
-    <el-table-column label="操作员姓名" prop="op_name" width="120"></el-table-column> 
+    <el-table-column label="位置名称" prop="placeName" width="120"></el-table-column> 
     
-    <el-table-column label="操作" prop="action" width="120"></el-table-column> 
+      <el-table-column label="状态" prop="status" width="120">
+        <template slot-scope="scope">
+          {{filterDict(scope.row.status,"status")}}
+        </template>
+      </el-table-column>
     
-    <el-table-column label="status" prop="status" width="120"></el-table-column> 
+    <el-table-column label="经度" prop="longitude" width="120"></el-table-column> 
     
-    <el-table-column label="result" prop="result" width="120"></el-table-column> 
+    <el-table-column label="纬度" prop="latitude" width="120"></el-table-column> 
     
       <el-table-column label="按钮组">
         <template slot-scope="scope">
-          <el-button class="table-button" @click="updateOperatorLog(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
+          <el-button class="table-button" @click="updateDevicePlace(scope.row)" size="small" type="primary" icon="el-icon-edit">变更</el-button>
           <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteRow(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -71,22 +78,27 @@
 
     <el-dialog :before-close="closeDialog" :visible.sync="dialogFormVisible" title="弹窗操作">
       <el-form :model="formData" label-position="right" label-width="80px">
-         <el-form-item label="操作员ID:"><el-input v-model="formData.op_id" clearable placeholder="请输入"></el-input>
+         <el-form-item label="设备ID:">
+            <el-input v-model="formData.placeId" clearable placeholder="请输入" ></el-input>
       </el-form-item>
        
-         <el-form-item label="操作员姓名:">
-            <el-input v-model="formData.op_name" clearable placeholder="请输入" ></el-input>
+         <el-form-item label="位置名称:">
+            <el-input v-model="formData.placeName" clearable placeholder="请输入" ></el-input>
       </el-form-item>
        
-         <el-form-item label="操作:">
-            <el-input v-model="formData.action" clearable placeholder="请输入" ></el-input>
+         <el-form-item label="状态:">
+             <el-select v-model="formData.status" placeholder="请选择" clearable>
+                 <el-option v-for="(item,key) in statusOptions" :key="key" :label="item.label" :value="item.value"></el-option>
+             </el-select>
       </el-form-item>
        
-         <el-form-item label="status:"><el-input v-model.number="formData.status" clearable placeholder="请输入"></el-input>
-      </el-form-item>
+         <el-form-item label="经度:">
+              <el-input-number v-model="formData.longitude" :precision="2" clearable></el-input-number>
+       </el-form-item>
        
-         <el-form-item label="result:"><el-input v-model.number="formData.result" clearable placeholder="请输入"></el-input>
-      </el-form-item>
+         <el-form-item label="纬度:">
+              <el-input-number v-model="formData.latitude" :precision="2" clearable></el-input-number>
+       </el-form-item>
        </el-form>
       <div class="dialog-footer" slot="footer">
         <el-button @click="closeDialog">取 消</el-button>
@@ -98,30 +110,32 @@
 
 <script>
 import {
-    createOperatorLog,
-    deleteOperatorLog,
-    deleteOperatorLogByIds,
-    updateOperatorLog,
-    findOperatorLog,
-    getOperatorLogList
-} from "@/api/operator_log";  //  此处请自行替换地址
+    createDevicePlace,
+    deleteDevicePlace,
+    deleteDevicePlaceByIds,
+    updateDevicePlace,
+    findDevicePlace,
+    getDevicePlaceList
+} from "@/api/device_place";  //  此处请自行替换地址
 import { formatTimeToStr } from "@/utils/date";
 import infoList from "@/mixins/infoList";
 export default {
-  name: "OperatorLog",
+  name: "DevicePlace",
   mixins: [infoList],
   data() {
     return {
-      listApi: getOperatorLogList,
+      listApi: getDevicePlaceList,
       dialogFormVisible: false,
       type: "",
       deleteVisible: false,
-      multipleSelection: [],formData: {
-            op_id:0,
-            op_name:"",
-            action:"",
+      multipleSelection: [],
+      statusOptions:[],
+          formData: {
+            placeId:"",
+            placeName:"",
             status:0,
-            result:0,
+            longitude:0,
+            latitude:0,
             
       }
     };
@@ -159,7 +173,7 @@ export default {
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-           this.deleteOperatorLog(row);
+           this.deleteDevicePlace(row);
         });
       },
       async onDelete() {
@@ -175,7 +189,7 @@ export default {
           this.multipleSelection.map(item => {
             ids.push(item.ID)
           })
-        const res = await deleteOperatorLogByIds({ ids })
+        const res = await deleteDevicePlaceByIds({ ids })
         if (res.code == 0) {
           this.$message({
             type: 'success',
@@ -188,27 +202,27 @@ export default {
           this.getTableData()
         }
       },
-    async updateOperatorLog(row) {
-      const res = await findOperatorLog({ ID: row.ID });
+    async updateDevicePlace(row) {
+      const res = await findDevicePlace({ ID: row.ID });
       this.type = "update";
       if (res.code == 0) {
-        this.formData = res.data.reopLog;
+        this.formData = res.data.replace;
         this.dialogFormVisible = true;
       }
     },
     closeDialog() {
       this.dialogFormVisible = false;
       this.formData = {
-          op_id:0,
-          op_name:"",
-          action:"",
+          placeId:"",
+          placeName:"",
           status:0,
-          result:0,
+          longitude:0,
+          latitude:0,
           
       };
     },
-    async deleteOperatorLog(row) {
-      const res = await deleteOperatorLog({ ID: row.ID });
+    async deleteDevicePlace(row) {
+      const res = await deleteDevicePlace({ ID: row.ID });
       if (res.code == 0) {
         this.$message({
           type: "success",
@@ -224,13 +238,13 @@ export default {
       let res;
       switch (this.type) {
         case "create":
-          res = await createOperatorLog(this.formData);
+          res = await createDevicePlace(this.formData);
           break;
         case "update":
-          res = await updateOperatorLog(this.formData);
+          res = await updateDevicePlace(this.formData);
           break;
         default:
-          res = await createOperatorLog(this.formData);
+          res = await createDevicePlace(this.formData);
           break;
       }
       if (res.code == 0) {
@@ -250,6 +264,8 @@ export default {
   async created() {
     await this.getTableData();
   
+    await this.getDict("status");
+    
 }
 };
 </script>
