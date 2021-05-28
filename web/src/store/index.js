@@ -20,6 +20,7 @@ import {
     getDCSSMTConsumeAndRejectRate4ChartDash,
     getDCSSMTMachineEvent4ChartDash,
     getDCSSMTRunTime4ChartDash,
+    getTS_AOI_Spc4Chart,
 } from '@/api/PVS_Base_Line'
 import { formatTimeToStr } from "@/utils/date";
 import {
@@ -41,12 +42,12 @@ export const store = new Vuex.Store({
             // categories: [],
             // series: [
             // ],
-            categories: [],   //'4/18', '4/19', '4/20', '4/21', '4/22'
+            categories: ['14:30', '14:40', '14:44', '14:55', '15:10'],   //'4/18', '4/19', '4/20', '4/21', '4/22'
             series: [
-                // {
-                //     name: '不良',
-                //     data: [320, 420, 210, 110, 620],
-                // },
+                {
+                    name: '不良',
+                    data: [2, 1, 3, 1, 3],
+                },
             ],
         },
         rejectRate4Chart: {
@@ -122,8 +123,13 @@ export const store = new Vuex.Store({
 
         //////// dept dash
         aoiRate4ChartDash: {
-            categories: [],
-            series: [],
+            categories: ['14:30', '14:40', '14:44', '14:55', '15:10'],   //'4/18', '4/19', '4/20', '4/21', '4/22'
+            series: [
+                {
+                    name: '不良',
+                    data: [2, 1, 3, 1, 3],
+                },
+            ],
         },
         rejectRate4ChartDash: {
             categories: [],     //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
@@ -190,6 +196,25 @@ export const store = new Vuex.Store({
                 // },
             ],
         },
+
+
+        ////// SPC
+        TS_AOI_Spc4Chart: {
+            categories: [],
+            series: [],
+        },
+        TS_AOI_SpcAvg4Chart: {
+            categories: [],
+            series: [],
+        },
+        TS_AOI_SpcRage4Chart: {
+            categories: [],
+            series: [],
+        },
+        TS_AOI_Spc4VarianceChart: {
+            categories: [],
+            series: [],
+        }, 
     },
     actions: {
         async getLines({ commit, state }) {
@@ -306,6 +331,7 @@ export const store = new Vuex.Store({
             formData.endDate = formData.date[1]
             // TODO
             // dispatch('getAoiRate4Chart', formData)
+            dispatch('getTS_AOI_Spc4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
             dispatch('getRejectRate4Chart', formData)
             dispatch('getDCSSMTMachineEvent4Chart', formData)
@@ -338,7 +364,6 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
-            console.log(res.data)
             if (res.code == 0 && res.data.total != 0) {
                 const rejectRate = res.data.list[1]
                 commit("setRejectRate4ChartDash", rejectRate)
@@ -401,12 +426,13 @@ export const store = new Vuex.Store({
             const date = new Date();
             let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
             // formData.startDate = dateStr + " 00:00:00"
-            formData.startDate = dateStr + " 00:00:00"
+            formData.startDate = "2021-03-01 00:00:00"
             formData.endDate = dateStr + " 23:59:59"
-            console.log("version_1.5")
+            console.log("version_1.6")
             dispatch('getDeptLineSummary')
             // TODO
             // dispatch('getAoiRate4ChartDash', formData)
+            dispatch('getTS_AOI_Spc4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4ChartDash', formData)
             dispatch('getRejectRate4ChartDash', formData)
             dispatch('getDCSSMTMachineEvent4ChartDash', formData)
@@ -427,6 +453,85 @@ export const store = new Vuex.Store({
                 commit("setDeptLineSummary", deptLineSummary)
                 return state.deptLineSummary
             }
+        },
+
+        /// SPC
+        async getTS_AOI_Spc4Chart({ commit, state }, formData) {
+            const res = await getTS_AOI_Spc4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0 && res.data.total != 0) {
+                const chartData = res.data.list[0]
+                commit("setTS_AOI_Spc4Chart", chartData)
+                return state.TS_AOI_Spc4Chart
+            }
+        },
+        async getTS_AOI_SpcAvg4Chart({ commit, state }, formData) {
+            const res = await GetTS_AOI_SpcAvg4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0 && res.data.total != 0) {
+                const chartData = res.data.list[0]
+                commit("setTS_AOI_SpcAvg4Chart", chartData)
+                return state.dateRunTime4Chart
+            }
+        },
+        async getTS_AOI_SpcRage4Chart({ commit, state }, formData) {
+            const res = await GetTS_AOI_SpcRage4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0 && res.data.total != 0) {
+                const chartData = res.data.list[0]
+                commit("setTS_AOI_SpcRage4Chart", chartData)
+                return state.dateRunTime4Chart
+            }
+        },
+        async getTS_AOI_SpcVariance4Chart({ commit, state }, formData) {
+            const res = await GetTS_AOI_SpcVariance4Chart({
+                page: 1, pageSize: 100,
+                LineName: formData.LineName,
+                startDate: formData.startDate,
+                endDate: formData.endDate,
+                shift: formData.Shift,
+                workOrderNo: formData.WorkOrderNo
+            });
+            if (res.code == 0 && res.data.total != 0) {
+                const chartData = res.data.list[0]
+                commit("setTS_AOI_SpcVariance4Chart", chartData)
+                return state.dateRunTime4Chart
+            }
+        }, 
+
+        // 定时刷新spc_dashboard
+        // @deprected
+        async refreshSpcDashboard({ commit, dispatch }, formData) {
+            const date = new Date();
+            let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
+            // formData.startDate = dateStr + " 00:00:00"
+            formData.startDate = dateStr + " 00:00:00"
+            formData.endDate = dateStr + " 23:59:59"
+            console.log("version_1.6")
+            // dispatch('getDeptLineSummary')
+            // TODO
+            dispatch('getTS_AOI_Spc4Chart', formData)
+            dispatch('getTS_AOI_SpcAvg4Chart', formData)
+            dispatch('getTS_AOI_SpcRage4Chart', formData)
+            dispatch('getTS_AOI_SpcVariance4Chart', formData)
         },
     },
     // 无法执行异步
@@ -478,6 +583,18 @@ export const store = new Vuex.Store({
         },
         setAoiRate4ChartDash(state, aoiRate4Chart) {
             state.aoiRate4ChartDash = aoiRate4Chart;
+        },
+        setTS_AOI_Spc4Chart(state, TS_AOI_Spc4Chart) {
+            state.TS_AOI_Spc4Chart = TS_AOI_Spc4Chart;
+        },
+        setTS_AOI_SpcAvg4Chart(state, TS_AOI_SpcAvg4Chart) {
+            state.TS_AOI_SpcAvg4Chart = TS_AOI_SpcAvg4Chart;
+        },
+        setTS_AOI_Spc4RageChart(state, TS_AOI_SpcRage4Chart) {
+            state.TS_AOI_SpcRage4Chart = TS_AOI_SpcRage4Chart;
+        },
+        setTS_AOI_SpcVariance4Chart(state, TS_AOI_SpcVariance4Chart) {
+            state.TS_AOI_SpcVariance4Chart = TS_AOI_SpcVariance4Chart;
         },
     },
     getters: {

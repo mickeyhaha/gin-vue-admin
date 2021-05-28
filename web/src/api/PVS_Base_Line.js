@@ -206,3 +206,35 @@ export const getDCSSMTRunTime4ChartDash = (params) => {
         params
     })
 }
+
+export const getTS_AOI_Spc4Chart = (params) => {
+    return service({
+        url: "/PBL/getTS_AOI_Spc4Chart",
+        method: 'get',
+        params
+    })
+}
+
+export const getTS_AOI_SpcAvg4Chart = (params) => {
+    return service({
+        url: "/PBL/getTS_AOI_SpcAvg4Chart",
+        method: 'get',
+        params
+    })
+}
+
+export const getTS_AOI_SpcRage4Chart = (params) => {
+    return service({
+        url: "/PBL/getTS_AOI_SpcRage4Chart",
+        method: 'get',
+        params
+    })
+}
+
+export const getTS_AOI_SpcVariance4Chart = (params) => {
+    return service({
+        url: "/PBL/getTS_AOI_SpcVariance4Chart",
+        method: 'get',
+        params
+    })
+}

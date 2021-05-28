@@ -3,7 +3,7 @@
     <dv-full-screen-container>
       <div class="top">
           <div class="left" style="text-align: left;">
-              <img class="img" src="./img/logo.png">
+              <img class="img" src="../datav/img/logo.png">
           </div>
           <div class="middle">
               <p class="center-title">车间看板</p>
@@ -34,7 +34,7 @@
             <!-- <cards /> -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-              <aoi-rate /> 
+              <AoiRateSpc /> 
               <!-- <spi-rate />  -->
               <!-- <utiliazation />  -->
         </el-col>
@@ -67,7 +67,8 @@ import DeptLineSummary from './deptLineSummary'
 import DateOutput from './dateOutput'
 import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
-import StopReason from "./stopReason"
+import StopReason from "./stopReason";
+import AoiRateSpc from "./aoiRateSpc";
 
 export default {
   name: 'DataViewDept',
@@ -79,6 +80,7 @@ export default {
     DateMachineEvent,
     DateRunTime,
     StopReason,
+    AoiRateSpc,
   },
   data () {
     return {  
@@ -128,7 +130,7 @@ export default {
   color: #fff;
 
   #dv-full-screen-container {
-    background-image: url('./img/bg.png');
+    background-image: url('../datav/img/bg.png');
     background-size: 100% 100%;
     box-shadow: 0 0 3px blue;
     display: flex;
@@ -137,7 +139,7 @@ export default {
   
   // top header
 .top {
-    background-image: url('./img/bg_top.png');
+    background-image: url('../datav/img/bg_top.png');
     background-size: 100% 100%;
     width: 100%;
     background-size:cover;

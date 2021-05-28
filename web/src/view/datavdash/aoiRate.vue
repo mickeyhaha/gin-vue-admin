@@ -23,7 +23,7 @@ export default {
       chartProps: {
         containerStyle: {
           width: '100%',
-          height: '200px',
+          height: '300px',
         },
         options: {
           chart: {  
@@ -179,7 +179,7 @@ export default {
 <style lang="less">
 #aoi-rate {
   width: 100%;
-  // height: 33%;
+  height: 100%;
   box-shadow: 0 0 3px blue;
   display: flex;
   flex-direction: column;

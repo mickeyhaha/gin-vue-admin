@@ -21,6 +21,7 @@ var (
 
 //const DateBaseFmt = "2006-01-02 15:04:05"
 const DateBaseFmt = "01/02"
+const DateTimeBaseFmt = "01/02 15:04"
 const Shift_Day_Begin_Hour = 8
 const Shift_Day_End_Hour = 18
 const Shift_Night_Begin_Hour = 19

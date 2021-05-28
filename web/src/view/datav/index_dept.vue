@@ -34,7 +34,7 @@
             <!-- <cards /> -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-              <aoi-rate /> 
+              <AoiRateSpc /> 
               <!-- <spi-rate />  -->
               <!-- <utiliazation />  -->
         </el-col>
@@ -81,6 +81,7 @@ import DateOutput from './dateOutput'
 import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
 import StopReason from "./stopReason"
+import AoiRateSpc from "./aoiRateSpc"
 
 export default {
   name: 'DataViewDept',
@@ -106,6 +107,7 @@ export default {
     DateRunTime,
     StopReason,
     // person,
+    AoiRateSpc,
   },
   data () {
     return {  

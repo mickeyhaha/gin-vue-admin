@@ -15,7 +15,7 @@ type TS_AOI_CNT struct {
       LineID  int `json:"lineID" form:"lineID" gorm:"column:LineID;comment:LineID;type:int;"`
       OrderNo  string `json:"orderNo" form:"orderNo" gorm:"column:OrderNo;comment:OrderNo;type:varchar(50);size:50;"`
       IssueName  string `json:"issueName" form:"issueName" gorm:"column:IssueName;comment:IssueName;type:varchar(50);size:50;"`
-      Result  int `json:"result" form:"result" gorm:"column:Result;comment:Result;type:int;"`
+      Result  bool `json:"result" form:"result" gorm:"column:Result;comment:Result;type:tinyint;"`
       AOIID  int `json:"aOIID" form:"aOIID" gorm:"column:AOIID;comment:AOIID;type:int;"`
       LineName  string `json:"lineName" form:"lineName" gorm:"column:lineName;comment:lineName;type:string;"`
       global.DeptFilter

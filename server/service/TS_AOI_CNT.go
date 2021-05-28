@@ -77,30 +77,30 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
     var TACs []model.TS_AOI_CNT
 	sql := `
 		SELECT a.*, COUNT(1) AS ErrCount
-			FROM (
-					 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName
-					 FROM TS_AOI_Repair a WITH(NOLOCK)
-							  JOIN  TS_AOI b WITH(NOLOCK)
-								   ON b.ID =a.AOIID
-							  JOIN  PVS_Base_Line line WITH(NOLOCK)
-								   ON b.LineID = line.LineID
-					 WHERE b.Result =0 AND b.OrderNo <>''
-					 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName
-				 ) a
-			GROUP BY a.IssueName, a.LineID, a.OrderNo, a.AOIID, a.LineName
-			ORDER BY IssueName, LineName;
+		FROM (
+				 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, a.IssueCase, a.PCBCode
+				 FROM T_Bllb_AOIRepair_tbar a WITH(NOLOCK)
+						  JOIN  T_Bllb_AOI_tba b WITH(NOLOCK)
+								ON b.ID =a.AOIID
+						  JOIN  PVS_Base_Line line WITH(NOLOCK)
+								ON b.LineID = line.LineID
+				 WHERE b.Result =0
+				 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName, a.IssueCase, a.PCBCode
+			 ) a
+		GROUP BY a.IssueName, a.IssueCase, a.LineID, a.OrderNo, a.AOIID, a.LineName, a.PCBCode
+		ORDER BY IssueName, LineName;
 		`
 	if info.LineName != "" {
 		sql = fmt.Sprintf(`
 		SELECT a.*, COUNT(1) AS ErrCount
 				FROM (
 						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
-						 FROM TS_AOI_Repair a WITH(NOLOCK)
-								  JOIN  TS_AOI b WITH(NOLOCK)
+						 FROM T_Bllb_AOIRepair_tbar a WITH(NOLOCK)
+								  JOIN  T_Bllb_AOI_tba b WITH(NOLOCK)
 										ON b.ID =a.AOIID
 								  JOIN  PVS_Base_Line line WITH(NOLOCK)
 										ON b.LineID = line.LineID
-						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
+						 WHERE b.Result =0 AND line.LineName = '%s'
 						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
 						   AND a.CreateTime >='%s'  AND a.CreateTime <= '%s'
 						 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName, cast(a.CreateTime as date)
@@ -114,12 +114,12 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 				SELECT a.*, COUNT(1) AS ErrCount
 				FROM (
 						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
-						 FROM TS_AOI_Repair a WITH(NOLOCK)
-								  JOIN  TS_AOI b WITH(NOLOCK)
+						 FROM T_Bllb_AOIRepair_tbar a WITH(NOLOCK)
+								  JOIN  T_Bllb_AOI_tba b WITH(NOLOCK)
 										ON b.ID =a.AOIID
 								  JOIN  PVS_Base_Line line WITH(NOLOCK)
 										ON b.LineID = line.LineID
-						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
+						 WHERE b.Result =0 AND line.LineName = '%s'
 						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
 						   AND a.CreateTime >='%s'  AND a.CreateTime <= '%s' and DATENAME(hh, a.CreateTime) BETWEEN %d AND %d
 						 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName, cast(a.CreateTime as date)
@@ -132,12 +132,12 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 				SELECT a.*, COUNT(1) AS ErrCount
 				FROM (
 						 SELECT a.IssueName, b.LineID, b.OrderNo, a.AOIID, line.LineName, cast(a.CreateTime as date) CreateTime
-						 FROM TS_AOI_Repair a WITH(NOLOCK)
-								  JOIN  TS_AOI b WITH(NOLOCK)
+						 FROM T_Bllb_AOIRepair_tbar a WITH(NOLOCK)
+								  JOIN  T_Bllb_AOI_tba b WITH(NOLOCK)
 										ON b.ID =a.AOIID
 								  JOIN  PVS_Base_Line line WITH(NOLOCK)
 										ON b.LineID = line.LineID
-						 WHERE b.Result =0 AND b.OrderNo <>'' AND line.LineName = '%s'
+						 WHERE b.Result =0 AND line.LineName = '%s'
 						   AND b.CreateTime >='%s'  AND b.CreateTime <= '%s'
 						   AND a.CreateTime >='%s'  AND a.CreateTime <= '%s' and DATENAME(hh, a.CreateTime) BETWEEN %d AND %d
 						 GROUP BY a.IssueName, a.AOIID, b.LineID, b.OrderNo, line.LineName, cast(a.CreateTime as date)
@@ -164,10 +164,6 @@ func GetTS_AOI_CNTInfoList(info request.TS_AOI_CNTSearch) (err error, list inter
 //}
 
 func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list interface{}, total int64) {
-	// TODO
-	//if true {
-	//	return nil, make([]smt.ChartData, 0), 0
-	//}
 	err, list, total = GetTS_AOI_CNTInfoList(info)
 	TACs := list.([]model.TS_AOI_CNT)
 	var i int64
@@ -246,4 +242,71 @@ func GetTS_AOI_CNTInfoListByLineName(lineID string) (err error, list []model.TS_
 		`, lineID).Scan(&TACs).Error
 	total = int64(len(TACs))
 	return err, TACs, total
+}
+
+func GetTS_AOI_Spc(info request.TS_AOI_CNTSearch) (err error, list interface{}, total int64) {
+	// 创建db
+	db := global.GVA_DB_MSSQL.Model(&model.TS_AOI_CNT{})
+	var TACs []model.TS_AOI_CNT
+	sql := `
+				select a.CreateTime, a.Result from T_Bllb_AOI_tba a 
+				WHERE a.CreateTime >='%s'  AND a.CreateTime <= '%s' order by a.CreateTime asc ;
+		`
+	if info.StartDate != "" {
+		sql = fmt.Sprintf(`
+				select a.CreateTime, a.Result from T_Bllb_AOI_tba a 
+				WHERE a.CreateTime >='%s'  AND a.CreateTime <= '%s' order by a.CreateTime asc ;
+			`, info.StartDate, info.EndDate)
+	}
+	err = db.Raw(sql).Scan(&TACs).Error
+	total = int64(len(TACs))
+	return err, TACs, total
+}
+
+func GetTS_AOI_Spc4Chart(info request.TS_AOI_CNTSearch) (err error, list interface{}, total int64) {
+	err, list, total = GetTS_AOI_Spc(info)
+	TACs := list.([]model.TS_AOI_CNT)
+	var i int64
+
+	lineArr := make([]string, 0)
+	lineNameAll := "All"
+	lineArr = append(lineArr, lineNameAll)
+	dateArr := make([]string, 0)
+	issueNameArr := make([]string, 0)
+	issueNameAll := "不良"
+	issueNameArr = append(issueNameArr, issueNameAll)
+
+	errCount := 0
+
+	var data []float64
+	var startDate string
+	for i=0; i<total; i++ {
+		if i % 30 == 0 {
+			startDate =  TACs[i].CreateTime.Format(global.DateTimeBaseFmt)
+		}
+		if (i+1) % 30 == 0 && errCount != 0  {
+			data = append(data, float64(errCount))
+			dateArr = append(dateArr, startDate)
+			errCount = 0
+		}
+		if TACs[i].Result == false {
+			errCount++
+		}
+	}
+
+	series := make([]smt.Series, 0)
+	seri := smt.Series{
+		Name: issueNameAll,
+		Data: data,
+	}
+	series = append(series, seri)
+
+	chartDatas := make([]smt.ChartData, 0)
+	chartData := smt.ChartData{
+		Categories: dateArr,
+		Series: series,
+	}
+	chartDatas = append(chartDatas, chartData)
+
+	return err, chartDatas, total
 }

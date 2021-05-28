@@ -27,6 +27,11 @@ func InitPVS_Base_LineRouter(Router *gin.RouterGroup) {
 		PVS_Base_LineRouter.GET("getDCSSMTRunTime4Chart", v1.GetDCSSMTRunTime4Chart)  // 获取停机时长 & 停机分布
 		PVS_Base_LineRouter.GET("getTS_AOI_CNTList4Chart", v1.GetTS_AOI_CNTList4Chart)  // 获取TS_AOI_CNT列表4Chart
 
+		PVS_Base_LineRouter.GET("getTS_AOI_Spc4Chart", v1.GetTS_AOI_Spc4Chart)  // 获取TS_AOI_CNT列表SPC数据分布图
+		//PVS_Base_LineRouter.GET("getTS_AOI_SpcAvg4Chart", v1.GetTS_AOI_SpcAvg4Chart)  // 获取TS_AOI_CNT列表SPC数据均值图
+		//PVS_Base_LineRouter.GET("getTS_AOI_SpcRage4Chart", v1.GetTS_AOI_SpcRage4Chart)  // 获取TS_AOI_CNT列表SPC数据极差图
+		//PVS_Base_LineRouter.GET("getTS_AOI_SpcVariance4Chart", v1.GetTS_AOI_SpcVariance4Chart)  // 获取TS_AOI_CNT列表SPC数据方差图
+
 		// chart service for dept_dashboard
 		//PVS_Base_LineRouter.GET("getPUBMOrderProduce2InfoList4ChartDash", v1.GetPUBMOrderProduce2InfoList4ChartDash)  // 获取产量
 		//PVS_Base_LineRouter.GET("getDCSSMTConsumeAndRejectRate4ChartDash", v1.GetDCSSMTConsumeAndRejectRate4ChartDash)  // 获取抛料率

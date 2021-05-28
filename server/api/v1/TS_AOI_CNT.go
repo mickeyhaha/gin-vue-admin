@@ -144,3 +144,67 @@ func GetTS_AOI_CNTList4Chart(c *gin.Context) {
 		}, "获取成功", c)
 	}
 }
+
+func GetTS_AOI_Spc4Chart(c *gin.Context) {
+	var pageInfo request.TS_AOI_CNTSearch
+	_ = c.ShouldBindQuery(&pageInfo)
+	if err, list, total := service.GetTS_AOI_Spc4Chart(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+func GetTS_AOI_SpcAvg4Chart(c *gin.Context) {
+	var pageInfo request.TS_AOI_CNTSearch
+	_ = c.ShouldBindQuery(&pageInfo)
+	if err, list, total := service.GetTS_AOI_Spc4Chart(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+func GetTS_AOI_SpcRage4Chart(c *gin.Context) {
+	var pageInfo request.TS_AOI_CNTSearch
+	_ = c.ShouldBindQuery(&pageInfo)
+	if err, list, total := service.GetTS_AOI_Spc4Chart(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+func GetTS_AOI_SpcVariance4Chart(c *gin.Context) {
+	var pageInfo request.TS_AOI_CNTSearch
+	_ = c.ShouldBindQuery(&pageInfo)
+	if err, list, total := service.GetTS_AOI_Spc4Chart(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}

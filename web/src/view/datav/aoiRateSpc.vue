@@ -1,22 +1,22 @@
 <template>
-  <div id="date-machineevent">
-    <!-- <div class="title">产量</div> -->
-    <column-chart :data="dateMachineEvent4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
+  <div id="aoi-rate-spc">
+    <!-- <div class="title">AOI不良率</div> -->
+    <line-chart :data="TS_AOI_Spc4Chart" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { columnChart } from '@toast-ui/vue-chart';
+import { lineChart } from '@toast-ui/vue-chart';
 import { mapState } from 'vuex';
 
 export default {
-  name: 'DateMachineEvent',
+  name: 'AoiRateSpc',
   components: {
-    'column-chart': columnChart
+    'line-chart': lineChart
   },
   computed: mapState(
-    ['dateMachineEvent4ChartDash']
+    ['TS_AOI_Spc4Chart']
   ),
   data () {
     return {
@@ -28,7 +28,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '异常事件(次)',
+              text: 'AOI不良(每30片)',
               align: 'center',
             }, 
           },
@@ -137,15 +137,22 @@ export default {
         }
       },
       // chartData: {
-      //   categories: ['4/18', '4/19', '4/20', '4/18', '4/19', '4/20'],
+      //   categories: ['Line1', 'Line2', 'Line3', 'Line4', 'Line5'],
       //   series: [
       //     {
-      //       name: '实际产量',
-      //       data: [40, 40, 20, 10, 50],
+      //       name: '模糊',
+      //       data: [0.3, 0.4, 0.2, 0.1, 0.5],
+      //       stackGroup: 'AOI',
       //     },
       //     {
-      //       name: '标准产量',
-      //       data: [32, 42, 21, 11, 52],
+      //       name: '少料',
+      //       data: [0.2, 0.3, 0.3, 0.2, 0.5],
+      //       stackGroup: 'AOI',
+      //     },
+      //     {
+      //       name: '错点',
+      //       data: [0.4, 0.2, 0.1, 0.3, 0.1],
+      //       stackGroup: 'AOI',
       //     },
       //   ],
       // }
@@ -153,6 +160,10 @@ export default {
   },
   methods: {
     createData () {
+      // this.getTableData().then(() => {
+      //   this.chartData = this.tableData[0];
+      // });
+      
     },
   },
   mounted () {
@@ -160,13 +171,13 @@ export default {
 
     createData()
 
-    //setInterval(createData, 3000)
+    // setInterval(createData, 3000)
   }
 }
 </script>
 
 <style lang="less">
-#date-machineevent {
+#aoi-rate-spc {
   width: 100%;
   height: 100%;
   box-shadow: 0 0 3px blue;

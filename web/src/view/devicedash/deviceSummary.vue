@@ -82,7 +82,6 @@ export default {
 <style lang="less">
 #dept-line-summary {
   width: 100%;
-  height: 100%;
   box-sizing: border-box;
   padding-left: 20px;
   padding-right: 20px;
