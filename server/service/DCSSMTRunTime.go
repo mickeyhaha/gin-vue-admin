@@ -136,50 +136,55 @@ func GetDCSSMTRunTimeByRange(info request.DCSSMTRunTimeSearch) (err error, list 
 
 func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list interface{}, total int64) {
 	err, list, total = GetDCSSMTRunTimeByRange(info)
-	DSRTs := list.([]model.DCSSMTRunTime)
+	DSMEs := list.([]model.DCSSMTRunTime)
+
 	var i int64
 	lines := make(map[string]struct{}, 0)
 	dateMap := make(map[string]struct{}, 0)
 	issueNames := make(map[string]struct{}, 0)
-	// line - issueName - errCount
-	lineSeries := make(map[string]map[string]float64, 0)
+	// line - issueName - date - errCount
+	lineSeries := make(map[string]map[string]map[string]float64, 0)
 
 	lineArr := make([]string, 0)
 	dateArr := make([]string, 0)
 	issueNameArr := make([]string, 0)
 
 	for i=0; i<total; i++ {
-		if DSRTs[i].TimeValue == 0 {
+		if DSMEs[i].TimeValue == 0 {
 			continue
 		}
 
-		if  _, ok := lines[DSRTs[i].LineName]; !ok {
-			lines[DSRTs[i].LineName] = struct{}{}
-			lineArr = append(lineArr, DSRTs[i].LineName)
+		if  _, ok := lines[DSMEs[i].LineName]; !ok {
+			lines[DSMEs[i].LineName] = struct{}{}
+			lineArr = append(lineArr, DSMEs[i].LineName)
 		}
 
-		dateStr :=  DSRTs[i].CreateTime.Format(global.DateBaseFmt)
-		if  _, ok := lines[dateStr]; !ok {
+		dateStr :=  DSMEs[i].CreateTime.Format(global.DateBaseFmt)
+		if  _, ok := dateMap[dateStr]; !ok {
 			dateMap[dateStr] = struct{}{}
 			dateArr = append(dateArr, dateStr)
 		}
 
-		if  _, ok := issueNames[DSRTs[i].TimeCode]; !ok {
-			issueNames[DSRTs[i].TimeCode] = struct{}{}
-			issueNameArr = append(issueNameArr, DSRTs[i].TimeCode)
+		if  _, ok := issueNames[DSMEs[i].TimeCode]; !ok {
+			issueNames[DSMEs[i].TimeCode] = struct{}{}
+			issueNameArr = append(issueNameArr, DSMEs[i].TimeCode)
 		}
 
-		if  _, ok := lineSeries[DSRTs[i].LineName]; !ok {
-			lineSeries[DSRTs[i].LineName] = make(map[string]float64, 0)
+		if  _, ok := lineSeries[DSMEs[i].LineName]; !ok {
+			lineSeries[DSMEs[i].LineName] = make(map[string]map[string]float64, 0)
 		}
-		lineSeries[DSRTs[i].LineName][DSRTs[i].TimeCode] = DSRTs[i].TimeValue
+
+		if  _, ok := lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode]; !ok {
+			lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode] = make(map[string]float64, 0)
+		}
+		lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode][dateStr] = DSMEs[i].TimeValue
 	}
 
 	series := make([]smt.Series, 0)
-	for j:=0; j < len(issueNameArr) && len(dateArr) > 0; j++ {
+	for j:=0; j < len(issueNameArr) && len(dateArr) > 0 && len(lineArr) > 0; j++ {
 		var data []float64
-		for k:=0; k < len(lineArr); k++ {
-			data = append(data, float64(lineSeries[lineArr[k]][issueNameArr[j]]))
+		for k:=0; k < len(dateArr); k++ {
+			data = append(data, float64(lineSeries[lineArr[0]][issueNameArr[j]][dateArr[k]]))
 		}
 		seri := smt.Series{
 			Name: issueNameArr[j],
@@ -201,15 +206,13 @@ func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list i
 
 	series2 := make([]smt.PieSeries, 0)
 	for j:=0; j < len(issueNameArr) && len(dateArr) > 0; j++ {
-		//var data []float64
-		total := 0.0
-		for k:=0; k < len(lineArr); k++ {
-			total += float64(lineSeries[lineArr[k]][issueNameArr[j]])
+		subTotal := 0.0
+		for k:=0; k < len(dateArr); k++ {
+			subTotal += float64(lineSeries[lineArr[0]][issueNameArr[j]][dateArr[k]])
 		}
-		//data = append(data, total)
 		seri := smt.PieSeries{
 			Name: issueNameArr[j],
-			Data: total,
+			Data: subTotal,
 		}
 		series2 = append(series2, seri)
 	}
@@ -219,12 +222,6 @@ func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list i
 		Series: series2,
 	}
 	chartDatas = append(chartDatas, chartData2)
-
-	chartData3 := smt.ChartData{
-		Categories: lineArr,
-		Series: series,
-	}
-	chartDatas = append(chartDatas, chartData3)
 
 	return err, chartDatas, total
 }
