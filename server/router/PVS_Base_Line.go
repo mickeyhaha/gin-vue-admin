@@ -19,7 +19,7 @@ func InitPVS_Base_LineRouter(Router *gin.RouterGroup) {
 		// All smt router here
 		PVS_Base_LineRouter.GET("getDeptLineSummary", v1.GetDeptLineSummary)
 		PVS_Base_LineRouter.GET("getWorkOrderListByLine", v1.GetWorkOrderListByLine)
-		PVS_Base_LineRouter.GET("getDCSSMTOutPutList4Chart", v1.GetDCSSMTOutPutList4Chart)  // TODO 获取产量old
+		//PVS_Base_LineRouter.GET("getDCSSMTOutPutList4Chart", v1.GetDCSSMTOutPutList4Chart)  // TODO 获取产量old
 		PVS_Base_LineRouter.GET("getPUBMOrderProduce2InfoList4Chart", v1.GetPUBMOrderProduce2InfoList4Chart)  // 获取产量
 		PVS_Base_LineRouter.GET("getDCSSMTConsumeAndRejectRate4Chart", v1.GetDCSSMTConsumeAndRejectRate4Chart)  // 获取抛料率
 		//PVS_Base_LineRouter.GET("getDCSSMTConsumeAndRejectRate4Chart", v1.GetRejectRateList4Chart)  // 获取抛料率
@@ -33,10 +33,10 @@ func InitPVS_Base_LineRouter(Router *gin.RouterGroup) {
 		//PVS_Base_LineRouter.GET("getTS_AOI_SpcVariance4Chart", v1.GetTS_AOI_SpcVariance4Chart)  // 获取TS_AOI_CNT列表SPC数据方差图
 
 		// chart service for dept_dashboard
-		//PVS_Base_LineRouter.GET("getPUBMOrderProduce2InfoList4ChartDash", v1.GetPUBMOrderProduce2InfoList4ChartDash)  // 获取产量
-		//PVS_Base_LineRouter.GET("getDCSSMTConsumeAndRejectRate4ChartDash", v1.GetDCSSMTConsumeAndRejectRate4ChartDash)  // 获取抛料率
-		//PVS_Base_LineRouter.GET("getDCSSMTMachineEvent4ChartDash", v1.GetDCSSMTMachineEvent4ChartDash)  // 获取事件异常
-		//PVS_Base_LineRouter.GET("getDCSSMTRunTime4ChartDash", v1.GetDCSSMTRunTime4ChartDash)  // 获取停机时长 & 停机分布
+		PVS_Base_LineRouter.GET("getPUBMOrderProduce2InfoList4ChartDash", v1.GetPUBMOrderProduce2InfoList4ChartDash)  // 获取产量
+		PVS_Base_LineRouter.GET("getDCSSMTConsumeAndRejectRate4ChartDash", v1.GetDCSSMTConsumeAndRejectRate4ChartDash)  // 获取抛料率
+		PVS_Base_LineRouter.GET("getDCSSMTMachineEvent4ChartDash", v1.GetDCSSMTMachineEvent4ChartDash)  // 获取事件异常
+		PVS_Base_LineRouter.GET("getDCSSMTRunTime4ChartDash", v1.GetDCSSMTRunTime4ChartDash)  // 获取停机时长 & 停机分布
 		//PVS_Base_LineRouter.GET("getTS_AOI_CNTList4ChartDash", v1.GetTS_AOI_CNTList4ChartDash)  // 获取TS_AOI_CNT列表4Chart
 	}
 }

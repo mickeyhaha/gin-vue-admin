@@ -23,7 +23,7 @@ export default {
       chartProps: {
         containerStyle: {
           width: '100%',
-          height: '300px',
+          height: '200px',
         },
         options: {
           chart: {  

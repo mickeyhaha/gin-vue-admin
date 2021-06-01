@@ -60,7 +60,7 @@ export const store = new Vuex.Store({
             ],
         },
         dateOutput4Chart: {
-            categories: [],
+            categories: [],     //'4/18', '4/19', '4/20', '4/21', '4/22'
             series: [
                 // {
                 //     name: '实际产量',
@@ -292,21 +292,21 @@ export const store = new Vuex.Store({
         }, 
         
         // 获取产量1
-        async getDCSSMTOutPutList4Chart({ commit, state }, formData) {
-            const res = await getDCSSMTOutPutList4Chart({
-                page: 1, pageSize: 100,
-                lineName: formData.LineName,
-                startDate: formData.startDate,
-                endDate: formData.endDate,
-                shift: formData.Shift,
-                workOrderNo: formData.WorkOrderNo
-            });
-            if (res.code == 0 && res.data.total != 0) {
-                const dateOutput4Chart = res.data.list[0]
-                commit("setDateOutput4Chart", dateOutput4Chart)
-                return state.dateOutput4Chart
-            }
-        }, 
+        // async getDCSSMTOutPutList4Chart({ commit, state }, formData) {
+        //     const res = await getDCSSMTOutPutList4Chart({
+        //         page: 1, pageSize: 100,
+        //         lineName: formData.LineName,
+        //         startDate: formData.startDate,
+        //         endDate: formData.endDate,
+        //         shift: formData.Shift,
+        //         workOrderNo: formData.WorkOrderNo
+        //     });
+        //     if (res.code == 0 && res.data.total != 0) {
+        //         const dateOutput4Chart = res.data.list[0]
+        //         commit("setDateOutput4Chart", dateOutput4Chart)
+        //         return state.dateOutput4Chart
+        //     }
+        // }, 
 
         // 获取产量2
         async getPUBMOrderProduce2InfoList4Chart({ commit, state }, formData) {
@@ -327,11 +327,11 @@ export const store = new Vuex.Store({
 
         // 点击deptFilter的submit
         async submitDeptFilter({ commit, dispatch }, formData) {
-            formData.startDate = formData.date[0]
-            formData.endDate = formData.date[1]
+            formData.startDate = formData.date[0] + " 00:00:00"
+            formData.endDate = formData.date[1] + " 23:59:59"
             // TODO
             // dispatch('getAoiRate4Chart', formData)
-            dispatch('getTS_AOI_Spc4Chart', formData)
+            // dispatch('getTS_AOI_Spc4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
             dispatch('getRejectRate4Chart', formData)
             dispatch('getDCSSMTMachineEvent4Chart', formData)
@@ -356,7 +356,7 @@ export const store = new Vuex.Store({
 
         // 抛料率
         async getRejectRate4ChartDash({ commit, state }, formData) {
-            const res = await getDCSSMTConsumeAndRejectRate4Chart({
+            const res = await getDCSSMTConsumeAndRejectRate4ChartDash({
                 page: 1, pageSize: 100,
                 LineName: formData.LineName,
                 startDate: formData.startDate,
@@ -365,14 +365,14 @@ export const store = new Vuex.Store({
                 workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0 && res.data.total != 0) {
-                const rejectRate = res.data.list[1]
+                const rejectRate = res.data.list[0]
                 commit("setRejectRate4ChartDash", rejectRate)
                 return state.rejectRateDash
             }
         },
 
         async getDCSSMTMachineEvent4ChartDash({ commit, state }, formData) {
-            const res = await getDCSSMTMachineEvent4Chart({
+            const res = await getDCSSMTMachineEvent4ChartDash({
                 page: 1, pageSize: 100,
                 LineName: formData.LineName,
                 startDate: formData.startDate,
@@ -381,7 +381,7 @@ export const store = new Vuex.Store({
                 workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0 && res.data.total != 0) {
-                const chartData = res.data.list[1]
+                const chartData = res.data.list[0]
                 commit("setDateMachineEvent4ChartDash", chartData)
                 return state.dateMachineEvent4ChartDash
             }
@@ -406,7 +406,7 @@ export const store = new Vuex.Store({
         },
 
         async getPUBMOrderProduce2InfoList4ChartDash({ commit, state }, formData) {
-            const res = await getPUBMOrderProduce2InfoList4Chart({
+            const res = await getPUBMOrderProduce2InfoList4ChartDash({
                 page: 1, pageSize: 100,
                 LineName: formData.LineName,
                 startDate: formData.startDate,
@@ -415,7 +415,7 @@ export const store = new Vuex.Store({
                 workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0 && res.data.total != 0) {
-                const dateOutput4Chart = res.data.list[1]
+                const dateOutput4Chart = res.data.list[0]
                 commit("setDateOutput4ChartDash", dateOutput4Chart)
                 return state.dateOutput4ChartDash
             }
@@ -425,14 +425,17 @@ export const store = new Vuex.Store({
         async refreshDeptDashboard({ commit, dispatch }, formData) {
             const date = new Date();
             let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
-            // formData.startDate = dateStr + " 00:00:00"
-            formData.startDate = "2021-03-01 00:00:00"
+            if (process.env.NODE_ENV === 'development') {
+                formData.startDate = "2021-03-01 00:00:00"
+            } else {
+                formData.startDate = dateStr + " 00:00:00"
+            }
             formData.endDate = dateStr + " 23:59:59"
             console.log("version_1.6")
             dispatch('getDeptLineSummary')
             // TODO
             // dispatch('getAoiRate4ChartDash', formData)
-            dispatch('getTS_AOI_Spc4Chart', formData)
+            // dispatch('getTS_AOI_Spc4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4ChartDash', formData)
             dispatch('getRejectRate4ChartDash', formData)
             dispatch('getDCSSMTMachineEvent4ChartDash', formData)

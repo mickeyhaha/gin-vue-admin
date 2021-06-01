@@ -195,6 +195,7 @@ func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (
 	return err, PUBMOrderProduces, total
 }
 
+// 报表
 func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
 	err, list, total = GetPUBMOrderProduce2InfoListByRange(info)
 	entities := list.([]model.PUBMOrderProduce2)
@@ -211,6 +212,10 @@ func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (e
 	dateArr := make([]string, 0)
 
 	for i=0; i<total; i++ {
+		if entities[i].QtyCompleted == 0 {
+			continue
+		}
+
 		if  _, ok := lines[entities[i].LineName]; !ok {
 			lines[entities[i].LineName] = struct{}{}
 			lineArr = append(lineArr, entities[i].LineName)
@@ -225,15 +230,16 @@ func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (e
 		if  _, ok := lineSeries[entities[i].LineName]; !ok {
 			lineSeries[entities[i].LineName] = make(map[string]int, 0)
 		}
-		lineSeries[entities[i].LineName]["实际产量"] = entities[i].QtyCompleted
-		//lineSeries[entities[i].LineName]["标准产量"] = entities[i].QtyCompleted+100
+		lineSeries[entities[i].LineName][dateStr] = entities[i].QtyCompleted
 	}
 
 	series := make([]smt.Series, 0)
 	for j:=0; j < len(seriesNameArr) && len(dateArr) > 0; j++ {
 		var data []float64
 		for k:=0; k < len(lineArr); k++ {
-			data = append(data, float64(lineSeries[lineArr[k]][seriesNameArr[j]]))
+			for l:=0; l < len(dateArr); l++  {
+				data = append(data, float64(lineSeries[lineArr[k]][dateArr[l]]))
+			}
 		}
 		seri := smt.Series{
 			Name: seriesNameArr[j],
@@ -248,11 +254,72 @@ func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (e
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
+	return err, chartDatas, total
+}
 
-	chartData2 := smt.ChartData{
+// 看板
+func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
+	err, list, total = GetPUBMOrderProduce2InfoListByRange(info)
+	entities := list.([]model.PUBMOrderProduce2)
+	var i int64
+	lines := make(map[string]struct{}, 0)
+	dateMap := make(map[string]struct{}, 0)
+	seriesNameArr := make([]string, 0)
+	//seriesNameArr = append(seriesNameArr, "标准产量")
+	seriesNameArr = append(seriesNameArr, "实际产量")
+	// line - issueName - errCount
+	lineSeries := make(map[string]map[string]int, 0)
+
+	lineArr := make([]string, 0)
+	dateArr := make([]string, 0)
+
+	for i=0; i<total; i++ {
+		if entities[i].QtyCompleted == 0 {
+			continue
+		}
+
+		if  _, ok := lines[entities[i].LineName]; !ok {
+			lines[entities[i].LineName] = struct{}{}
+			lineArr = append(lineArr, entities[i].LineName)
+		}
+
+		dateStr :=  entities[i].CreateTime.Format(global.DateBaseFmt)
+		if  _, ok := lines[dateStr]; !ok {
+			dateMap[dateStr] = struct{}{}
+			dateArr = append(dateArr, dateStr)
+		}
+
+		if  _, ok := lineSeries[entities[i].LineName]; !ok {
+			lineSeries[entities[i].LineName] = make(map[string]int, 0)
+		}
+		lineSeries[entities[i].LineName][dateStr] = entities[i].QtyCompleted
+	}
+
+	series := make([]smt.Series, 0)
+
+	for j:=0; j < len(seriesNameArr) && len(dateArr) > 0; j++ {
+		var data []float64
+		// 看板, 多天，多线体
+		for k:=0; k < len(lineArr); k++ {
+			subTotal := 0
+			for l:=0; l < len(dateArr); l++  {
+				subTotal += lineSeries[lineArr[k]][dateArr[l]]
+			}
+			data = append(data, float64(subTotal))
+		}
+		seri := smt.Series{
+			Name: seriesNameArr[j],
+			Data: data,
+		}
+		series = append(series, seri)
+	}
+
+	chartDatas := make([]smt.ChartData, 0)
+	chartData := smt.ChartData{
 		Categories: lineArr,
 		Series: series,
 	}
-	chartDatas = append(chartDatas, chartData2)
+	chartDatas = append(chartDatas, chartData)
+
 	return err, chartDatas, total
 }

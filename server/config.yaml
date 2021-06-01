@@ -59,9 +59,9 @@ mysql:
   log-mode: false
   log-zap: ""
 mssql:
-  path: 58.247.128.134:43504
+  path: 58.247.128.134:43513
   config: charset=utf8mb4&parseTime=True&loc=Local
-  db-name: cmes3
+  db-name: MES_CSGL
   username: sa
   password: cit@888
   max-idle-conns: 0

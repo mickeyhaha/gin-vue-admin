@@ -148,12 +148,11 @@ func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list i
 	dateArr := make([]string, 0)
 	issueNameArr := make([]string, 0)
 
-	totalCount := 0.0
 	for i=0; i<total; i++ {
-		totalCount += DSRTs[i].TimeValue
-	}
+		if DSRTs[i].TimeValue == 0 {
+			continue
+		}
 
-	for i=0; i<total; i++ {
 		if  _, ok := lines[DSRTs[i].LineName]; !ok {
 			lines[DSRTs[i].LineName] = struct{}{}
 			lineArr = append(lineArr, DSRTs[i].LineName)

@@ -102,7 +102,7 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
 				   count(1) as Count
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s'
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and EventRemark != '生产'
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
 		`, info.StartDate, info.EndDate, info.LineName)
 
@@ -111,7 +111,7 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
 				   count(1) as Count
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s'
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and EventRemark != '生产'
 			group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
 		`, info.StartDate, info.EndDate)
 	}
@@ -121,7 +121,7 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
 				   count(1) as Count
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d  and EventRemark != '生产'
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
 		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
 	} else if info.Shift == 2 {
@@ -129,7 +129,7 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
 				   count(1) as Count
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d  and EventRemark != '生产'
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
 		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)
 	}
@@ -146,46 +146,54 @@ func GetDCSSMTMachineEvent4Chart(info request.DCSSMTMachineEventSearch) (err err
 	lines := make(map[string]struct{}, 0)
 	dateMap := make(map[string]struct{}, 0)
 	issueNames := make(map[string]struct{}, 0)
-	// line - issueName - errCount
-	lineSeries := make(map[string]map[string]int, 0)
+	// line - issueName - date - errCount
+	lineSeries := make(map[string]map[string]map[string]int, 0)
 
 	lineArr := make([]string, 0)
 	dateArr := make([]string, 0)
 	issueNameArr := make([]string, 0)
 
-	totalCount := 0
-	for i=0; i<total; i++ {
-		totalCount += DSMEs[i].Count
-	}
+	//totalCount := 0
+	//for i=0; i<total; i++ {
+	//	totalCount += DSMEs[i].Count
+	//}
 
 	for i=0; i<total; i++ {
+		if DSMEs[i].Count == 0 {
+			continue
+		}
+
 		if  _, ok := lines[DSMEs[i].LineName]; !ok {
 			lines[DSMEs[i].LineName] = struct{}{}
 			lineArr = append(lineArr, DSMEs[i].LineName)
 		}
 
 		dateStr :=  DSMEs[i].CreateTime.Format(global.DateBaseFmt)
-		if  _, ok := lines[dateStr]; !ok {
+		if  _, ok := dateMap[dateStr]; !ok {
 			dateMap[dateStr] = struct{}{}
 			dateArr = append(dateArr, dateStr)
 		}
 
-		if  _, ok := issueNames[DSMEs[i].EventRemark]; !ok {
-			issueNames[DSMEs[i].EventRemark] = struct{}{}
-			issueNameArr = append(issueNameArr, DSMEs[i].EventRemark)
+		if  _, ok := issueNames[DSMEs[i].EventName]; !ok {
+			issueNames[DSMEs[i].EventName] = struct{}{}
+			issueNameArr = append(issueNameArr, DSMEs[i].EventName)
 		}
 
 		if  _, ok := lineSeries[DSMEs[i].LineName]; !ok {
-			lineSeries[DSMEs[i].LineName] = make(map[string]int, 0)
+			lineSeries[DSMEs[i].LineName] = make(map[string]map[string]int, 0)
 		}
-		lineSeries[DSMEs[i].LineName][DSMEs[i].EventRemark] = DSMEs[i].Count
+
+		if  _, ok := lineSeries[DSMEs[i].LineName][DSMEs[i].EventName]; !ok {
+			lineSeries[DSMEs[i].LineName][DSMEs[i].EventName] = make(map[string]int, 0)
+		}
+		lineSeries[DSMEs[i].LineName][DSMEs[i].EventName][dateStr] = DSMEs[i].Count
 	}
 
 	series := make([]smt.Series, 0)
-	for j:=0; j < len(issueNameArr) && len(dateArr) > 0; j++ {
+	for j:=0; j < len(issueNameArr) && len(dateArr) > 0 && len(lineArr) > 0; j++ {
 		var data []float64
-		for k:=0; k < len(lineArr); k++ {
-			data = append(data, float64(lineSeries[lineArr[k]][issueNameArr[j]]) / (float64(totalCount)))
+		for k:=0; k < len(dateArr); k++ {
+			data = append(data, float64(lineSeries[lineArr[0]][issueNameArr[j]][dateArr[k]]))
 		}
 		seri := smt.Series{
 			Name: issueNameArr[j],
@@ -201,10 +209,83 @@ func GetDCSSMTMachineEvent4Chart(info request.DCSSMTMachineEventSearch) (err err
 	}
 	chartDatas = append(chartDatas, chartData)
 
-	chartData2 := smt.ChartData{
+	return err, chartDatas, total
+}
+
+
+func GetDCSSMTMachineEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err error, list interface{}, total int64) {
+	err, list, total = GetDCSSMTMachineEventByRange(info)
+	DSMEs := list.([]model.DCSSMTMachineEvent)
+	var i int64
+	lines := make(map[string]struct{}, 0)
+	dateMap := make(map[string]struct{}, 0)
+	issueNames := make(map[string]struct{}, 0)
+	// line - issueName - date - errCount
+	lineSeries := make(map[string]map[string]map[string]int, 0)
+
+	lineArr := make([]string, 0)
+	dateArr := make([]string, 0)
+	issueNameArr := make([]string, 0)
+
+	//totalCount := 0
+	//for i=0; i<total; i++ {
+	//	totalCount += DSMEs[i].Count
+	//}
+
+	for i=0; i<total; i++ {
+		if DSMEs[i].Count == 0 {
+			continue
+		}
+
+		if  _, ok := lines[DSMEs[i].LineName]; !ok {
+			lines[DSMEs[i].LineName] = struct{}{}
+			lineArr = append(lineArr, DSMEs[i].LineName)
+		}
+
+		dateStr :=  DSMEs[i].CreateTime.Format(global.DateBaseFmt)
+		if  _, ok := dateMap[dateStr]; !ok {
+			dateMap[dateStr] = struct{}{}
+			dateArr = append(dateArr, dateStr)
+		}
+
+		if  _, ok := issueNames[DSMEs[i].EventName]; !ok {
+			issueNames[DSMEs[i].EventName] = struct{}{}
+			issueNameArr = append(issueNameArr, DSMEs[i].EventName)
+		}
+
+		if  _, ok := lineSeries[DSMEs[i].LineName]; !ok {
+			lineSeries[DSMEs[i].LineName] = make(map[string]map[string]int, 0)
+		}
+
+		if  _, ok := lineSeries[DSMEs[i].LineName][DSMEs[i].EventName]; !ok {
+			lineSeries[DSMEs[i].LineName][DSMEs[i].EventName] = make(map[string]int, 0)
+		}
+		lineSeries[DSMEs[i].LineName][DSMEs[i].EventName][dateStr] = DSMEs[i].Count
+	}
+
+	series := make([]smt.Series, 0)
+	for j:=0; j < len(issueNameArr) && len(dateArr) > 0 && len(lineArr) > 0; j++ {
+		var data []float64
+		for l:=0; l < len(lineArr); l++  {
+			subTotal := 0
+			for k:=0; k < len(dateArr); k++ {
+				subTotal += lineSeries[lineArr[l]][issueNameArr[j]][dateArr[k]]
+			}
+			data = append(data, float64(subTotal))
+		}
+		seri := smt.Series{
+			Name: issueNameArr[j],
+			Data: data,
+		}
+		series = append(series, seri)
+	}
+
+	chartDatas := make([]smt.ChartData, 0)
+	chartData := smt.ChartData{
 		Categories: lineArr,
 		Series: series,
 	}
-	chartDatas = append(chartDatas, chartData2)
+	chartDatas = append(chartDatas, chartData)
+
 	return err, chartDatas, total
 }

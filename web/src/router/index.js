@@ -32,12 +32,12 @@ const baseRouters = [{
         component: () =>
             import('@/view/datavdash/index_dept_dash.vue')
     },
-    {
-        path: "/spcdashboard",
-        name: 'SpcDashboard',
-        component: () =>
-            import('@/view/datavspc/index.vue')
-    },
+    // {
+    //     path: "/spcdashboard",
+    //     name: 'SpcDashboard',
+    //     component: () =>
+    //         import('@/view/datavspc/index.vue')
+    // },
 {
     path: "/init",
     name: 'init',

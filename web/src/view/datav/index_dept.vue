@@ -141,6 +141,8 @@ export default {
   color: #fff;
 
   #dv-full-screen-container {
+    width: 100%;
+    height: 2048px;
     background-image: url('./img/bg.png');
     background-size: 100% 100%;
     box-shadow: 0 0 3px blue;
