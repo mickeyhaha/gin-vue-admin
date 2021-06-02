@@ -388,7 +388,7 @@ export const store = new Vuex.Store({
         },
 
         async getDCSSMTRunTime4ChartDash({ commit, state }, formData) {
-            const res = await getDCSSMTRunTime4Chart({
+            const res = await getDCSSMTRunTime4ChartDash({
                 page: 1, pageSize: 100,
                 LineName: formData.LineName,
                 startDate: formData.startDate,
@@ -397,9 +397,10 @@ export const store = new Vuex.Store({
                 workOrderNo: formData.WorkOrderNo
             });
             if (res.code == 0 && res.data.total != 0) {
-                const chartData = res.data.list[2]
+                const chartData = res.data.list[0]
                 commit("setDateRunTime4ChartDash", chartData)
                 // 整体停机分布
+                console.log(res.data.list[1])
                 commit("setStopReason4ChartDash", res.data.list[1])
                 return state.dateRunTime4ChartDash
             }

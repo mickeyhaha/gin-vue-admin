@@ -225,3 +225,104 @@ func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list i
 
 	return err, chartDatas, total
 }
+
+func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, list interface{}, total int64) {
+	err, list, total = GetDCSSMTRunTimeByRange(info)
+	DSMEs := list.([]model.DCSSMTRunTime)
+
+	var i int64
+	lines := make(map[string]struct{}, 0)
+	dateMap := make(map[string]struct{}, 0)
+	issueNames := make(map[string]struct{}, 0)
+	// line - issueName - date - errCount
+	lineSeries := make(map[string]map[string]map[string]float64, 0)
+
+	lineArr := make([]string, 0)
+	dateArr := make([]string, 0)
+	issueNameArr := make([]string, 0)
+
+	//totalCount := 0
+	//for i=0; i<total; i++ {
+	//	totalCount += DSMEs[i].Count
+	//}
+
+	for i=0; i<total; i++ {
+		if DSMEs[i].TimeValue == 0 {
+			continue
+		}
+
+		if  _, ok := lines[DSMEs[i].LineName]; !ok {
+			lines[DSMEs[i].LineName] = struct{}{}
+			lineArr = append(lineArr, DSMEs[i].LineName)
+		}
+
+		dateStr :=  DSMEs[i].CreateTime.Format(global.DateBaseFmt)
+		if  _, ok := dateMap[dateStr]; !ok {
+			dateMap[dateStr] = struct{}{}
+			dateArr = append(dateArr, dateStr)
+		}
+
+		if  _, ok := issueNames[DSMEs[i].TimeCode]; !ok {
+			issueNames[DSMEs[i].TimeCode] = struct{}{}
+			issueNameArr = append(issueNameArr, DSMEs[i].TimeCode)
+		}
+
+		if  _, ok := lineSeries[DSMEs[i].LineName]; !ok {
+			lineSeries[DSMEs[i].LineName] = make(map[string]map[string]float64, 0)
+		}
+
+		if  _, ok := lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode]; !ok {
+			lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode] = make(map[string]float64, 0)
+		}
+		lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode][dateStr] = DSMEs[i].TimeValue
+	}
+
+	series := make([]smt.Series, 0)
+	for j:=0; j < len(issueNameArr) && len(dateArr) > 0 && len(lineArr) > 0; j++ {
+		var data []float64
+		for l:=0; l < len(lineArr); l++  {
+			subTotal := 0.0
+			for k:=0; k < len(dateArr); k++ {
+				subTotal += lineSeries[lineArr[l]][issueNameArr[j]][dateArr[k]]
+			}
+			data = append(data, float64(subTotal))
+		}
+		seri := smt.Series{
+			Name: issueNameArr[j],
+			Data: data,
+		}
+		series = append(series, seri)
+	}
+
+	chartDatas := make([]smt.ChartData, 0)
+	chartData := smt.ChartData{
+		Categories: lineArr,
+		Series: series,
+	}
+	chartDatas = append(chartDatas, chartData)
+
+	/// 停机分布
+	cateArr := make([]string, 0)
+	cateArr = append(cateArr, "停机分布")
+
+	series2 := make([]smt.PieSeries, 0)
+	for j:=0; j < len(issueNameArr) && len(dateArr) > 0; j++ {
+		subTotal := 0.0
+		for k:=0; k < len(dateArr); k++ {
+			subTotal += float64(lineSeries[lineArr[0]][issueNameArr[j]][dateArr[k]])
+		}
+		seri := smt.PieSeries{
+			Name: issueNameArr[j],
+			Data: subTotal,
+		}
+		series2 = append(series2, seri)
+	}
+
+	chartData2 := smt.ChartData {
+		Categories: cateArr,
+		Series: series2,
+	}
+	chartDatas = append(chartDatas, chartData2)
+
+	return err, chartDatas, total
+}

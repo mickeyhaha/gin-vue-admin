@@ -46,7 +46,7 @@ export default {
             stack: false,
             dataLabels: { visible: true },
           },
-          xAxis: { pointOnColumn: false, title: { text: '日期' } },
+          // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
             title: {

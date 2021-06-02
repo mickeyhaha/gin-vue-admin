@@ -148,7 +148,7 @@ func GetDCSSMTRunTime4Chart(c *gin.Context) {
 func GetDCSSMTRunTime4ChartDash(c *gin.Context) {
 	var pageInfo request.DCSSMTRunTimeSearch
 	_ = c.ShouldBindQuery(&pageInfo)
-	if err, list, total := service.GetDCSSMTRunTime4Chart(pageInfo); err != nil {
+	if err, list, total := service.GetDCSSMTRunTime4ChartDash(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
 		response.FailWithMessage("获取失败", c)
 	} else {

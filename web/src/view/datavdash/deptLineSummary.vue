@@ -5,7 +5,7 @@
       @selection-change="handleSelectionChange"
       @row-click="clickData"
       ref="multipleTable"
-      height="200"
+      height="300"
       tooltip-effect="dark"
     >
     <!-- <el-table-column label="LineID" prop="lineID" ></el-table-column>  -->
