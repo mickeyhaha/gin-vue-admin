@@ -138,22 +138,21 @@ func GetDeptLineSummary(c *gin.Context) {
 	} else {
 		// Fill aoi info
 		// TODO 打开
-		//if err, aoiInfoList, _ := service.GetTS_AOI_CNTInfoList(request.TS_AOI_CNTSearch{}); err == nil {
-		//	aoiInfoArr := aoiInfoList.([]model.TS_AOI_CNT)
-		//	lineArr := line.([]model.PUBMOrderProduce2)
-		//	for i := 0; i < len(lineArr); i++ {
-		//		for j := 0; j < len(aoiInfoArr); j++  {
-		//			if lineArr[i].LineID == aoiInfoArr[j].LineID {
-		//				lineArr[i].ErrCount = aoiInfoArr[j].ErrCount
-		//				lineArr[i].Count = aoiInfoArr[j].Count
-		//				if lineArr[i].Count != 0 {
-		//					lineArr[i].AoiErrRate = (float64(lineArr[i].ErrCount) / float64(lineArr[i].Count))
-		//				}
-		//				break
-		//			}
-		//		}
-		//	}
-		//}
+		if err, aoiInfoList, _ := service.GetTS_AOI_CNTInfoListByLine(); err == nil {
+			lineArr := line.([]model.PUBMOrderProduce2)
+			for i := 0; i < len(lineArr); i++ {
+				for j := 0; j < len(aoiInfoList); j++  {
+					if lineArr[i].LineID == aoiInfoList[j].LineID {
+						lineArr[i].ErrCount = aoiInfoList[j].ErrCount
+						lineArr[i].Count = aoiInfoList[j].Count
+						if lineArr[i].Count != 0 {
+							lineArr[i].AoiErrRate = (float64(lineArr[i].ErrCount) / float64(lineArr[i].Count))
+						}
+						break
+					}
+				}
+			}
+		}
 		response.OkWithDetailed(response.PageResult{
 			List:     line,
 			Total:    total,

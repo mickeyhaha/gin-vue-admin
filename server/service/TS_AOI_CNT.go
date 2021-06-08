@@ -233,13 +233,13 @@ func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list
 	return err, chartDatas, total
 }
 
-func GetTS_AOI_CNTInfoListByLineName(lineID string) (err error, list []model.TS_AOI_CNT, total int64) {
+func GetTS_AOI_CNTInfoListByLine() (err error, list []model.TS_AOI_CNT, total int64) {
 	db := global.GVA_DB_MSSQL.Model(&model.TS_AOI_CNT{})
 	var TACs []model.TS_AOI_CNT
 	err = db.Raw(`
-			SELECT Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM TS_AOI WITH(NOLOCK) 
-			WHERE LineID = ? and OrderNO <> ''
-		`, lineID).Scan(&TACs).Error
+			SELECT LineID, Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM T_Bllb_AOI_tba WITH(NOLOCK) 
+			group by LineID
+		`).Scan(&TACs).Error
 	total = int64(len(TACs))
 	return err, TACs, total
 }
@@ -301,12 +301,16 @@ func GetTS_AOI_Spc4Chart(info request.TS_AOI_CNTSearch) (err error, list interfa
 	}
 	series = append(series, seri)
 
+	fmt.Printf("dateArr: %v", dateArr)
+	fmt.Printf("Data: %v", data)
+
 	chartDatas := make([]smt.ChartData, 0)
 	chartData := smt.ChartData{
 		Categories: dateArr,
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
+	fmt.Printf("chartDatas: %v", chartDatas)
 
 	return err, chartDatas, total
 }

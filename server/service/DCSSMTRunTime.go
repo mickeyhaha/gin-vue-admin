@@ -135,8 +135,15 @@ func GetDCSSMTRunTimeByRange(info request.DCSSMTRunTimeSearch) (err error, list 
 }
 
 func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list interface{}, total int64) {
-	err, list, total = GetDCSSMTRunTimeByRange(info)
-	DSMEs := list.([]model.DCSSMTRunTime)
+	//err, list, total = GetDCSSMTRunTimeByRange(info)
+	// Get runtime by machine event
+	err, DSMEs, total := GetRuntimeByEvent4ChartDash(request.DCSSMTMachineEventSearch{
+		DCSSMTMachineEvent: model.DCSSMTMachineEvent {
+			LineName: info.LineName,
+			DeptFilter: info.DeptFilter,
+		},
+		PageInfo: info.PageInfo,
+	})
 
 	var i int64
 	lines := make(map[string]struct{}, 0)
@@ -227,8 +234,16 @@ func GetDCSSMTRunTime4Chart(info request.DCSSMTRunTimeSearch) (err error, list i
 }
 
 func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, list interface{}, total int64) {
-	err, list, total = GetDCSSMTRunTimeByRange(info)
-	DSMEs := list.([]model.DCSSMTRunTime)
+	//err, list, total = GetDCSSMTRunTimeByRange(info)
+	//DSMEs := list.([]model.DCSSMTRunTime)
+	// Get runtime by machine event
+	err, DSMEs, total := GetRuntimeByEvent4ChartDash(request.DCSSMTMachineEventSearch{
+		DCSSMTMachineEvent: model.DCSSMTMachineEvent {
+			LineName: info.LineName,
+			DeptFilter: info.DeptFilter,
+		},
+		PageInfo: info.PageInfo,
+	})
 
 	var i int64
 	lines := make(map[string]struct{}, 0)

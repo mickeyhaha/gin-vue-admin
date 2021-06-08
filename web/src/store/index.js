@@ -331,7 +331,7 @@ export const store = new Vuex.Store({
             formData.endDate = formData.date[1] + " 23:59:59"
             // TODO
             // dispatch('getAoiRate4Chart', formData)
-            // dispatch('getTS_AOI_Spc4Chart', formData)
+            dispatch('getTS_AOI_Spc4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4Chart', formData)
             dispatch('getRejectRate4Chart', formData)
             dispatch('getDCSSMTMachineEvent4Chart', formData)
@@ -400,7 +400,6 @@ export const store = new Vuex.Store({
                 const chartData = res.data.list[0]
                 commit("setDateRunTime4ChartDash", chartData)
                 // 整体停机分布
-                console.log(res.data.list[1])
                 commit("setStopReason4ChartDash", res.data.list[1])
                 return state.dateRunTime4ChartDash
             }
@@ -432,11 +431,11 @@ export const store = new Vuex.Store({
                 formData.startDate = dateStr + " 00:00:00"
             }
             formData.endDate = dateStr + " 23:59:59"
-            console.log("version_1.6")
+            console.log("version_1.7")
             dispatch('getDeptLineSummary')
             // TODO
             // dispatch('getAoiRate4ChartDash', formData)
-            // dispatch('getTS_AOI_Spc4Chart', formData)
+            dispatch('getTS_AOI_Spc4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4ChartDash', formData)
             dispatch('getRejectRate4ChartDash', formData)
             dispatch('getDCSSMTMachineEvent4ChartDash', formData)
@@ -529,8 +528,8 @@ export const store = new Vuex.Store({
             // formData.startDate = dateStr + " 00:00:00"
             formData.startDate = dateStr + " 00:00:00"
             formData.endDate = dateStr + " 23:59:59"
-            console.log("version_1.6")
-            // dispatch('getDeptLineSummary')
+            console.log("version_1.7")
+            dispatch('getDeptLineSummary')
             // TODO
             dispatch('getTS_AOI_Spc4Chart', formData)
             dispatch('getTS_AOI_SpcAvg4Chart', formData)

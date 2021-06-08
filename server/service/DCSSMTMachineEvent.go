@@ -93,6 +93,33 @@ func GetDCSSMTMachineEventInfoList(info request.DCSSMTMachineEventSearch) (err e
 	return err, DSMEs, total
 }
 
+func getAvailLineMachineEvent(info request.DCSSMTMachineEventSearch) (err error, lineAvailMachineEvent map[string]model.DCSSMTMachineEvent) {
+	db := global.GVA_DB_MSSQL.Model(&model.DCSSMTMachineEvent{})
+	var DSMEs []model.DCSSMTMachineEvent
+	sql := fmt.Sprintf(`
+	     select o.LineName, max(MachineCode) MachineCode
+			from DCS_SMT_MachineEvent o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' group by o.LineName
+		`, info.StartDate, info.EndDate)
+
+	err = db.Raw(sql).Scan(&DSMEs).Error
+
+	lineAvailMachineEvent = make(map[string]model.DCSSMTMachineEvent, 0)
+	for i:=0; i<len(DSMEs); i++ {
+		sql = fmt.Sprintf(`
+	     select o.LineName, max(TableNo) TableNo, o.MachineCode
+			from DCS_SMT_MachineEvent o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and o.MachineCode = %d and o.LineName = '%s' group by o.LineName, o.MachineCode
+		`, info.StartDate, info.EndDate, DSMEs[i].MachineCode, DSMEs[i].LineName)
+		var tmpDSMEs []model.DCSSMTMachineEvent
+		err = db.Raw(sql).Scan(&tmpDSMEs).Error
+		if err==nil && len(tmpDSMEs) > 0 {
+			lineAvailMachineEvent[DSMEs[i].LineName] = tmpDSMEs[0]
+		}
+	}
+	return err, lineAvailMachineEvent
+}
+
 func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err error, list interface{}, total int64) {
 	// 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.DCSSMTMachineEvent{})
@@ -100,37 +127,37 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 
 	sql := fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
-				   count(1) as Count
+				   count(1) as Count, MachineCode, TableNo
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and EventRemark != '生产'
-			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
+			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark, MachineCode, TableNo
 		`, info.StartDate, info.EndDate, info.LineName)
 
 	if info.LineName == "" {
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
-				   count(1) as Count
+				   count(1) as Count, MachineCode, TableNo
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and EventRemark != '生产'
-			group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
+			group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark, MachineCode, TableNo
 		`, info.StartDate, info.EndDate)
 	}
 
 	if info.Shift == 1 {
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
-				   count(1) as Count
+				   count(1) as Count, MachineCode, TableNo
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d  and EventRemark != '生产'
-			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
+			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark, MachineCode, TableNo
 		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
 	} else if info.Shift == 2 {
 		sql = fmt.Sprintf(`
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
-				   count(1) as Count
+				   count(1) as Count, MachineCode, TableNo
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d  and EventRemark != '生产'
-			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark
+			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark, MachineCode, TableNo
 		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)
 	}
 
@@ -139,8 +166,91 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	return err, DSMEs, total
 }
 
+
+func GetRuntimeByRangeLine(info request.DCSSMTMachineEventSearch) (err error, list []model.DCSSMTMachineEvent, total int64) {
+	// 创建db
+	db := global.GVA_DB_MSSQL.Model(&model.DCSSMTMachineEvent{})
+	var DSMEs []model.DCSSMTMachineEvent
+
+	sql := fmt.Sprintf(`
+			select o.LineName, MachineCode, MachineName, EventName, EventRemark, CreateTime, TableNo
+			from DCS_SMT_MachineEvent o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s'
+			  and o.LineName = '%s' and o.MachineCode = %d and o.TableNo = '%s'  order by o.CreateTime asc
+		`, info.StartDate, info.EndDate, info.LineName, info.MachineCode, info.TableNo)
+
+	if info.Shift == 1 {
+		sql = fmt.Sprintf(`
+			select o.LineName, MachineCode, MachineName, EventName, EventRemark, CreateTime, TableNo
+			from DCS_SMT_MachineEvent o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+			  and o.LineName = '%s' and o.MachineCode = %d and o.TableNo = '%s'  order by o.CreateTime asc
+		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName, info.MachineCode, info.TableNo)
+	} else if info.Shift == 2 {
+		sql = fmt.Sprintf(`
+			select o.LineName, MachineCode, MachineName, EventName, EventRemark, CreateTime, TableNo
+			from DCS_SMT_MachineEvent o WITH(NOLOCK)
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d
+			  and o.LineName = '%s' and o.MachineCode = %d and o.TableNo = '%s'  order by o.CreateTime asc
+		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName, info.MachineCode, info.TableNo)
+	}
+
+	err = db.Raw(sql).Scan(&DSMEs).Error
+	total = int64(len(DSMEs))
+	return err, DSMEs, total
+}
+
+// 停机时间
+func GetRuntimeByEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err error, lineStops []model.DCSSMTRunTime, total int64) {
+	err, lineMachineEvent := getAvailLineMachineEvent(info)
+	if err != nil {
+		return err, nil, 0
+	}
+
+	lineStops = make([]model.DCSSMTRunTime, 0)
+
+	for lineName, machineEvent := range lineMachineEvent {
+		info.LineName = lineName
+		info.TableNo = machineEvent.TableNo
+		info.MachineCode = machineEvent.MachineCode
+		err, DSMEs, _ := GetRuntimeByRangeLine(info)
+		if err==nil {
+			lastStop := model.DCSSMTMachineEvent{
+				EventRemark: "生产",
+			}
+			for i:=0; i<len(DSMEs); i++ {
+				if DSMEs[i].EventRemark == "待机" {
+					lastStop = DSMEs[i]
+				} else if DSMEs[i].EventRemark == "生产" && lastStop.EventRemark == "待机" {
+					sub := DSMEs[i].CreateTime.Sub(lastStop.CreateTime).Seconds()
+					if sub >= 3 {
+						oneStop := model.DCSSMTRunTime {
+							CreateTime: lastStop.CreateTime,
+							TimeCode: lastStop.EventName,
+							TimeValue: sub,
+							LineName: DSMEs[i].LineName,
+						}
+						lineStops = append(lineStops, oneStop)
+					}
+					lastStop.EventRemark = ""
+				}
+			}
+		}
+	}
+	return nil, lineStops, int64(len(lineStops))
+}
+
 func GetDCSSMTMachineEvent4Chart(info request.DCSSMTMachineEventSearch) (err error, list interface{}, total int64) {
+	err, lineMachineEvent := getAvailLineMachineEvent(info)
+	if err != nil {
+		return err, list, 0
+	}
+
 	err, list, total = GetDCSSMTMachineEventByRange(info)
+	if err != nil {
+		return err, list, 0
+	}
+
 	DSMEs := list.([]model.DCSSMTMachineEvent)
 	var i int64
 	lines := make(map[string]struct{}, 0)
@@ -160,6 +270,10 @@ func GetDCSSMTMachineEvent4Chart(info request.DCSSMTMachineEventSearch) (err err
 
 	for i=0; i<total; i++ {
 		if DSMEs[i].Count == 0 {
+			continue
+		}
+
+		if DSME, ok := lineMachineEvent[DSMEs[i].LineName]; !ok || DSME.MachineCode != DSMEs[i].MachineCode || DSME.TableNo != DSMEs[i].TableNo {
 			continue
 		}
 
@@ -214,7 +328,16 @@ func GetDCSSMTMachineEvent4Chart(info request.DCSSMTMachineEventSearch) (err err
 
 
 func GetDCSSMTMachineEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err error, list interface{}, total int64) {
+	err, lineMachineEvent := getAvailLineMachineEvent(info)
+	if err != nil {
+		return err, list, 0
+	}
+
 	err, list, total = GetDCSSMTMachineEventByRange(info)
+	if err != nil {
+		return err, list, 0
+	}
+
 	DSMEs := list.([]model.DCSSMTMachineEvent)
 	var i int64
 	lines := make(map[string]struct{}, 0)
@@ -227,13 +350,12 @@ func GetDCSSMTMachineEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err
 	dateArr := make([]string, 0)
 	issueNameArr := make([]string, 0)
 
-	//totalCount := 0
-	//for i=0; i<total; i++ {
-	//	totalCount += DSMEs[i].Count
-	//}
-
 	for i=0; i<total; i++ {
 		if DSMEs[i].Count == 0 {
+			continue
+		}
+
+		if DSME, ok := lineMachineEvent[DSMEs[i].LineName]; !ok || DSME.MachineCode != DSMEs[i].MachineCode || DSME.TableNo != DSMEs[i].TableNo {
 			continue
 		}
 

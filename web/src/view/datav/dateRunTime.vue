@@ -27,7 +27,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '停机时长(s)',
+              text: '停机时长(秒)',
               align: 'center',
             }, 
           },
