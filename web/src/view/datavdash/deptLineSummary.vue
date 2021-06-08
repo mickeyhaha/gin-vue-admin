@@ -90,8 +90,8 @@ export default {
   .el-table__header th {
     //此处设置表头样式
     padding: 0;
-    height: 30px;
-    line-height: 20px;
+    height: 50px;
+    line-height: 40px;
     background-color: #519ef0;
     color: #fff;
   }
@@ -100,8 +100,8 @@ export default {
   .el-table__body td {
     //单元格样式
     padding: 0;
-    height: 30px;
-    line-height: 20px;
+    height: 50px;
+    line-height: 40px;
     color: #fff;
     background-color: #12396a;
   }

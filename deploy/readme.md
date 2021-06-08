@@ -1,8 +1,11 @@
 1. 安装并初始化msyql 5.7.* Community Server: https://www.cnblogs.com/ericli-ericli/p/6916285.html
 
-2. CREATE DATABASE IF NOT EXISTS gva DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+2. 打开cmd，运行：
+   mysql -uroot -p
+   CREATE DATABASE IF NOT EXISTS gva DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
-3. mysql -uroot -p gva < db/dump.sql
+3. 打开cmd，到deploy目录，运行：
+   mysql -uroot -p gva < db/dump.sql
 
 4. 解压nginx-1.20.0_configed.zip
 

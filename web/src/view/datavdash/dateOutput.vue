@@ -48,7 +48,7 @@ export default {
           theme: {
             title: {
               fontWeight: 'bold',
-              fontSize: 15,
+              fontSize: 20,
               color: '#ffffff',
             },
             xAxis: {
@@ -56,8 +56,8 @@ export default {
                 color: '#ffffff'
               },
               label: {
-                fontSize: 11,
-                fontWeight: 700,
+                fontSize: 15,
+                // fontWeight: 'bold',
                 color: '#ffffff'
               },
               // width: 2,
@@ -66,13 +66,13 @@ export default {
             yAxis: [
               {
                 title: {
-                  fontSize: 17,
-                  fontWeight: 400,
+                  fontSize: 15,
+                  fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 label: {
-                  fontSize: 11,
-                  fontWeight: 700,
+                  fontSize: 15,
+                  fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 // width: 3,
@@ -80,13 +80,13 @@ export default {
               },
               {
                 title: {
-                  fontSize: 13,
-                  fontWeight: 600,
+                  fontSize: 15,
+                  fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 label: {
-                  fontSize: 11,
-                  fontWeight: 700,
+                  fontSize: 15,
+                  fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 width: 3,
@@ -95,8 +95,8 @@ export default {
             ],
             legend: {
               label: {
-                // fontSize: 15,
-                // fontWeight: 700,
+                fontSize: 15,
+                fontWeight: 'bold',
                 color: '#ffffff'
               }
             },

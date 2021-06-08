@@ -48,7 +48,7 @@ export default {
           theme: {
             title: {
               fontWeight: 'bold',
-              fontSize: 15,
+              fontSize: 30,
               color: '#ffffff',
             },
             xAxis: {
