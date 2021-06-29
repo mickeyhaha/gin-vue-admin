@@ -143,7 +143,7 @@ export default {
     background-size: 100% 100%;
     width: 100%;
     background-size:cover;
-    height: 6%;
+    height: 8%;
 }
 .left img{
     height:70%;
@@ -152,11 +152,13 @@ export default {
 }
 .right{
     float: right !important;
-    font-size:15;
+    font-size:20;
+    font-weight: 'bold';
+
 }
 .middle{
     margin-left:23%;
-    font-weight: 700;
+    font-weight: 'bold';
 }
 .top div *{
     position: relative;
@@ -173,7 +175,7 @@ export default {
 
   .center-title {
     position: absolute;
-    font-size: 25px;
+    font-size: 30px;
     font-weight: bold;
     left: 50%;
     top: 15px;
@@ -189,7 +191,7 @@ export default {
   .block-left-right-content {
     flex: 1;
     display: flex;
-    margin-top: 20px;
+    margin-top: 30px;
   }
 
   .block-top-bottom-content {
@@ -199,7 +201,7 @@ export default {
     height: 100%;
     // flex-direction: column;
     // box-sizing: border-box;
-    padding: 0px 20px;
+    padding: 0px 30px;
   }
 
   .block-top-content {
@@ -207,7 +209,7 @@ export default {
     display: flex;
     flex-grow: 0;
     box-sizing: border-box;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
   }
 }
 </style>

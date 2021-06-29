@@ -99,7 +99,7 @@ func getAvailLineMachineEvent(info request.DCSSMTMachineEventSearch) (err error,
 	sql := fmt.Sprintf(`
 	     select o.LineName, max(MachineCode) MachineCode
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' group by o.LineName
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and o.EventName not in('等待进板','等待出板') group by o.LineName
 		`, info.StartDate, info.EndDate)
 
 	err = db.Raw(sql).Scan(&DSMEs).Error
@@ -109,7 +109,7 @@ func getAvailLineMachineEvent(info request.DCSSMTMachineEventSearch) (err error,
 		sql = fmt.Sprintf(`
 	     select o.LineName, max(TableNo) TableNo, o.MachineCode
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and o.MachineCode = %d and o.LineName = '%s' group by o.LineName, o.MachineCode
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and o.MachineCode = %d and o.LineName = '%s' and o.EventName not in('等待进板','等待出板') group by o.LineName, o.MachineCode
 		`, info.StartDate, info.EndDate, DSMEs[i].MachineCode, DSMEs[i].LineName)
 		var tmpDSMEs []model.DCSSMTMachineEvent
 		err = db.Raw(sql).Scan(&tmpDSMEs).Error

@@ -90,7 +90,7 @@ export default {
   .el-table__header th {
     //此处设置表头样式
     padding: 0;
-    height: 50px;
+    height: 60px;
     line-height: 40px;
     background-color: #519ef0;
     color: #fff;

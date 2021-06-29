@@ -23,7 +23,7 @@ export default {
       chartProps: {
         containerStyle: {
           width: '100%',
-          height: '300px',
+          height: '100%',
         },
         options: {
           chart: {  
@@ -46,7 +46,7 @@ export default {
           // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
           theme: {
-                        title: {
+            title: {
               fontWeight: 'bold',
               fontSize: 20,
               color: '#ffffff',
@@ -67,12 +67,12 @@ export default {
               {
                 title: {
                   fontSize: 15,
-                  fontWeight: 'bold',
+                  // fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 label: {
                   fontSize: 15,
-                  fontWeight: 'bold',
+                  // fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 // width: 3,
@@ -81,12 +81,12 @@ export default {
               {
                 title: {
                   fontSize: 15,
-                  fontWeight: 'bold',
+                  // fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 label: {
                   fontSize: 15,
-                  fontWeight: 'bold',
+                  // fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 width: 3,
@@ -96,12 +96,12 @@ export default {
             legend: {
               label: {
                 fontSize: 15,
-                fontWeight: 'bold',
+                // fontWeight: 'bold',
                 color: '#ffffff'
               }
             },
             chart: {
-              fontFamily: 'Verdana',
+              // fontFamily: 'Verdana',
               backgroundColor: '#12396a',//rgba(9, 206, 115, 0.1)
             },
             series: {
@@ -109,7 +109,7 @@ export default {
                 color: '#ffffff',
                 visible: true,
                 stack: true,
-                fontFamily: 'Verdana',
+                // fontFamily: 'Verdana',
               //   lineWidth: 2,
               //   textStrokeColor: '#ffffff',
               //   shadowColor: '#ffffff',

@@ -23,7 +23,7 @@ export default {
       chartProps: {
         containerStyle: {
           width: '100%',
-          height: '300px',
+          height: '350px',
         },
         options: {
           chart: {  
@@ -47,7 +47,7 @@ export default {
           // yAxis: { title: 'AOI不良率' },
           theme: {
             title: {
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
               fontSize: 30,
               color: '#ffffff',
             },
@@ -67,12 +67,12 @@ export default {
               {
                 title: {
                   fontSize: 17,
-                  fontWeight: 400,
+                  // fontWeight: 400,
                   color: '#ffffff'
                 },
                 label: {
                   fontSize: 11,
-                  fontWeight: 700,
+                  // fontWeight: 700,
                   color: '#ffffff'
                 },
                 // width: 3,
@@ -81,12 +81,12 @@ export default {
               {
                 title: {
                   fontSize: 13,
-                  fontWeight: 600,
+                  // fontWeight: 600,
                   color: '#ffffff'
                 },
                 label: {
                   fontSize: 11,
-                  fontWeight: 700,
+                  // fontWeight: 700,
                   color: '#ffffff'
                 },
                 width: 3,
