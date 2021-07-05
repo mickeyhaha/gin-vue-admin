@@ -60,7 +60,7 @@ import {
   getLineCurrOrderList
 } from "@/api/PUBMOrderProduce";
 import infoList from "@/mixins/infoList";
-import { store } from '@/store/index';
+// import { store } from '@/store/index';
 
 export default {
   name: 'OrderInfo',

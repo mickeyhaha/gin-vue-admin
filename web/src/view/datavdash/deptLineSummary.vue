@@ -15,7 +15,8 @@
     <el-table-column label="已完成" prop="QtyCompleted" ></el-table-column> 
     <el-table-column label="AOI不良数" prop="errCount" ></el-table-column> 
     <el-table-column label="AOI总数" prop="count" ></el-table-column> 
-    <!-- <el-table-column label="AOI不良率" prop="aoiErrCount" ></el-table-column>  -->
+    <el-table-column label="AOI不良PPM" prop="aoiErrCount" ></el-table-column> 
+    <el-table-column label="平衡率%" prop="balance" ></el-table-column> 
 
     <!-- <el-table-column label="Customer" prop="Customer" ></el-table-column> 
     <el-table-column label="CustOrderNo" prop="CustOrderNo" ></el-table-column> 

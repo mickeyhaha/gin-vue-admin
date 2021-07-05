@@ -5,11 +5,11 @@
 
 <script>
 import { Commits, Members } from "@/api/github";
-import Timeline from "timeline-vuejs";
+// import Timeline from "timeline-vuejs";
 export default {
   name: "Test",
   components: {
-    Timeline,
+    // Timeline,
   },
   data() {
     return {

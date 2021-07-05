@@ -259,14 +259,37 @@ func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (e
 
 // 看板
 func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
+	chartDatas := make([]smt.ChartData, 0)
+
 	err, list, total = GetPUBMOrderProduce2InfoListByRange(info)
 	entities := list.([]model.PUBMOrderProduce2)
+
+	standardOutput := 30000.0
+
+	shift := request.TBllbShiftManageSearch{}
+	shift.ShiftManageCode = info.LineName
+	shift.ShiftManageName = "白班"
+	err, days, _ := GetTBllbShiftManageInfoListByShift(shift)
+	daysEntities := days.([]model.TBllbShiftManage)
+	if len(daysEntities) == 0 {
+		fmt.Errorf("未配置白班信息")
+		return err, chartDatas, 0
+	}
+
+	shift.ShiftManageName = "夜班"
+	err, nights, _ := GetTBllbShiftManageInfoListByShift(shift)
+	nightsEntities := nights.([]model.TBllbShiftManage)
+	if len(nightsEntities) == 0 {
+		fmt.Errorf("未配置夜班信息")
+		return err, chartDatas, 0
+	}
+
 	var i int64
 	lines := make(map[string]struct{}, 0)
 	dateMap := make(map[string]struct{}, 0)
 	seriesNameArr := make([]string, 0)
-	//seriesNameArr = append(seriesNameArr, "标准产量")
 	seriesNameArr = append(seriesNameArr, "实际产量")
+	seriesNameArr = append(seriesNameArr, "与标准产量差距")
 	// line - issueName - errCount
 	lineSeries := make(map[string]map[string]int, 0)
 
@@ -305,16 +328,20 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 			for l:=0; l < len(dateArr); l++  {
 				subTotal += lineSeries[lineArr[k]][dateArr[l]]
 			}
-			data = append(data, float64(subTotal))
+			if j>0 {
+				data = append(data, standardOutput-float64(subTotal))	// 距离标准产量30000的差距
+			} else {
+				data = append(data, float64(subTotal))
+			}
 		}
 		seri := smt.Series{
 			Name: seriesNameArr[j],
 			Data: data,
+			StackGroup: "output",
 		}
 		series = append(series, seri)
 	}
 
-	chartDatas := make([]smt.ChartData, 0)
 	chartData := smt.ChartData{
 		Categories: lineArr,
 		Series: series,

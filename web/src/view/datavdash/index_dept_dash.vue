@@ -62,7 +62,7 @@
 <script>
 import { formatTimeToStr } from "@/utils/date";
 import RejectRate from './rejectRate'
-import aoiRate from './aoiRate'
+// import aoiRate from './aoiRate'
 import DeptLineSummary from './deptLineSummary'
 import DateOutput from './dateOutput'
 import DateMachineEvent from "./dateMachineEvent";
@@ -73,7 +73,7 @@ import AoiRateSpc from "./aoiRateSpc";
 export default {
   name: 'DataViewDept',
   components: {
-    aoiRate,
+    // aoiRate,
     RejectRate,
     DeptLineSummary,
     DateOutput,
@@ -109,7 +109,7 @@ export default {
 
     createData()
 
-    setInterval(createData, 30000)
+    // setInterval(createData, 30000)
   }
 }
 </script>

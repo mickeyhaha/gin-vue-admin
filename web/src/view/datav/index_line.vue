@@ -58,14 +58,14 @@ import topHeader from './topHeader'
 // import rankingBoard from './rankingBoard'
 // import roseChart from './roseChart'
 import waterLevelChart from './waterLevelChart'
-import scrollBoard from './scrollBoard'
-import cards from './cards'
-import lackWarning from './lackWarning'
-import rejectRate from './rejectRate'
-import spiRate from './spiRate'
+// import scrollBoard from './scrollBoard'
+// import cards from './cards'
+// import lackWarning from './lackWarning'
+// import rejectRate from './rejectRate'
+// import spiRate from './spiRate'
 import aoiRate from './aoiRate'
 import orderInfo from './orderInfo'
-import utiliazation from './utilization'
+// import utiliazation from './utilization'
 import TimeOutput from './timeOutput'
 
 // import person from './person'
@@ -78,14 +78,14 @@ export default {
     // rankingBoard,
     // roseChart,
     waterLevelChart,
-    scrollBoard,
-    cards,
-    lackWarning,
-    rejectRate,
-    spiRate,
+    // scrollBoard,
+    // cards,
+    // lackWarning,
+    // rejectRate,
+    // spiRate,
     aoiRate,
     orderInfo,
-    utiliazation,
+    // utiliazation,
     TimeOutput,
     // person,
   },

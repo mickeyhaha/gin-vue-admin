@@ -6,6 +6,8 @@ import (
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
 	"gin-vue-admin/model/smt"
+	"strings"
+	"time"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -92,6 +94,28 @@ func GetDCSSMTMachineEventInfoList(info request.DCSSMTMachineEventSearch) (err e
 	err = db.Limit(limit).Offset(offset).Find(&DSMEs).Error
 	return err, DSMEs, total
 }
+
+
+func GetCurrShiftMachineEvents(lineName string) (err error, list []model.DCSSMTMachineEvent, total int64) {
+	db := global.GVA_DB_MSSQL.Model(&model.DCSSMTMachineEvent{})
+
+	shiftStart := time.Now().String()
+	dateArr := strings.Split(shiftStart, " ")
+	shiftStart = dateArr[0] + " 00:00:00"
+	//TODO
+	shiftStart = "2021-07-01 00:00:00"
+
+	var DSMEs []model.DCSSMTMachineEvent
+	sql := fmt.Sprintf(`
+		select  * from DCS_SMT_MachineEvent where CreateTime > '%s' and EventName in('生产开始', '等待进板')
+                            and LineName = '%s' order by TableNo, CreateTime asc;
+		`, shiftStart, lineName)
+
+	err = db.Raw(sql).Scan(&DSMEs).Error
+	total = int64(len(DSMEs))
+	return err, DSMEs, total
+}
+
 
 func getAvailLineMachineEvent(info request.DCSSMTMachineEventSearch) (err error, lineAvailMachineEvent map[string]model.DCSSMTMachineEvent) {
 	db := global.GVA_DB_MSSQL.Model(&model.DCSSMTMachineEvent{})
@@ -227,7 +251,7 @@ func GetRuntimeByEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err err
 						oneStop := model.DCSSMTRunTime {
 							CreateTime: lastStop.CreateTime,
 							TimeCode: lastStop.EventName,
-							TimeValue: sub,
+							TimeValue: sub/60,
 							LineName: DSMEs[i].LineName,
 						}
 						lineStops = append(lineStops, oneStop)

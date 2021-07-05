@@ -155,6 +155,7 @@ export default {
   },
   methods: {
     onSelectSeries(ev) {
+      console.log(ev)
     },
 
     createData () {

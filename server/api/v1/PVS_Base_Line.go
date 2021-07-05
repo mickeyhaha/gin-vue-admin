@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"gin-vue-admin/global"
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
@@ -8,6 +9,8 @@ import (
 	"gin-vue-admin/service"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"math"
+	"time"
 )
 
 // @Tags PVS_Base_Line
@@ -137,22 +140,58 @@ func GetDeptLineSummary(c *gin.Context) {
 		response.FailWithMessage("获取失败", c)
 	} else {
 		// Fill aoi info
-		// TODO 打开
+		lineArr := line.([]model.PUBMOrderProduce2)
 		if err, aoiInfoList, _ := service.GetTS_AOI_CNTInfoListByLine(); err == nil {
-			lineArr := line.([]model.PUBMOrderProduce2)
 			for i := 0; i < len(lineArr); i++ {
 				for j := 0; j < len(aoiInfoList); j++  {
 					if lineArr[i].LineID == aoiInfoList[j].LineID {
 						lineArr[i].ErrCount = aoiInfoList[j].ErrCount
 						lineArr[i].Count = aoiInfoList[j].Count
 						if lineArr[i].Count != 0 {
-							lineArr[i].AoiErrRate = (float64(lineArr[i].ErrCount) / float64(lineArr[i].Count))
+							//AOI不良PPM=(不良数/总生产数)*1000000
+							lineArr[i].AoiErrRate = fmt.Sprintf("%.2f", float64(lineArr[i].ErrCount)*1000000 / float64(lineArr[i].Count))
 						}
 						break
 					}
 				}
 			}
 		}
+		// Fill 平衡率
+		for i := 0; i < len(lineArr); i++ {
+			if err, machineEventList, _ := service.GetCurrShiftMachineEvents(lineArr[i].LineName); err == nil {
+				start := time.Now()
+				CTMap := make(map[string]float64, 0)	// map of TableNo, totalCT
+				for j:=0; j<len(machineEventList); j++  {
+					if _, ok := CTMap[machineEventList[j].TableNo]; !ok {
+						CTMap[machineEventList[j].TableNo] = 0
+					}
+					if machineEventList[j].EventName == "生产开始" {
+						start = machineEventList[j].CreateTime
+						continue
+					}
+					if machineEventList[j].EventName == "等待进板" {
+						if machineEventList[j].CreateTime.After(start) {
+							CTMap[machineEventList[j].TableNo] += machineEventList[j].CreateTime.Sub(start).Seconds()
+						}
+					}
+				}
+				minCT := math.MaxFloat64
+				maxCT := 0.0
+				for _,v := range CTMap {
+					if v < minCT {
+						minCT = v
+					}
+					if v > maxCT {
+						maxCT = v
+					}
+				}
+				if maxCT > 0 {
+					lineArr[i].Balance = fmt.Sprintf("%.2f", minCT*100 / maxCT)
+					fmt.Println(lineArr[i].Balance)
+				}
+			}
+		}
+
 		response.OkWithDetailed(response.PageResult{
 			List:     line,
 			Total:    total,

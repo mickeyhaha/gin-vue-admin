@@ -61,22 +61,22 @@
 
 <script>
 import { formatTimeToStr } from "@/utils/date";
-import topHeader from './topHeader'
+// import topHeader from './topHeader'
 // import digitalFlop from './digitalFlop'
 // import rankingBoard from './rankingBoard'
 // import roseChart from './roseChart'
-import waterLevelChart from './waterLevelChart'
-import scrollBoard from './scrollBoard'
-import cards from './cards'
-import lackWarning from './lackWarning'
+// import waterLevelChart from './waterLevelChart'
+// import scrollBoard from './scrollBoard'
+// import cards from './cards'
+// import lackWarning from './lackWarning'
 import RejectRate from './rejectRate'
-import spiRate from './spiRate'
-import aoiRate from './aoiRate'
-import orderInfo from './orderInfo'
-import utiliazation from './utilization'
+// import spiRate from './spiRate'
+// import aoiRate from './aoiRate'
+// import orderInfo from './orderInfo'
+// import utiliazation from './utilization'
 import DeptLineSummary from './deptLineSummary'
 import DeptFilter from './deptFilter'
-import TimeOutput from './timeOutput'
+// import TimeOutput from './timeOutput'
 import DateOutput from './dateOutput'
 import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
@@ -86,22 +86,22 @@ import AoiRateSpc from "./aoiRateSpc"
 export default {
   name: 'DataViewDept',
   components: {
-    topHeader,
+    // topHeader,
     // digitalFlop,
     // rankingBoard,
     // roseChart,
-    waterLevelChart,
-    scrollBoard,
-    cards,
-    lackWarning,
+    // waterLevelChart,
+    // scrollBoard,
+    // cards,
+    // lackWarning,
     RejectRate,
-    spiRate,
-    aoiRate,
-    orderInfo,
-    utiliazation,
+    // spiRate,
+    // aoiRate,
+    // orderInfo,
+    // utiliazation,
     DeptLineSummary,
     DeptFilter,
-    TimeOutput,
+    // TimeOutput,
     DateOutput,
     DateMachineEvent,
     DateRunTime,

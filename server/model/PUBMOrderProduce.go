@@ -36,7 +36,9 @@ type PUBMOrderProduce2 struct {
       LineID  int `json:"lineID" form:"lineID" gorm:"column:LineID;comment:;type:int;"`
       Count  int `json:"count" form:"count" gorm:"column:count;comment:Count;type:bigint;"`
       ErrCount  int `json:"errCount" form:"errCount" gorm:"column:ErrCount;comment:ErrCount;type:bigint;"`
-      AoiErrRate  float64 `json:"aoiErrCount" form:"aoiErrCount"`
+      AoiErrRate  string `json:"aoiErrCount" form:"aoiErrCount"`
+      TotalMente  float64 `json:"totalMente" form:"totalMente"`
+      Balance  string `json:"balance" form:"balance"`
       global.DeptFilter
 }
 

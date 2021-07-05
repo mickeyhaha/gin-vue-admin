@@ -46,7 +46,7 @@ export default {
             align: 'bottom'
           },
           series: {
-            stack: false,
+            stack: true,
             dataLabels: { visible: true },
           },
           // xAxis: { pointOnColumn: false, title: { text: '日期' } },
