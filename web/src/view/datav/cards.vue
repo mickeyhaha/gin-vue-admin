@@ -113,7 +113,6 @@ export default {
 
     createData()
 
-    setInterval(this.createData, 30000)
   }
 }
 </script>

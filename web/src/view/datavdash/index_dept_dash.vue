@@ -34,12 +34,13 @@
             <!-- <cards /> -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-              <AoiRateSpc /> 
+              <DateOutputAll /> 
               <!-- <spi-rate />  -->
               <!-- <utiliazation />  -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-            <RejectRate />
+            <AoiRateSpc /> 
+            <!-- <RejectRate /> -->
             <!-- <lack-warning /> -->
             <!-- <scroll-board /> -->
         </el-col>
@@ -69,6 +70,7 @@ import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
 import StopReason from "./stopReason";
 import AoiRateSpc from "./aoiRateSpc";
+import DateOutputAll from "./dateOutputAll"
 
 export default {
   name: 'DataViewDept',
@@ -81,6 +83,7 @@ export default {
     DateRunTime,
     StopReason,
     AoiRateSpc,
+    DateOutputAll,
   },
   data () {
     return {  
@@ -109,7 +112,7 @@ export default {
 
     createData()
 
-    // setInterval(createData, 30000)
+    setInterval(createData, 30000)
   }
 }
 </script>

@@ -99,6 +99,17 @@ export default {
                 color: '#ffffff'
               }
             ],
+            // plot: {
+            //   vertical: {
+            //     lineColor: 'white',
+            //     lineWidth: 5,
+            //     dashSegments: [5, 20],
+            //   },
+            //   horizontal: {
+            //     lineColor: 'rgba(0, 0, 0, 0)',
+            //   },
+            //   backgroundColor: 'rgba(60, 80, 180, 0.1)'
+            // },
             legend: {
               label: {
                 // fontSize: 15,

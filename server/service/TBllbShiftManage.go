@@ -92,7 +92,7 @@ func GetTBllbShiftManageInfoList(info request.TBllbShiftManageSearch) (err error
 
 func GetTBllbShiftManageInfoListByShift(info request.TBllbShiftManageSearch) (err error, list interface{}, total int64) {
 	// 创建db
-	db := global.GVA_DB.Model(&model.TBllbShiftManage{})
+	db := global.GVA_DB_MSSQL.Model(&model.TBllbShiftManage{})
 	var TSMs []model.TBllbShiftManage
 	// 如果有条件搜索 下方会自动创建搜索语句
 
@@ -102,5 +102,6 @@ func GetTBllbShiftManageInfoListByShift(info request.TBllbShiftManageSearch) (er
 
 	err = db.Raw(sql).Scan(&TSMs).Error
 	total = int64(len(TSMs))
+
 	return err, TSMs, total
 }
