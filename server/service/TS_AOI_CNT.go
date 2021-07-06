@@ -233,13 +233,15 @@ func GetTS_AOI_CNTInfoList4Chart(info request.TS_AOI_CNTSearch) (err error, list
 	return err, chartDatas, total
 }
 
-func GetTS_AOI_CNTInfoListByLine() (err error, list []model.TS_AOI_CNT, total int64) {
+func GetTS_AOI_CNTInfoListByLine(dayStart string, dayEnd string) (err error, list []model.TS_AOI_CNT, total int64) {
 	db := global.GVA_DB_MSSQL.Model(&model.TS_AOI_CNT{})
 	var TACs []model.TS_AOI_CNT
-	err = db.Raw(`
+	sql := fmt.Sprintf(`
 			SELECT LineID, Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM T_Bllb_AOI_tba WITH(NOLOCK) 
+			where CreateTime >='%s' AND CreateTime <= '%s'
 			group by LineID
-		`).Scan(&TACs).Error
+		`, dayStart, dayEnd)
+	err = db.Raw(sql).Scan(&TACs).Error
 	total = int64(len(TACs))
 	return err, TACs, total
 }

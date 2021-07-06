@@ -6,6 +6,7 @@ import (
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
 	"gin-vue-admin/model/smt"
+	"strings"
 	"time"
 )
 
@@ -344,8 +345,8 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 
 
 	/// OEE = runRate * okRate
-	startTime, err2 := time.Parse("2006-01-02 15:04:05", info.StartDate)
-	endTime, err3 := time.Parse("2006-01-02 15:04:05", info.EndDate)
+	startTime, err2 := time.Parse(global.TimeBaseFmt, info.StartDate)
+	endTime, err3 := time.Parse(global.TimeBaseFmt, info.EndDate)
 	if err2 != nil || err3 != nil {
 		chartData3 := smt.ChartData{
 			Series: smt.Series{
@@ -365,7 +366,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	// 良率
 	totalErrCount := 0
 	totalCount := 0
-	if err, aoiInfoList, _ := GetTS_AOI_CNTInfoListByLine(); err == nil {
+	if err, aoiInfoList, _ := GetTS_AOI_CNTInfoListByLine(GetNowShiftStartEndTime()); err == nil {
 		for j := 0; j < len(aoiInfoList); j++  {
 			totalErrCount += aoiInfoList[j].ErrCount
 			totalCount += aoiInfoList[j].Count
@@ -392,4 +393,56 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	chartDatas = append(chartDatas, chartData3)
 
 	return err, chartDatas, total
+}
+
+func GetNowShiftStartEndTime() (start string, end string) {
+	now := time.Now()
+	nowStr := now.String()[0:strings.Index(now.String(), ".")]
+	arrToday := strings.Split(nowStr, " ")
+
+	d, _ := time.ParseDuration("-24h")
+	d1 := time.Now().Add(d)
+	arrYesterday := strings.Split(d1.String(), " ")
+
+	dayStart := ""
+	dayEnd := ""
+	yesterDayNightStart := ""
+
+	shift := request.TBllbShiftManageSearch{}
+	shift.ShiftManageCode = "白班"
+	shift.ShiftManageName = "白班"
+	_, days, _ := GetTBllbShiftManageInfoListByShift(shift)
+	daysEntities := days.([]model.TBllbShiftManage)
+	if len(daysEntities) == 0 {
+		fmt.Errorf("未配置白班信息")
+		//return err, chartDatas, 0
+	} else {
+		dayStart = arrToday[0] + " " + daysEntities[0].StartTime + ":00"
+		dayEnd = arrToday[0] + " " + daysEntities[0].EndTime + ":00"
+	}
+
+	shift.ShiftManageCode = "夜班"
+	shift.ShiftManageName = "夜班"
+	_, nights, _ := GetTBllbShiftManageInfoListByShift(shift)
+	nightsEntities := nights.([]model.TBllbShiftManage)
+	if len(nightsEntities) == 0 {
+		fmt.Errorf("未配置夜班信息")
+		//return err, chartDatas, 0
+	} else {
+		yesterDayNightStart = arrYesterday[0] + " " + nightsEntities[0].StartTime + ":00"
+	}
+
+	t1, _ := time.Parse(global.TimeBaseFmt, dayStart)
+	t2, _ := time.Parse(global.TimeBaseFmt, dayEnd)
+	if now.After(t2) {
+		start = dayEnd
+	} else if now.After(t1) {
+		start = dayStart
+	} else {
+		start = yesterDayNightStart
+	}
+
+	end = nowStr
+
+	return start, end
 }

@@ -132,16 +132,22 @@ func GetPVS_Base_LineList(c *gin.Context) {
     }
 }
 
+
 func GetDeptLineSummary(c *gin.Context) {
-	var pageInfo request.PUBMOrderProduce2Search
-	pageInfo.Status = 2
-	if err, line, total := service.GetPUBMOrderProduce2InfoList(pageInfo); err != nil {
+	var info request.PUBMOrderProduce2Search
+	info.Status = 2
+
+	dayStart, dayEnd := service.GetNowShiftStartEndTime()
+	info.StartDate = dayStart
+	info.EndDate = dayEnd
+
+	if err, line, total := service.GetPUBMOrderProduce2InfoList(info); err != nil {
 		global.GVA_LOG.Error("获取失败", zap.Any("err", err))
 		response.FailWithMessage("获取失败", c)
 	} else {
 		// Fill aoi info
 		lineArr := line.([]model.PUBMOrderProduce2)
-		if err, aoiInfoList, _ := service.GetTS_AOI_CNTInfoListByLine(); err == nil {
+		if err, aoiInfoList, _ := service.GetTS_AOI_CNTInfoListByLine(dayStart, dayEnd); err == nil {
 			for i := 0; i < len(lineArr); i++ {
 				for j := 0; j < len(aoiInfoList); j++  {
 					if lineArr[i].LineID == aoiInfoList[j].LineID {
@@ -195,8 +201,8 @@ func GetDeptLineSummary(c *gin.Context) {
 		response.OkWithDetailed(response.PageResult{
 			List:     line,
 			Total:    total,
-			Page:     pageInfo.Page,
-			PageSize: pageInfo.PageSize,
+			Page:     info.Page,
+			PageSize: info.PageSize,
 		}, "获取成功", c)
 	}
 }

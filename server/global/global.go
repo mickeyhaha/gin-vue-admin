@@ -26,3 +26,5 @@ const Shift_Day_Begin_Hour = 8
 const Shift_Day_End_Hour = 18
 const Shift_Night_Begin_Hour = 19
 const Shift_Night_End_Hour = 7
+
+const TimeBaseFmt = "2006-01-02 15:04:05"
