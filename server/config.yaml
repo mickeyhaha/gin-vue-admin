@@ -54,8 +54,8 @@ mysql:
   username: root
   password: root
   #password: innotech_TEST!123
-  max-idle-conns: 0
-  max-open-conns: 0
+  max-idle-conns: 10
+  max-open-conns: 10
   log-mode: false
   log-zap: ""
 mssql:
@@ -64,8 +64,8 @@ mssql:
   db-name: MES_CSGL
   username: sa
   password: cit@888
-  max-idle-conns: 0
-  max-open-conns: 0
+  max-idle-conns: 10
+  max-open-conns: 10
   log-mode: false
   log-zap: ""
 qiniu:

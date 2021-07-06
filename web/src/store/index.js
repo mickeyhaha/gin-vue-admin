@@ -157,6 +157,14 @@ export const store = new Vuex.Store({
                 },
             ],
         },
+        oee4ChartDash: {
+            series: [
+                {
+                    name: 'OEE%',
+                    data: [0],
+                },
+            ],
+        },
         dateMachineEvent4ChartDash: {
             categories: [], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
             series: [
@@ -409,6 +417,7 @@ export const store = new Vuex.Store({
                 commit("setDateRunTime4ChartDash", chartData)
                 // 整体停机分布
                 commit("setStopReason4ChartDash", res.data.list[1])
+                commit("setOee4ChartDash", res.data.list[2])
                 return state.dateRunTime4ChartDash
             }
         },
@@ -435,12 +444,12 @@ export const store = new Vuex.Store({
             const date = new Date();
             let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
             if (process.env.NODE_ENV === 'development') {
-                formData.startDate = "2021-06-01 00:00:00"
+                formData.startDate = "2021-07-01 00:00:00"
             } else {
                 formData.startDate = dateStr + " 00:00:00"
             }
-            formData.endDate = dateStr + " 23:59:59"
-            console.log("version_1.7")
+            formData.endDate = formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
+            console.log("version_1.8")
             dispatch('getDeptLineSummary')
             // TODO
             // dispatch('getAoiRate4ChartDash', formData)
@@ -595,6 +604,9 @@ export const store = new Vuex.Store({
         },
         setDateOutputAll4ChartDash(state, dateOutputAll4ChartDash) {
             state.dateOutputAll4ChartDash = dateOutputAll4ChartDash;
+        },
+        setOee4ChartDash(state, oee4ChartDash) {
+            state.oee4ChartDash = oee4ChartDash;
         },
         setAoiRate4ChartDash(state, aoiRate4Chart) {
             state.aoiRate4ChartDash = aoiRate4Chart;

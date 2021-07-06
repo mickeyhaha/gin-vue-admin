@@ -27,7 +27,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '停机分布(秒)',
+              text: '停机分布(分)',
               align: 'center',
             }, 
           },

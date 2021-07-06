@@ -103,7 +103,7 @@ func GetCurrShiftMachineEvents(lineName string) (err error, list []model.DCSSMTM
 	dateArr := strings.Split(shiftStart, " ")
 	shiftStart = dateArr[0] + " 00:00:00"
 	//TODO
-	shiftStart = "2021-07-01 00:00:00"
+	//shiftStart = "2021-07-01 00:00:00"
 
 	var DSMEs []model.DCSSMTMachineEvent
 	sql := fmt.Sprintf(`
@@ -123,7 +123,7 @@ func getAvailLineMachineEvent(info request.DCSSMTMachineEventSearch) (err error,
 	sql := fmt.Sprintf(`
 	     select o.LineName, max(MachineCode) MachineCode
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and o.EventName not in('等待进板','等待出板') group by o.LineName
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' group by o.LineName
 		`, info.StartDate, info.EndDate)
 
 	err = db.Raw(sql).Scan(&DSMEs).Error
@@ -133,7 +133,7 @@ func getAvailLineMachineEvent(info request.DCSSMTMachineEventSearch) (err error,
 		sql = fmt.Sprintf(`
 	     select o.LineName, max(TableNo) TableNo, o.MachineCode
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and o.MachineCode = %d and o.LineName = '%s' and o.EventName not in('等待进板','等待出板') group by o.LineName, o.MachineCode
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and o.MachineCode = %d and o.LineName = '%s' group by o.LineName, o.MachineCode
 		`, info.StartDate, info.EndDate, DSMEs[i].MachineCode, DSMEs[i].LineName)
 		var tmpDSMEs []model.DCSSMTMachineEvent
 		err = db.Raw(sql).Scan(&tmpDSMEs).Error
@@ -144,6 +144,7 @@ func getAvailLineMachineEvent(info request.DCSSMTMachineEventSearch) (err error,
 	return err, lineAvailMachineEvent
 }
 
+// 异常事件
 func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err error, list interface{}, total int64) {
 	// 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.DCSSMTMachineEvent{})
@@ -224,7 +225,7 @@ func GetRuntimeByRangeLine(info request.DCSSMTMachineEventSearch) (err error, li
 	return err, DSMEs, total
 }
 
-// 停机时间
+// 停机时长
 func GetRuntimeByEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err error, lineStops []model.DCSSMTRunTime, total int64) {
 	err, lineMachineEvent := getAvailLineMachineEvent(info)
 	if err != nil {

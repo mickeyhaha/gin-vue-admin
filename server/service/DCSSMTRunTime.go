@@ -6,6 +6,7 @@ import (
 	"gin-vue-admin/model"
 	"gin-vue-admin/model/request"
 	"gin-vue-admin/model/smt"
+	"time"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -261,6 +262,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	//	totalCount += DSMEs[i].Count
 	//}
 
+	stopTime := 0.0
 	for i=0; i<total; i++ {
 		if DSMEs[i].TimeValue == 0 {
 			continue
@@ -290,6 +292,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 			lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode] = make(map[string]float64, 0)
 		}
 		lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode][dateStr] = DSMEs[i].TimeValue
+		stopTime += DSMEs[i].TimeValue
 	}
 
 	series := make([]smt.Series, 0)
@@ -338,6 +341,55 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 		Series: series2,
 	}
 	chartDatas = append(chartDatas, chartData2)
+
+
+	/// OEE = runRate * okRate
+	startTime, err2 := time.Parse("2006-01-02 15:04:05", info.StartDate)
+	endTime, err3 := time.Parse("2006-01-02 15:04:05", info.EndDate)
+	if err2 != nil || err3 != nil {
+		chartData3 := smt.ChartData{
+			Series: smt.Series{
+				Name: "OEE",
+				Data: []float64{0.0},
+			},
+		}
+		chartDatas = append(chartDatas, chartData3)
+		return err, chartDatas, total
+	}
+
+	totalTime := endTime.Sub(startTime).Minutes()
+	runTime := totalTime - stopTime
+
+	runRate := (runTime - stopTime)/runTime
+
+	// 良率
+	totalErrCount := 0
+	totalCount := 0
+	if err, aoiInfoList, _ := GetTS_AOI_CNTInfoListByLine(); err == nil {
+		for j := 0; j < len(aoiInfoList); j++  {
+			totalErrCount += aoiInfoList[j].ErrCount
+			totalCount += aoiInfoList[j].Count
+		}
+	}
+	okRate := 1.0
+	if totalCount != 0 {
+		okRate = float64(totalCount - totalErrCount) / float64(totalCount)
+	}
+
+	oee := runRate * okRate * 100
+
+	series3 := make([]smt.Series, 0)
+	var datas []float64
+	datas = append(datas, oee)
+	serie3 := smt.Series{
+		Name: "OEE",
+		Data: datas,
+	}
+	series3 = append(series3, serie3)
+	chartData3 := smt.ChartData{
+		Series: series3,
+	}
+	chartDatas = append(chartDatas, chartData3)
 
 	return err, chartDatas, total
 }

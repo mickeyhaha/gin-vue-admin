@@ -364,7 +364,7 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 	}
 	chartDatas = append(chartDatas, chartData)
 
-	// 车间效率
+	// 车间进度
 	series2 := make([]smt.Series, 0)
 	var datas []float64
 	if totalPlanedQty > 0 {

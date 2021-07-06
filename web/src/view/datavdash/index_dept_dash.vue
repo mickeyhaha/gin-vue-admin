@@ -50,7 +50,8 @@
               <DateRunTime /> 
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-            <StopReason />
+            <Oee />
+            <!-- <StopReason /> -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
             <DateMachineEvent />
@@ -71,6 +72,7 @@ import DateRunTime from "./dateRunTime";
 import StopReason from "./stopReason";
 import AoiRateSpc from "./aoiRateSpc";
 import DateOutputAll from "./dateOutputAll"
+import Oee from './oee'
 
 export default {
   name: 'DataViewDept',
@@ -84,6 +86,7 @@ export default {
     StopReason,
     AoiRateSpc,
     DateOutputAll,
+    Oee,
   },
   data () {
     return {  
