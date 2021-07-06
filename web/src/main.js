@@ -170,4 +170,4 @@ export default new Vue({
     store
 }).$mount('#app')
 
-console.log(`================Started================`)
+console.log(`================Started================ v1.6`)

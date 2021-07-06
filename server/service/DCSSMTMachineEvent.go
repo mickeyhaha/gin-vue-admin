@@ -153,7 +153,7 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
 				   count(1) as Count, MachineCode, TableNo
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and EventRemark != '生产'
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and EventRemark != '生产' and o.EventName not in('等待进板','等待出板')
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark, MachineCode, TableNo
 		`, info.StartDate, info.EndDate, info.LineName)
 
@@ -162,7 +162,7 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
 				   count(1) as Count, MachineCode, TableNo
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and EventRemark != '生产'
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and EventRemark != '生产' and o.EventName not in('等待进板','等待出板')
 			group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark, MachineCode, TableNo
 		`, info.StartDate, info.EndDate)
 	}
@@ -172,7 +172,7 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
 				   count(1) as Count, MachineCode, TableNo
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d  and EventRemark != '生产'
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d  and EventRemark != '生产' and o.EventName not in('等待进板','等待出板')
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark, MachineCode, TableNo
 		`, info.StartDate, info.EndDate, global.Shift_Day_Begin_Hour, global.Shift_Day_End_Hour, info.LineName)
 	} else if info.Shift == 2 {
@@ -180,7 +180,7 @@ func GetDCSSMTMachineEventByRange(info request.DCSSMTMachineEventSearch) (err er
 	     select o.LineName, cast(o.CreateTime as date) CreateTime, EventName, EventRemark,
 				   count(1) as Count, MachineCode, TableNo
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
-			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d  and EventRemark != '生产'
+			where o.CreateTime >='%s' AND o.CreateTime <='%s' and DATENAME(hh, o.CreateTime) BETWEEN %d AND %d  and EventRemark != '生产' and o.EventName not in('等待进板','等待出板')
 			  and o.LineName = '%s' group by  o.LineName, cast(o.CreateTime as date), EventName, EventRemark, MachineCode, TableNo
 		`, info.StartDate, info.EndDate, global.Shift_Night_Begin_Hour, global.Shift_Night_End_Hour, info.LineName)
 	}
