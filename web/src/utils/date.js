@@ -28,3 +28,49 @@ export function formatTimeToStr(times, pattern) {
     }
     return d.toLocaleString();
 }
+
+export function DateAdd(interval, number, date) {
+    //確保為date類型:
+    date = convertToDate(date);
+    switch (interval.toLowerCase()) {
+        case "y": return new Date(date.setFullYear(date.getFullYear() + number));
+        case "m": return new Date(date.setMonth(date.getMonth() + number));
+        case "d": return new Date(date.setDate(date.getDate() + number));
+        case "w": return new Date(date.setDate(date.getDate() + 7 * number));
+        case "h": return new Date(date.setHours(date.getHours() + number));
+        case "n": return new Date(date.setMinutes(date.getMinutes() + number));
+        case "s": return new Date(date.setSeconds(date.getSeconds() + number));
+        case "l": return new Date(date.setMilliseconds(date.getMilliseconds() + number));
+    }
+};
+export function dateFormat(date) {
+    //確保為date類型:
+    date = convertToDate(date);
+    var defyear = parseInt(date.getFullYear());//當前年
+    var defmonth = parseInt(date.getMonth() + 1, 10); //當前月
+    var defday = date.getDate();//當前日
+    var result = "";
+    if (defmonth < 10 && defday < 10) {
+        result = defyear + '-0' + defmonth + '-0' + defday;
+    } else if (defmonth < 10) {
+        result = defyear + '-0' + defmonth + '-' + defday;
+    } else if (defday < 10) {
+        result = defyear + '-' + defmonth + '-0' + defday;
+    } else {
+        result = defyear + '-' + defmonth + '-' + defday;
+    }
+    return result;
+};
+//javascript中定義的replaceAll()
+String.prototype.replaceAll = function (s1, s2) {
+    return this.replace(new RegExp(s1, "gm"), s2);
+};
+//將日期類型格式的字符串轉化為日期類型:
+export function convertToDate(expr) {
+    if (typeof expr == 'string') {
+        expr = expr.replaceAll('-', '/');//將字符中的-替換為/,原因是IE或其它瀏覽器不支持-符號的Date.parse()
+        return new Date(Date.parse(expr));
+    } else {
+        return expr;
+    }
+};

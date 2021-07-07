@@ -46,7 +46,11 @@ export default {
           },
           series: {
             stack: true,
-            dataLabels: { visible: true },
+            dataLabels: { visible: true,
+              formatter: function(data){
+                return data.toFixed(2)
+              }
+            },
           },
           // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },

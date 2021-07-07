@@ -30,9 +30,9 @@
     <el-table-column label="开始时间">
         <template slot-scope="scope">{{ scope.row.BeginTime|formatDate }}</template>
     </el-table-column> 
-    <el-table-column label="结束时间">
+    <!-- <el-table-column label="结束时间">
         <template slot-scope="scope">{{ scope.row.EndTime|formatDate }}</template>
-    </el-table-column> 
+    </el-table-column>  -->
     <!-- <el-table-column label="备注" prop="Remark" ></el-table-column> 
     <el-table-column label="是否启动JIT拉动" prop="JITRunning" ></el-table-column> 
     <el-table-column label="CreateTimeorder" prop="CreateTime" ></el-table-column> 

@@ -22,7 +22,7 @@ import {
     getDCSSMTRunTime4ChartDash,
     getTS_AOI_Spc4Chart,
 } from '@/api/PVS_Base_Line'
-import { formatTimeToStr } from "@/utils/date";
+import { formatTimeToStr, DateAdd } from "@/utils/date";
 import {
     getTS_AOI_CNTList4Chart,
 } from "@/api/TS_AOI_CNT";
@@ -442,14 +442,32 @@ export const store = new Vuex.Store({
         // 定时刷新dept_dashboard
         async refreshDeptDashboard({ commit, dispatch }, formData) {
             const date = new Date();
-            let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
-            if (process.env.NODE_ENV === 'development') {
-                formData.startDate = "2021-07-01 00:00:00"
-            } else {
-                formData.startDate = dateStr + " 00:00:00"
-            }
             formData.endDate = formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
-            console.log("version_1.8")
+            let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
+            let hour = formData.endDate.substr(formData.endDate.indexOf(" ")+1, 2)
+            let min = formData.endDate.substr(formData.endDate.indexOf(":")+1, 2)
+            if (hour.substr(0, 1) == "0") {
+                hour = hour.substr(1, 1)
+            }
+            if (min.substr(0, 1) == "0") {
+                min = min.substr(1, 1)
+            }
+            let t0 = formatTimeToStr(DateAdd("d", -1, dateStr), "yyyy-MM-dd")   // yesterday
+            let t1 = dateStr + " 07:30:00"
+            let t2 = dateStr + " 19:30:00"
+            if (formData.endDate >= t2) {
+                formData.startDate = t2
+            } else if (formData.endDate >= t1) {
+                formData.startDate = t1
+            } else {
+                formData.startDate = t0 + " 19:30:00"
+            }
+            // if (process.env.NODE_ENV === 'development') {
+            //     formData.startDate = "2021-07-01 00:00:00"
+            // }
+            console.log(formData.startDate)
+            console.log(formData.endDate)
+            console.log("version_2.0")
             dispatch('getDeptLineSummary')
             // TODO
             // dispatch('getAoiRate4ChartDash', formData)

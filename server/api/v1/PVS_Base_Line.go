@@ -147,8 +147,8 @@ func GetDeptLineSummary(c *gin.Context) {
 	} else {
 		// Fill aoi info
 		lineArr := line.([]model.PUBMOrderProduce2)
-		if err, aoiInfoList, _ := service.GetTS_AOI_CNTInfoListByLine(dayStart, dayEnd); err == nil {
-			for i := 0; i < len(lineArr); i++ {
+		for i := 0; i < len(lineArr); i++ {
+			if err, aoiInfoList, _ := service.GetTS_AOI_CNTInfoListByLine(dayStart, dayEnd); err == nil {
 				for j := 0; j < len(aoiInfoList); j++  {
 					if lineArr[i].LineID == aoiInfoList[j].LineID {
 						lineArr[i].ErrCount = aoiInfoList[j].ErrCount
@@ -176,6 +176,7 @@ func GetDeptLineSummary(c *gin.Context) {
 						continue
 					}
 					if machineEventList[j].EventName == "等待进板" {
+						//fmt.Println(machineEventList[j].CreateTime.String())
 						if machineEventList[j].CreateTime.After(start) {
 							CTMap[machineEventList[j].TableNo] += machineEventList[j].CreateTime.Sub(start).Seconds()
 						}

@@ -292,10 +292,11 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 		if  _, ok := lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode]; !ok {
 			lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode] = make(map[string]float64, 0)
 		}
-		lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode][dateStr] = DSMEs[i].TimeValue
+		lineSeries[DSMEs[i].LineName][DSMEs[i].TimeCode][dateStr] += DSMEs[i].TimeValue
 		stopTime += DSMEs[i].TimeValue
 	}
 
+	// 分停机类别
 	series := make([]smt.Series, 0)
 	for j:=0; j < len(issueNameArr) && len(dateArr) > 0 && len(lineArr) > 0; j++ {
 		var data []float64
@@ -313,10 +314,26 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 		series = append(series, seri)
 	}
 
+	// 汇总
+	seriesAll := make([]smt.Series, 0)
+	var data []float64
+	for k:=0; k < len(lineArr); k++ {
+		subTotal := 0.0
+		for l:=0; l<len(series); l++ {
+			subTotal += series[l].Data[k]
+		}
+		data = append(data, float64(subTotal))
+	}
+	seri := smt.Series{
+		Name: "停机时长",
+		Data: data,
+	}
+	seriesAll = append(seriesAll, seri)
+
 	chartDatas := make([]smt.ChartData, 0)
 	chartData := smt.ChartData{
 		Categories: lineArr,
-		Series: series,
+		Series: seriesAll,
 	}
 	chartDatas = append(chartDatas, chartData)
 
@@ -347,6 +364,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	/// OEE = runRate * okRate
 	startTime, err2 := time.Parse(global.TimeBaseFmt, info.StartDate)
 	endTime, err3 := time.Parse(global.TimeBaseFmt, info.EndDate)
+	fmt.Printf("=========%s, %s", startTime, endTime)
 	if err2 != nil || err3 != nil {
 		chartData3 := smt.ChartData{
 			Series: smt.Series{
@@ -358,10 +376,12 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 		return err, chartDatas, total
 	}
 
-	totalTime := endTime.Sub(startTime).Minutes()
+	totalTime := endTime.Sub(startTime).Minutes() * float64(len(lineArr))
 	runTime := totalTime - stopTime
 
-	runRate := (runTime - stopTime)/runTime
+	fmt.Printf("=========%f, %f, %f", runTime, stopTime, totalTime)
+
+	runRate := (runTime)/totalTime
 
 	// 良率
 	totalErrCount := 0
@@ -376,6 +396,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	if totalCount != 0 {
 		okRate = float64(totalCount - totalErrCount) / float64(totalCount)
 	}
+	fmt.Printf("=========%d, %d", totalCount, totalErrCount)
 
 	oee := runRate * okRate * 100
 
@@ -398,6 +419,9 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 func GetNowShiftStartEndTime() (start string, end string) {
 	now := time.Now()
 	nowStr := now.String()[0:strings.Index(now.String(), ".")]
+	//fmt.Println(now.String())	//2021-07-06 20:18:10.042576 +0800 CST m=+10.753225358
+	now, _ = time.Parse(global.TimeBaseFmt, nowStr)
+	//fmt.Println(now.String())	//2021-07-06 20:18:10 +0000 UTC
 	arrToday := strings.Split(nowStr, " ")
 
 	d, _ := time.ParseDuration("-24h")

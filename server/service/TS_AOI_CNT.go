@@ -246,6 +246,20 @@ func GetTS_AOI_CNTInfoListByLine(dayStart string, dayEnd string) (err error, lis
 	return err, TACs, total
 }
 
+
+func GetTS_AOI_CNTInfoListByLineOrderNo(orderNo string, lineID int) (err error, list []model.TS_AOI_CNT, total int64) {
+	db := global.GVA_DB_MSSQL.Model(&model.TS_AOI_CNT{})
+	var TACs []model.TS_AOI_CNT
+	sql := fmt.Sprintf(`
+			SELECT LineID, Count(1) as Count, SUM(CASE Result when 1 then 0 else 1 end) as ErrCount FROM T_Bllb_AOI_tba WITH(NOLOCK) 
+			where OrderNo = '%s' and LineID = %d
+			group by LineID
+		`, orderNo, lineID)
+	err = db.Raw(sql).Scan(&TACs).Error
+	total = int64(len(TACs))
+	return err, TACs, total
+}
+
 func GetTS_AOI_Spc(info request.TS_AOI_CNTSearch) (err error, list interface{}, total int64) {
 	// 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.TS_AOI_CNT{})

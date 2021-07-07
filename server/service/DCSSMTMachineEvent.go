@@ -238,6 +238,7 @@ func GetRuntimeByEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err err
 		info.LineName = lineName
 		info.TableNo = machineEvent.TableNo
 		info.MachineCode = machineEvent.MachineCode
+
 		err, DSMEs, _ := GetRuntimeByRangeLine(info)
 		if err==nil {
 			lastStop := model.DCSSMTMachineEvent{
@@ -257,7 +258,7 @@ func GetRuntimeByEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err err
 						}
 						lineStops = append(lineStops, oneStop)
 					}
-					lastStop.EventRemark = ""
+					lastStop.EventRemark = "生产"
 				}
 			}
 		}
