@@ -376,12 +376,19 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 		return err, chartDatas, total
 	}
 
-	totalTime := endTime.Sub(startTime).Minutes() * float64(len(lineArr))
+	totalTime := endTime.Sub(startTime).Minutes()
+	if len(lineArr) > 0 {
+		totalTime *= float64(len(lineArr))
+	}
 	runTime := totalTime - stopTime
 
 	fmt.Printf("=========%f, %f, %f", runTime, stopTime, totalTime)
 
-	runRate := (runTime)/totalTime
+	runRate := 1.0
+	if totalTime != 0 && runTime > 0 {
+		runRate = runTime/totalTime
+	}
+
 
 	// 良率
 	totalErrCount := 0
@@ -393,7 +400,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 		}
 	}
 	okRate := 1.0
-	if totalCount != 0 {
+	if totalCount != 0 && totalCount >= totalErrCount {
 		okRate = float64(totalCount - totalErrCount) / float64(totalCount)
 	}
 	fmt.Printf("=========%d, %d", totalCount, totalErrCount)
