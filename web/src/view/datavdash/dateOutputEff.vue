@@ -1,22 +1,22 @@
 <template>
-  <div id="date-output">
+  <div id="date-outputeff">
     <!-- <div class="title">产量</div> -->
-    <column-chart :data="dateOutput4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <column-chart :data="dateOutputEff4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { barChart } from '@toast-ui/vue-chart';
+import { columnChart } from '@toast-ui/vue-chart';
 import { mapState } from 'vuex';
 
 export default {
-  name: 'DateOutput',
+  name: 'DateOutputEff',
   components: {
-    'bar-chart': barChart
+    'column-chart': columnChart
   },
   computed: mapState(
-    ['dateOutput4ChartDash']
+    ['dateOutputEff4ChartDash']
   ),
   data () {
     return {
@@ -28,7 +28,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '产量(件)',
+              text: '效率(%)',
               align: 'center',
             }, 
           },
@@ -46,8 +46,12 @@ export default {
             align: 'bottom'
           },
           series: {
-            stack: true,
-            dataLabels: { visible: true },
+            stack: false,
+            dataLabels: { visible: true,
+              formatter: function(data){
+              return data.toFixed(2)
+              } 
+            },
           },
           // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
@@ -62,7 +66,7 @@ export default {
                 color: '#ffffff'
               },
               label: {
-                // fontSize: 15,
+                fontSize: 20,
                 // fontWeight: 'bold',
                 color: '#ffffff'
               },
@@ -185,7 +189,7 @@ export default {
 </script>
 
 <style lang="less">
-#date-output {
+#date-outputeff {
   width: 100%;
   height: 100%;
   box-shadow: 0 0 3px blue;

@@ -361,17 +361,19 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 
 	series := make([]smt.Series, 0)
 	totalCompletedQty := 0.0
-	totalPlanedQty := 0.0
-	var efficient []float64;
+	//totalPlanedQty := 0.0
+	var efficients []float64;
+	var totalEff float64;
 	start, _ := time.Parse(global.TimeBaseFmt, info.StartDate)
 	end, _ := time.Parse(global.TimeBaseFmt, info.EndDate)
+	duration := end.Sub(start).Minutes()
 
 	for j:=0; j < len(seriesNameArr) && len(dateArr) > 0; j++ {
 		var data []float64
 		// 看板, 多天，多线体
 		for k:=0; k < len(lineArr); k++ {
 			subTotalComplete := 0
-			subTotalPlan := 0
+			//subTotalPlan := 0
 			for l:=0; l < len(dateArr); l++  {
 				subTotalComplete += lineSeries[lineArr[k]][dateArr[l]]
 				//subTotalPlan += lineSeriesPlan[lineArr[k]][dateArr[l]]
@@ -382,8 +384,12 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 			} else {
 				data = append(data, float64(subTotalComplete))
 				totalCompletedQty += float64(subTotalComplete)
-				totalPlanedQty += float64(subTotalPlan)
-				efficient = append(efficient, float64(subTotalComplete * 100)/(float64(standardOutput) * end.Sub(start).Minutes() / 720.0))
+				//totalPlanedQty += float64(subTotalPlan)
+				if standardOutput>0 && duration > 0 {
+					eff := float64(subTotalComplete * 100)/(float64(standardOutput) * duration / 720.0)
+					efficients = append(efficients, eff)
+					totalEff += eff
+				}
 			}
 		}
 		seri := smt.Series{
@@ -398,29 +404,43 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 	seriesRate := make([]smt.Series, 0)
 	seriesRate = append(seriesRate, smt.Series{
 		Name: "效率%",
-		Data: efficient,
+		Data: efficients,
 	})
 	columnLineSeris := smt.ColumnLineSeries {
 		Column: series,
 		Line: seriesRate,
 	}
+	fmt.Println(columnLineSeris)
 
+	// 车间产量
 	chartData := smt.ChartData{
 		Categories: lineArr,
-		Series: columnLineSeris,
+		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
 
-	// 车间进度
+	// 车间效率
+	chartData = smt.ChartData{
+		Categories: lineArr,
+		Series: seriesRate,
+	}
+	chartDatas = append(chartDatas, chartData)
+
+	// 车间效率
 	series2 := make([]smt.Series, 0)
 	var datas []float64
-	if totalPlanedQty > 0 {
-		datas = append(datas, totalCompletedQty*100/totalPlanedQty)
+	if len(efficients) > 0 {
+		datas = append(datas, totalEff/float64(len(efficients)))
 	} else {
 		datas = append(datas, 0)
 	}
+	//if totalPlanedQty > 0 {
+	//	datas = append(datas, totalCompletedQty*100/totalPlanedQty)
+	//} else {
+	//	datas = append(datas, 0)
+	//}
 	serie2 := smt.Series{
-		Name: "车间进度",
+		Name: "车间效率",
 		Data: datas,
 	}
 	series2 = append(series2, serie2)

@@ -140,26 +140,48 @@ export const store = new Vuex.Store({
                 // },
             ],
         },
+        // dateOutput4ChartDash: {
+        //     categories: ['Line1', 'Line2'], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
+        //     series: {
+        //         column: [
+        //             {
+        //                 name: '产量',
+        //                 data: [0, 0],
+        //             },
+        //             {
+        //                 name: '标准产量',
+        //                 data: [0, 0],
+        //             },
+        //         ],
+        //         line: [
+        //             {
+        //                 name: '效率%',
+        //                 data: [0, 0],
+        //             },
+        //         ],
+        //     },
+        // },
         dateOutput4ChartDash: {
             categories: ['Line1', 'Line2'], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
-            series: {
-                column: [
+            series: [
                     {
                         name: '产量',
-                        data: [0, 0],
+                        data: [10, 20],
                     },
                     {
                         name: '标准产量',
-                        data: [0, 0],
-                    },
-                ],
-                line: [
-                    {
-                        name: '效率%',
-                        data: [0, 0],
-                    },
-                ],
-            },
+                        data: [30, 30],
+                    }
+            ],
+        }, 
+        dateOutputEff4ChartDash: {
+            categories: ['Line1', 'Line2'], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
+            series: [
+                {
+                    name: '效率',
+                    data: [0, 0],
+                }
+            ],
         },
         dateOutputAll4ChartDash: {
             series: [
@@ -446,9 +468,9 @@ export const store = new Vuex.Store({
             console.log(res)
             if (res.code == 0 && res.data.total != 0) {
                 const dateOutput4Chart = res.data.list[0]
-                console.log(dateOutput4Chart)
                 commit("setDateOutput4ChartDash", dateOutput4Chart)
-                commit("setDateOutputAll4ChartDash", res.data.list[1])
+                commit("setDateOutputEff4ChartDash", res.data.list[1])
+                commit("setDateOutputAll4ChartDash", res.data.list[2])
                 return state.dateOutput4ChartDash
             }
         }, 
@@ -634,6 +656,9 @@ export const store = new Vuex.Store({
         },
         setDateOutput4ChartDash(state, dateOutput4Chart) {
             state.dateOutput4ChartDash = dateOutput4Chart;
+        },
+        setDateOutputEff4ChartDash(state, dateOutputEff4ChartDash) {
+            state.dateOutputEff4ChartDash = dateOutputEff4ChartDash;
         },
         setDateOutputAll4ChartDash(state, dateOutputAll4ChartDash) {
             state.dateOutputAll4ChartDash = dateOutputAll4ChartDash;

@@ -29,7 +29,7 @@ export default {
         options: {
           chart: {  
             title: {
-              text: '车间进度',
+              text: '车间效率',
               align: 'center',
             }, 
           },

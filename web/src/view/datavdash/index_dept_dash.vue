@@ -34,7 +34,7 @@
             <!-- <cards /> -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-            <DateOutput />
+            <DateOutputEff />
               <!-- <spi-rate />  -->
               <!-- <utiliazation />  -->
         </el-col>
@@ -68,6 +68,7 @@ import RejectRate from './rejectRate'
 // import aoiRate from './aoiRate'
 import DeptLineSummary from './deptLineSummary'
 import DateOutput from './dateOutput'
+import DateOutputEff from './dateOutputEff'
 import DateMachineEvent from "./dateMachineEvent";
 import DateRunTime from "./dateRunTime";
 import StopReason from "./stopReason";
@@ -82,6 +83,7 @@ export default {
     RejectRate,
     DeptLineSummary,
     DateOutput,
+    DateOutputEff,
     DateMachineEvent,
     DateRunTime,
     StopReason,
