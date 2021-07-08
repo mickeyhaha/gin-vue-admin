@@ -16,3 +16,9 @@ type PieSeries struct {
       Data float64 `json:"data"`
       StackGroup string `json:"stackGroup"`
 }
+
+
+type ColumnLineSeries struct {
+      Column []Series `json:"column"`
+      Line []Series `json:"line"`
+}

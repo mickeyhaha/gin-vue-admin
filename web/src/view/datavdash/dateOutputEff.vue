@@ -1,19 +1,19 @@
 <template>
   <div id="date-output">
     <!-- <div class="title">产量</div> -->
-    <columnLine-chart :data="dateOutput4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
+    <column-chart :data="dateOutput4ChartDash" :style="chartProps.containerStyle" :options="chartProps.options" />
   </div>
 </template>
 
 <script>
 import '@toast-ui/chart/dist/toastui-chart.min.css';
-import { columnLineChart } from '@toast-ui/vue-chart';
+import { barChart } from '@toast-ui/vue-chart';
 import { mapState } from 'vuex';
 
 export default {
   name: 'DateOutput',
   components: {
-    'columnLine-chart': columnLineChart
+    'bar-chart': barChart
   },
   computed: mapState(
     ['dateOutput4ChartDash']
@@ -26,48 +26,43 @@ export default {
           height: '350px',
         },
         options: {
+          chart: {  
+            title: {
+              text: '产量(件)',
+              align: 'center',
+            }, 
+          },
+          grid: {
+              top:"50px",
+              left:"50px",
+              right:"15px",                
+              bottom:"50px",
+          },
+          tooltip: {
+            visible: false,
+          },
           legend: {
             visible: true,
             align: 'bottom'
           },
           series: {
-            column: {
-              dataLabels: {
-                visible: true,
-              }
-            },
-            line: {
-              showDot: true,
-              spline: true,
-              dataLabels: {
-                visible: true,
-                formatter: function(data){
-                  if (data <= 80) {
-                    return  "!! " + data.toFixed(2) + " !!"
-                  } else {
-                    return data.toFixed(2) + ""
-                  }
-                }
-              }
-            }
+            stack: true,
+            dataLabels: { visible: true },
           },
+          // xAxis: { pointOnColumn: false, title: { text: '日期' } },
+          // yAxis: { title: 'AOI不良率' },
           theme: {
             title: {
               fontWeight: 'bold',
               // fontSize: 20,
               color: '#ffffff',
             },
-            chart: {
-              // fontFamily: 'Verdana',
-              backgroundColor: '#12396a',//rgba(9, 206, 115, 0.1)
-            },
             xAxis: {
               title: {
-                // fontSize: 25,
                 color: '#ffffff'
               },
               label: {
-                fontSize: 15,
+                // fontSize: 15,
                 // fontWeight: 'bold',
                 color: '#ffffff'
               },
@@ -82,11 +77,11 @@ export default {
                   color: '#ffffff'
                 },
                 label: {
-                  fontSize: 15,
+                  fontSize: 20,
                   fontWeight: 'bold',
                   color: '#ffffff'
                 },
-                width: 2,
+                // width: 3,
                 color: '#ffffff'
               },
               {
@@ -96,56 +91,63 @@ export default {
                   color: '#ffffff'
                 },
                 label: {
-                  fontSize: 15,
-                  fontWeight: 'bold',
+                  // fontSize: 15,
+                  // fontWeight: 'bold',
                   color: '#ffffff'
                 },
-                width: 2,
+                width: 3,
                 color: '#ffffff'
-              },
+              }
             ],
+            // plot: {
+            //   vertical: {
+            //     lineColor: 'white',
+            //     lineWidth: 5,
+            //     dashSegments: [5, 20],
+            //   },
+            //   horizontal: {
+            //     lineColor: 'rgba(0, 0, 0, 0)',
+            //   },
+            //   backgroundColor: 'rgba(60, 80, 180, 0.1)'
+            // },
             legend: {
               label: {
-                fontSize: 15,
+                // fontSize: 15,
                 // fontWeight: 'bold',
                 color: '#ffffff'
               }
             },
+            chart: {
+              // fontFamily: 'Verdana',
+              backgroundColor: '#12396a',//rgba(9, 206, 115, 0.1)
+            },
             series: {
-              column: {
-                dataLabels: {
-                  fontSize: 25,
-                  color: '#ffffff',
-                }
-              },
-              line: {
-                dataLabels: {
-                  fontSize: 25,
-                  color: '#ffffff',
-                  // visible: false,
-                  // stack: false,
+              dataLabels: {
+                fontSize: 25,
+                color: '#ffffff',
+                visible: true,
+                stack: true,
+                // fontFamily: 'Verdana',
+              //   lineWidth: 2,
+              //   textStrokeColor: '#ffffff',
+              //   shadowColor: '#ffffff',
+              //   shadowBlur: 4,
+                stackTotal: {
                   // fontFamily: 'Verdana',
-                //   lineWidth: 2,
-                //   textStrokeColor: '#ffffff',
-                //   shadowColor: '#ffffff',
-                //   shadowBlur: 4,
-                  // stackTotal: {
-                    // fontFamily: 'Verdana',
-                    // fontSize: 25,
-                    // fontWeight: 14,
-                    // color: '#ffffff',
-                    // textBubble: {
-                    //   visible: true,
-                    //   paddingY: 6,
-                    //   borderWidth: 3,
-                    //   borderColor: '#00bcd4',
-                    //   borderRadius: 7,
-                    //   backgroundColor: '#041367',
-                    //   shadowOffsetX: 0,
-                    //   shadowOffsetY: 0,
-                    //   shadowBlur: 0,
-                    //   shadowColor: 'rgba(0, 0, 0, 0)'
-                    // }
+                  fontSize: 25,
+                  fontWeight: 14,
+                  // color: '#ffffff',
+                  // textBubble: {
+                  //   visible: true,
+                  //   paddingY: 6,
+                  //   borderWidth: 3,
+                  //   borderColor: '#00bcd4',
+                  //   borderRadius: 7,
+                  //   backgroundColor: '#041367',
+                  //   shadowOffsetX: 0,
+                  //   shadowOffsetY: 0,
+                  //   shadowBlur: 0,
+                  //   shadowColor: 'rgba(0, 0, 0, 0)'
                   // }
                 }
               }

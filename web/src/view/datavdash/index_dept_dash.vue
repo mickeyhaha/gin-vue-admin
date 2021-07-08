@@ -34,12 +34,13 @@
             <!-- <cards /> -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-              <DateOutputAll /> 
+            <DateOutput />
               <!-- <spi-rate />  -->
               <!-- <utiliazation />  -->
         </el-col>
         <el-col :span="8" class="block-top-bottom-content">
-            <AoiRateSpc /> 
+            <DateOutputAll /> 
+            <!-- <AoiRateSpc />  -->
             <!-- <RejectRate /> -->
             <!-- <lack-warning /> -->
             <!-- <scroll-board /> -->

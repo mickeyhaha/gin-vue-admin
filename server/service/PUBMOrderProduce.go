@@ -7,6 +7,7 @@ import (
 	"gin-vue-admin/model/request"
 	"gin-vue-admin/model/smt"
 	"math"
+	"time"
 )
 
 //@author: [piexlmax](https://github.com/piexlmax)
@@ -145,8 +146,34 @@ func GetCurrentOrderByLineId(lineID int) (err error, PMP model.PUBMOrderProduce2
 	}
 }
 
-//Sample
 func GetPUBMOrderProduce2InfoListByRange(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
+	// 创建db
+	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})
+	var PUBMOrderProduces []model.PUBMOrderProduce2
+
+	sql := fmt.Sprintf(`
+			select LineName, QtyCompleted  from (
+			SELECT ISNULL(SUM(Qty),0) as QtyCompleted, LineID FROM dbo.TRS_Busi_ProduceRecords WITH(NOLOCK)
+			WHERE  CreateTime>='%s' and CreateTime<='%s'
+			group by  LineID) o join PVS_Base_line b WITH(NOLOCK) on o.LineID = b.LineID where b.LineName = '%s' 
+	`, info.StartDate, info.EndDate, info.LineName)			// 放到db.Raw里面scan不出来
+
+	if info.LineName == "" {
+		sql = fmt.Sprintf(`
+			select LineName, QtyCompleted  from (
+			SELECT ISNULL(SUM(Qty),0) as QtyCompleted, LineID FROM dbo.TRS_Busi_ProduceRecords WITH(NOLOCK)
+			WHERE  CreateTime>='%s' and CreateTime<='%s'
+			group by  LineID) o join PVS_Base_line b WITH(NOLOCK) on o.LineID = b.LineID
+		`, info.StartDate, info.EndDate)
+	}
+
+	err = db.Raw(sql).Scan(&PUBMOrderProduces).Error
+	total = int64(len(PUBMOrderProduces))
+	return err, PUBMOrderProduces, total
+}
+
+//Sample
+func GetPUBMOrderProduce2InfoListByRange_old(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
 	// 创建db
 	db := global.GVA_DB_MSSQL.Model(&model.PUBMOrderProduce2{})
 	var PUBMOrderProduces []model.PUBMOrderProduce2
@@ -258,8 +285,156 @@ func GetPUBMOrderProduce2InfoList4Chart(info request.PUBMOrderProduce2Search) (e
 	return err, chartDatas, total
 }
 
-// 看板
+// 产量效率看板
 func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
+	chartDatas := make([]smt.ChartData, 0)
+
+	err, list, total = GetPUBMOrderProduce2InfoListByRange(info)
+	entities := list.([]model.PUBMOrderProduce2)
+
+	standardOutput := 2500
+
+	//shift := request.TBllbShiftManageSearch{}
+	//shift.ShiftManageCode = "白班"
+	//shift.ShiftManageName = "白班"
+	//err, days, _ := GetTBllbShiftManageInfoListByShift(shift)
+	//daysEntities := days.([]model.TBllbShiftManage)
+	//if len(daysEntities) == 0 {
+	//	fmt.Errorf("未配置白班信息")
+	//	//return err, chartDatas, 0
+	//} else {
+	//	standardOutput = daysEntities[0].TotalMente
+	//}
+	//
+	//shift.ShiftManageCode = "夜班"
+	//shift.ShiftManageName = "夜班"
+	//err, nights, _ := GetTBllbShiftManageInfoListByShift(shift)
+	//nightsEntities := nights.([]model.TBllbShiftManage)
+	//if len(nightsEntities) == 0 {
+	//	fmt.Errorf("未配置夜班信息")
+	//	//return err, chartDatas, 0
+	//} else {
+	//	standardOutput = nightsEntities[0].TotalMente
+	//}
+	//fmt.Println(standardOutput)
+	_, _, isDay:= GetNowShiftStartEndTime()
+	if !isDay {
+		standardOutput = 1800
+	}
+
+	var i int64
+	lines := make(map[string]struct{}, 0)
+	dateMap := make(map[string]struct{}, 0)
+	seriesNameArr := make([]string, 0)
+	seriesNameArr = append(seriesNameArr, "当前产量")
+	seriesNameArr = append(seriesNameArr, "标准产量")
+	// line - issueName - errCount
+	lineSeries := make(map[string]map[string]int, 0)	//完成数量
+	//lineSeriesPlan := make(map[string]map[string]int, 0)	//计划数量
+
+	lineArr := make([]string, 0)
+	dateArr := make([]string, 0)
+
+	for i=0; i<total; i++ {
+		if entities[i].QtyCompleted == 0 {
+			continue
+		}
+
+		if  _, ok := lines[entities[i].LineName]; !ok {
+			lines[entities[i].LineName] = struct{}{}
+			lineArr = append(lineArr, entities[i].LineName)
+		}
+
+		dateStr :=  entities[i].CreateTime.Format(global.DateBaseFmt)
+		if  _, ok := lines[dateStr]; !ok {
+			dateMap[dateStr] = struct{}{}
+			dateArr = append(dateArr, dateStr)
+		}
+
+		if  _, ok := lineSeries[entities[i].LineName]; !ok {
+			lineSeries[entities[i].LineName] = make(map[string]int, 0)
+			//lineSeriesPlan[entities[i].LineName] = make(map[string]int, 0)
+		}
+		lineSeries[entities[i].LineName][dateStr] = entities[i].QtyCompleted
+		//lineSeriesPlan[entities[i].LineName][dateStr] = entities[i].Qty
+	}
+
+	series := make([]smt.Series, 0)
+	totalCompletedQty := 0.0
+	totalPlanedQty := 0.0
+	var efficient []float64;
+	start, _ := time.Parse(global.TimeBaseFmt, info.StartDate)
+	end, _ := time.Parse(global.TimeBaseFmt, info.EndDate)
+
+	for j:=0; j < len(seriesNameArr) && len(dateArr) > 0; j++ {
+		var data []float64
+		// 看板, 多天，多线体
+		for k:=0; k < len(lineArr); k++ {
+			subTotalComplete := 0
+			subTotalPlan := 0
+			for l:=0; l < len(dateArr); l++  {
+				subTotalComplete += lineSeries[lineArr[k]][dateArr[l]]
+				//subTotalPlan += lineSeriesPlan[lineArr[k]][dateArr[l]]
+			}
+			if j>0 {
+				//diff := math.Max(float64(standardOutput-subTotalComplete), 0)
+				data = append(data, float64(standardOutput))	 	// 距离标准产量的差距
+			} else {
+				data = append(data, float64(subTotalComplete))
+				totalCompletedQty += float64(subTotalComplete)
+				totalPlanedQty += float64(subTotalPlan)
+				efficient = append(efficient, float64(subTotalComplete * 100)/(float64(standardOutput) * end.Sub(start).Minutes() / 720.0))
+			}
+		}
+		seri := smt.Series{
+			Name: seriesNameArr[j],
+			Data: data,
+			StackGroup: "output",
+		}
+		series = append(series, seri)
+	}
+
+
+	seriesRate := make([]smt.Series, 0)
+	seriesRate = append(seriesRate, smt.Series{
+		Name: "效率%",
+		Data: efficient,
+	})
+	columnLineSeris := smt.ColumnLineSeries {
+		Column: series,
+		Line: seriesRate,
+	}
+
+	chartData := smt.ChartData{
+		Categories: lineArr,
+		Series: columnLineSeris,
+	}
+	chartDatas = append(chartDatas, chartData)
+
+	// 车间进度
+	series2 := make([]smt.Series, 0)
+	var datas []float64
+	if totalPlanedQty > 0 {
+		datas = append(datas, totalCompletedQty*100/totalPlanedQty)
+	} else {
+		datas = append(datas, 0)
+	}
+	serie2 := smt.Series{
+		Name: "车间进度",
+		Data: datas,
+	}
+	series2 = append(series2, serie2)
+	chartData2 := smt.ChartData{
+		Series: series2,
+	}
+	chartDatas = append(chartDatas, chartData2)
+
+	return err, chartDatas, total
+}
+
+
+// 看板
+func GetPUBMOrderProduce2InfoList4ChartDash2(info request.PUBMOrderProduce2Search) (err error, list interface{}, total int64) {
 	chartDatas := make([]smt.ChartData, 0)
 
 	err, list, total = GetPUBMOrderProduce2InfoListByRange(info)

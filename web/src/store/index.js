@@ -141,13 +141,25 @@ export const store = new Vuex.Store({
             ],
         },
         dateOutput4ChartDash: {
-            categories: [], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
-            series: [
-                // {
-                //     name: '实际产量',
-                //     data: [400, 400, 200, 100, 600],
-                // },
-            ],
+            categories: ['Line1', 'Line2'], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
+            series: {
+                column: [
+                    {
+                        name: '产量',
+                        data: [0, 0],
+                    },
+                    {
+                        name: '标准产量',
+                        data: [0, 0],
+                    },
+                ],
+                line: [
+                    {
+                        name: '效率%',
+                        data: [0, 0],
+                    },
+                ],
+            },
         },
         dateOutputAll4ChartDash: {
             series: [
@@ -434,6 +446,7 @@ export const store = new Vuex.Store({
             console.log(res)
             if (res.code == 0 && res.data.total != 0) {
                 const dateOutput4Chart = res.data.list[0]
+                console.log(dateOutput4Chart)
                 commit("setDateOutput4ChartDash", dateOutput4Chart)
                 commit("setDateOutputAll4ChartDash", res.data.list[1])
                 return state.dateOutput4ChartDash
