@@ -431,6 +431,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
+            console.log(res)
             if (res.code == 0 && res.data.total != 0) {
                 const dateOutput4Chart = res.data.list[0]
                 commit("setDateOutput4ChartDash", dateOutput4Chart)
@@ -504,6 +505,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
+            console.log(res)
             if (res.code == 0 && res.data.total != 0) {
                 const chartData = res.data.list[0]
                 commit("setTS_AOI_Spc4Chart", chartData)
