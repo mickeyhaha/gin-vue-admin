@@ -463,9 +463,9 @@ export const store = new Vuex.Store({
             } else {
                 formData.startDate = t0 + " 19:30:00"
             }
-            // if (process.env.NODE_ENV === 'development') {
-            //     formData.startDate = "2021-07-01 00:00:00"
-            // }
+            if (process.env.NODE_ENV === 'development') {
+                formData.startDate = "2021-07-01 00:00:00"
+            }
             console.log(formData.startDate)
             console.log(formData.endDate)
             console.log("version_2.0")

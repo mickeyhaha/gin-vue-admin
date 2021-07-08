@@ -106,6 +106,7 @@ export default {
             },
             series: {
               dataLabels: {
+                fontSize: 25,
                 color: '#ffffff',
                 visible: true,
                 stack: true,

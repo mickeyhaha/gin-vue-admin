@@ -41,7 +41,9 @@ export default {
           },
           series: {
             stack: false,
-            dataLabels: { visible: true,
+            dataLabels: { 
+                fontSize: 25,
+                visible: true,
               formatter: function(data){
                 return data.toFixed(2)
               }

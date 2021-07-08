@@ -45,8 +45,10 @@ export default {
             align: 'bottom'
           },
           series: {
-            stack: true,
-            dataLabels: { visible: true,
+            stack: false,
+            dataLabels: { 
+              fontSize: 25,
+              visible: true,
               formatter: function(data){
                 return data.toFixed(2)
               }
@@ -115,9 +117,10 @@ export default {
             },
             series: {
               dataLabels: {
+                fontSize: 25,
                 color: '#ffffff',
                 visible: true,
-                stack: true,
+                stack: false,
                 // fontFamily: 'Verdana',
               //   lineWidth: 2,
               //   textStrokeColor: '#ffffff',

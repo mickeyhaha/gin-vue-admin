@@ -393,7 +393,8 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	// 良率
 	totalErrCount := 0
 	totalCount := 0
-	if err, aoiInfoList, _ := GetTS_AOI_CNTInfoListByLine(GetNowShiftStartEndTime()); err == nil {
+	start, end, _ := GetNowShiftStartEndTime()
+	if err, aoiInfoList, _ := GetTS_AOI_CNTInfoListByLine(start, end); err == nil {
 		for j := 0; j < len(aoiInfoList); j++  {
 			totalErrCount += aoiInfoList[j].ErrCount
 			totalCount += aoiInfoList[j].Count
@@ -423,7 +424,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	return err, chartDatas, total
 }
 
-func GetNowShiftStartEndTime() (start string, end string) {
+func GetNowShiftStartEndTime() (start string, end string, isDay bool) {
 	now := time.Now()
 	nowStr := now.String()[0:strings.Index(now.String(), ".")]
 	//fmt.Println(now.String())	//2021-07-06 20:18:10.042576 +0800 CST m=+10.753225358
@@ -467,13 +468,16 @@ func GetNowShiftStartEndTime() (start string, end string) {
 	t2, _ := time.Parse(global.TimeBaseFmt, dayEnd)
 	if now.After(t2) {
 		start = dayEnd
+		isDay = false
 	} else if now.After(t1) {
 		start = dayStart
+		isDay = true
 	} else {
 		start = yesterDayNightStart
+		isDay = false
 	}
 
 	end = nowStr
 
-	return start, end
+	return start, end, isDay
 }

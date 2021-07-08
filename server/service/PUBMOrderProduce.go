@@ -265,38 +265,42 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 	err, list, total = GetPUBMOrderProduce2InfoListByRange(info)
 	entities := list.([]model.PUBMOrderProduce2)
 
-	standardOutput := 500000.0
+	standardOutput := 2500
 
-	shift := request.TBllbShiftManageSearch{}
-	shift.ShiftManageCode = "白班"
-	shift.ShiftManageName = "白班"
-	err, days, _ := GetTBllbShiftManageInfoListByShift(shift)
-	daysEntities := days.([]model.TBllbShiftManage)
-	if len(daysEntities) == 0 {
-		fmt.Errorf("未配置白班信息")
-		//return err, chartDatas, 0
-	} else {
-		standardOutput = daysEntities[0].TotalMente
+	//shift := request.TBllbShiftManageSearch{}
+	//shift.ShiftManageCode = "白班"
+	//shift.ShiftManageName = "白班"
+	//err, days, _ := GetTBllbShiftManageInfoListByShift(shift)
+	//daysEntities := days.([]model.TBllbShiftManage)
+	//if len(daysEntities) == 0 {
+	//	fmt.Errorf("未配置白班信息")
+	//	//return err, chartDatas, 0
+	//} else {
+	//	standardOutput = daysEntities[0].TotalMente
+	//}
+	//
+	//shift.ShiftManageCode = "夜班"
+	//shift.ShiftManageName = "夜班"
+	//err, nights, _ := GetTBllbShiftManageInfoListByShift(shift)
+	//nightsEntities := nights.([]model.TBllbShiftManage)
+	//if len(nightsEntities) == 0 {
+	//	fmt.Errorf("未配置夜班信息")
+	//	//return err, chartDatas, 0
+	//} else {
+	//	standardOutput = nightsEntities[0].TotalMente
+	//}
+	//fmt.Println(standardOutput)
+	_, _, isDay:= GetNowShiftStartEndTime()
+	if !isDay {
+		standardOutput = 1800
 	}
-
-	shift.ShiftManageCode = "夜班"
-	shift.ShiftManageName = "夜班"
-	err, nights, _ := GetTBllbShiftManageInfoListByShift(shift)
-	nightsEntities := nights.([]model.TBllbShiftManage)
-	if len(nightsEntities) == 0 {
-		fmt.Errorf("未配置夜班信息")
-		//return err, chartDatas, 0
-	} else {
-		standardOutput = nightsEntities[0].TotalMente
-	}
-	fmt.Println(standardOutput)
 
 	var i int64
 	lines := make(map[string]struct{}, 0)
 	dateMap := make(map[string]struct{}, 0)
 	seriesNameArr := make([]string, 0)
 	seriesNameArr = append(seriesNameArr, "当前产量")
-	seriesNameArr = append(seriesNameArr, "计划产量")
+	seriesNameArr = append(seriesNameArr, "标准产量")
 	// line - issueName - errCount
 	lineSeries := make(map[string]map[string]int, 0)	//完成数量
 	lineSeriesPlan := make(map[string]map[string]int, 0)	//计划数量
@@ -342,8 +346,8 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 				subTotalPlan += lineSeriesPlan[lineArr[k]][dateArr[l]]
 			}
 			if j>0 {
-				diff := math.Max(float64(subTotalPlan-subTotalComplete), 0)
-				data = append(data, diff)	 	// 距离计划产量的差距
+				diff := math.Max(float64(standardOutput-subTotalComplete), 0)
+				data = append(data, diff)	 	// 距离标准产量的差距
 			} else {
 				data = append(data, float64(subTotalComplete))
 				totalCompletedQty += float64(subTotalComplete)

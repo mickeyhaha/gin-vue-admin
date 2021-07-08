@@ -41,7 +41,9 @@ export default {
           },
           series: {
             stack: false,
-            dataLabels: { visible: true },
+            dataLabels: { 
+                fontSize: 25,
+              visible: true },
           },
           // xAxis: { pointOnColumn: false, title: { text: '日期' } },
           // yAxis: { title: 'AOI不良率' },
@@ -106,6 +108,7 @@ export default {
             },
             series: {
               dataLabels: {
+              fontSize: 25,
                 color: '#ffffff',
                 visible: true,
                 stack: true,

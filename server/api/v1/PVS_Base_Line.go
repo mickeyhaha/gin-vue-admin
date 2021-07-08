@@ -137,7 +137,7 @@ func GetDeptLineSummary(c *gin.Context) {
 	var info request.PUBMOrderProduce2Search
 	info.Status = 2
 
-	dayStart, dayEnd := service.GetNowShiftStartEndTime()
+	dayStart, dayEnd, _:= service.GetNowShiftStartEndTime()
 	info.StartDate = dayStart
 	info.EndDate = dayEnd
 

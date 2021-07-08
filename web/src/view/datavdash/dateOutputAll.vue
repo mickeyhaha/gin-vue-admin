@@ -79,9 +79,10 @@ export default {
                 // borderColor: 'rgba(101, 4, 52, 0.3)',
               },
               dataLabels: {
-                fontSize: 20,
+                fontSize: 25,
                 // color: '#fff',
                 textBubble: {
+                  fontSize: 25,
                   visible: true,
                   // backgroundColor: '#650434',
                   paddingX: 5,

@@ -62,7 +62,7 @@ export default {
                 color: '#ffffff'
               },
               label: {
-                fontSize: 15,
+                // fontSize: 15,
                 // fontWeight: 'bold',
                 color: '#ffffff'
               },
@@ -72,12 +72,12 @@ export default {
             yAxis: [
               {
                 title: {
-                  fontSize: 15,
+                  // fontSize: 15,
                   // fontWeight: 'bold',
                   color: '#ffffff'
                 },
                 label: {
-                  fontSize: 15,
+                  fontSize: 20,
                   fontWeight: 'bold',
                   color: '#ffffff'
                 },
@@ -123,6 +123,7 @@ export default {
             },
             series: {
               dataLabels: {
+                fontSize: 25,
                 color: '#ffffff',
                 visible: true,
                 stack: true,
@@ -131,23 +132,24 @@ export default {
               //   textStrokeColor: '#ffffff',
               //   shadowColor: '#ffffff',
               //   shadowBlur: 4,
-                // stackTotal: {
-                //   fontFamily: 'Verdana',
-                //   fontWeight: 14,
-                //   color: '#ffffff',
-                //   textBubble: {
-                //     visible: true,
-                //     paddingY: 6,
-                //     borderWidth: 3,
-                //     borderColor: '#00bcd4',
-                //     borderRadius: 7,
-                //     backgroundColor: '#041367',
-                //     shadowOffsetX: 0,
-                //     shadowOffsetY: 0,
-                //     shadowBlur: 0,
-                //     shadowColor: 'rgba(0, 0, 0, 0)'
-                //   }
-                // }
+                stackTotal: {
+                  // fontFamily: 'Verdana',
+                  fontSize: 25,
+                  fontWeight: 14,
+                  // color: '#ffffff',
+                  // textBubble: {
+                  //   visible: true,
+                  //   paddingY: 6,
+                  //   borderWidth: 3,
+                  //   borderColor: '#00bcd4',
+                  //   borderRadius: 7,
+                  //   backgroundColor: '#041367',
+                  //   shadowOffsetX: 0,
+                  //   shadowOffsetY: 0,
+                  //   shadowBlur: 0,
+                  //   shadowColor: 'rgba(0, 0, 0, 0)'
+                  // }
+                }
               }
             }
           }
