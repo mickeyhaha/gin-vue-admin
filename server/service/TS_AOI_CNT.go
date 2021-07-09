@@ -317,16 +317,14 @@ func GetTS_AOI_Spc4Chart(info request.TS_AOI_CNTSearch) (err error, list interfa
 	}
 	series = append(series, seri)
 
-	fmt.Printf("dateArr: %v", dateArr)
-	fmt.Printf("Data: %v", data)
-
 	chartDatas := make([]smt.ChartData, 0)
 	chartData := smt.ChartData{
 		Categories: dateArr,
 		Series: series,
 	}
 	chartDatas = append(chartDatas, chartData)
-	fmt.Printf("chartDatas: %v", chartDatas)
+
+	fmt.Printf("GetTS_AOI_Spc4Chart return: \n %v\n", chartDatas)
 
 	return err, chartDatas, total
 }

@@ -341,9 +341,9 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 	dateArr := make([]string, 0)
 
 	for i=0; i<total; i++ {
-		if entities[i].QtyCompleted == 0 {
-			continue
-		}
+		//if entities[i].QtyCompleted == 0 {
+		//	continue
+		//}
 
 		if  _, ok := lines[entities[i].LineName]; !ok {
 			lines[entities[i].LineName] = struct{}{}
@@ -411,11 +411,11 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 		Name: "效率%",
 		Data: efficients,
 	})
-	columnLineSeris := smt.ColumnLineSeries {
-		Column: series,
-		Line: seriesRate,
-	}
-	fmt.Println(columnLineSeris)
+	//columnLineSeris := smt.ColumnLineSeries {
+	//	Column: series,
+	//	Line: seriesRate,
+	//}
+	//fmt.Println(columnLineSeris)
 
 	// 车间产量
 	chartData := smt.ChartData{
@@ -453,6 +453,8 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 		Series: series2,
 	}
 	chartDatas = append(chartDatas, chartData2)
+
+	fmt.Printf("GetPUBMOrderProduce2InfoList4ChartDash return: %s\n", chartDatas)
 
 	return err, chartDatas, total
 }

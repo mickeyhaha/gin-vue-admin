@@ -435,5 +435,7 @@ func GetDCSSMTMachineEvent4ChartDash(info request.DCSSMTMachineEventSearch) (err
 	}
 	chartDatas = append(chartDatas, chartData)
 
+	fmt.Printf("GetDCSSMTMachineEvent4ChartDash return: %s\n", chartDatas)
+
 	return err, chartDatas, total
 }

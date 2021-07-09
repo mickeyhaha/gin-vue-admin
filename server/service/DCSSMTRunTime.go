@@ -421,6 +421,8 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	}
 	chartDatas = append(chartDatas, chartData3)
 
+	fmt.Printf("GetDCSSMTRunTime4ChartDash return: %s\n", chartDatas)
+
 	return err, chartDatas, total
 }
 

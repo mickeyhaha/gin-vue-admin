@@ -430,6 +430,8 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
+            console.log("getDCSSMTMachineEvent4ChartDash")
+            console.log(res)
             if (res.code == 0 && res.data.total != 0) {
                 const chartData = res.data.list[0]
                 commit("setDateMachineEvent4ChartDash", chartData)
@@ -446,6 +448,8 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
+            console.log("getDCSSMTRunTime4ChartDash")
+            console.log(res)
             if (res.code == 0 && res.data.total != 0) {
                 const chartData = res.data.list[0]
                 commit("setDateRunTime4ChartDash", chartData)
@@ -465,6 +469,7 @@ export const store = new Vuex.Store({
                 shift: formData.Shift,
                 workOrderNo: formData.WorkOrderNo
             });
+            console.log("getPUBMOrderProduce2InfoList4ChartDash")
             console.log(res)
             if (res.code == 0 && res.data.total != 0) {
                 const dateOutput4Chart = res.data.list[0]
@@ -480,14 +485,6 @@ export const store = new Vuex.Store({
             const date = new Date();
             formData.endDate = formatTimeToStr(date, "yyyy-MM-dd hh:mm:ss");
             let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
-            let hour = formData.endDate.substr(formData.endDate.indexOf(" ")+1, 2)
-            let min = formData.endDate.substr(formData.endDate.indexOf(":")+1, 2)
-            if (hour.substr(0, 1) == "0") {
-                hour = hour.substr(1, 1)
-            }
-            if (min.substr(0, 1) == "0") {
-                min = min.substr(1, 1)
-            }
             let t0 = formatTimeToStr(DateAdd("d", -1, dateStr), "yyyy-MM-dd")   // yesterday
             let t1 = dateStr + " 07:30:00"
             let t2 = dateStr + " 19:30:00"
@@ -498,18 +495,18 @@ export const store = new Vuex.Store({
             } else {
                 formData.startDate = t0 + " 19:30:00"
             }
-            if (process.env.NODE_ENV === 'development') {
-                formData.startDate = "2021-07-01 00:00:00"
-            }
-            console.log(formData.startDate)
-            console.log(formData.endDate)
+            // if (process.env.NODE_ENV === 'development') {
+            //     formData.startDate = "2021-07-01 00:00:00"
+            // }
+            // console.log(formData.startDate)
+            // console.log(formData.endDate)
             console.log("version_2.0")
             dispatch('getDeptLineSummary')
             // TODO
             // dispatch('getAoiRate4ChartDash', formData)
-            dispatch('getTS_AOI_Spc4Chart', formData)
+            // dispatch('getTS_AOI_Spc4Chart', formData)
             dispatch('getPUBMOrderProduce2InfoList4ChartDash', formData)
-            dispatch('getRejectRate4ChartDash', formData)
+            // dispatch('getRejectRate4ChartDash', formData)
             dispatch('getDCSSMTMachineEvent4ChartDash', formData)
             dispatch('getDCSSMTRunTime4ChartDash', formData)
         },
@@ -595,20 +592,20 @@ export const store = new Vuex.Store({
 
         // 定时刷新spc_dashboard
         // @deprected
-        async refreshSpcDashboard({ commit, dispatch }, formData) {
-            const date = new Date();
-            let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
-            // formData.startDate = dateStr + " 00:00:00"
-            formData.startDate = dateStr + " 00:00:00"
-            formData.endDate = dateStr + " 23:59:59"
-            console.log("version_1.7")
-            dispatch('getDeptLineSummary')
-            // TODO
-            dispatch('getTS_AOI_Spc4Chart', formData)
-            dispatch('getTS_AOI_SpcAvg4Chart', formData)
-            dispatch('getTS_AOI_SpcRage4Chart', formData)
-            dispatch('getTS_AOI_SpcVariance4Chart', formData)
-        },
+        // async refreshSpcDashboard({ commit, dispatch }, formData) {
+        //     const date = new Date();
+        //     let dateStr = formatTimeToStr(date, "yyyy-MM-dd");
+        //     // formData.startDate = dateStr + " 00:00:00"
+        //     formData.startDate = dateStr + " 00:00:00"
+        //     formData.endDate = dateStr + " 23:59:59"
+        //     console.log("version_1.7")
+        //     dispatch('getDeptLineSummary')
+        //     // TODO
+        //     dispatch('getTS_AOI_Spc4Chart', formData)
+        //     dispatch('getTS_AOI_SpcAvg4Chart', formData)
+        //     dispatch('getTS_AOI_SpcRage4Chart', formData)
+        //     dispatch('getTS_AOI_SpcVariance4Chart', formData)
+        // },
     },
     // 无法执行异步
     mutations: {
