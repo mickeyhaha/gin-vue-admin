@@ -364,7 +364,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	/// OEE = runRate * okRate
 	startTime, err2 := time.Parse(global.TimeBaseFmt, info.StartDate)
 	endTime, err3 := time.Parse(global.TimeBaseFmt, info.EndDate)
-	fmt.Printf("=========%s, %s", startTime, endTime)
+	fmt.Printf("=========%s, %s\n", startTime, endTime)
 	if err2 != nil || err3 != nil {
 		chartData3 := smt.ChartData{
 			Series: smt.Series{
@@ -382,7 +382,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	}
 	runTime := totalTime - stopTime
 
-	fmt.Printf("=========%f, %f, %f", runTime, stopTime, totalTime)
+	fmt.Printf("=========%f, %f, %f\n", runTime, stopTime, totalTime)
 
 	runRate := 1.0
 	if totalTime != 0 && runTime > 0 {
@@ -404,7 +404,7 @@ func GetDCSSMTRunTime4ChartDash(info request.DCSSMTRunTimeSearch) (err error, li
 	if totalCount != 0 && totalCount >= totalErrCount {
 		okRate = float64(totalCount - totalErrCount) / float64(totalCount)
 	}
-	fmt.Printf("=========%d, %d", totalCount, totalErrCount)
+	fmt.Printf("=========%d, %d\n", totalCount, totalErrCount)
 
 	oee := runRate * okRate * 100
 

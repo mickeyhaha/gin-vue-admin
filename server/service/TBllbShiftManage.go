@@ -78,10 +78,10 @@ func GetTBllbShiftManageInfoList(info request.TBllbShiftManageSearch) (err error
 		select  * from T_Bllb_ShiftManage
 	`)
 
-	if info.ShiftManageName != "" && info.ShiftManageCode != "" {
+	if info.ShiftManageCode != "" {
 		sql = fmt.Sprintf(`
-		select  * from T_Bllb_ShiftManage where ShiftManageCode = '%s' and ShiftManageName = '%s'
-	`, info.ShiftManageCode, info.ShiftManageName)
+		select  * from T_Bllb_ShiftManage where ShiftManageCode = '%s'
+	`, info.ShiftManageCode)
 	}
 
 	err = db.Raw(sql).Scan(&TSMs).Error

@@ -292,35 +292,40 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 	err, list, total = GetPUBMOrderProduce2InfoListByRange(info)
 	entities := list.([]model.PUBMOrderProduce2)
 
-	standardOutput := 2500
+	standardOutput := 2500.0
+	dayStandardOutput := 2500.0
+	nightStandardOutput := 1800.0
 
-	//shift := request.TBllbShiftManageSearch{}
-	//shift.ShiftManageCode = "白班"
-	//shift.ShiftManageName = "白班"
-	//err, days, _ := GetTBllbShiftManageInfoListByShift(shift)
-	//daysEntities := days.([]model.TBllbShiftManage)
-	//if len(daysEntities) == 0 {
-	//	fmt.Errorf("未配置白班信息")
-	//	//return err, chartDatas, 0
-	//} else {
-	//	standardOutput = daysEntities[0].TotalMente
-	//}
-	//
-	//shift.ShiftManageCode = "夜班"
-	//shift.ShiftManageName = "夜班"
-	//err, nights, _ := GetTBllbShiftManageInfoListByShift(shift)
-	//nightsEntities := nights.([]model.TBllbShiftManage)
-	//if len(nightsEntities) == 0 {
-	//	fmt.Errorf("未配置夜班信息")
-	//	//return err, chartDatas, 0
-	//} else {
-	//	standardOutput = nightsEntities[0].TotalMente
-	//}
-	//fmt.Println(standardOutput)
-	_, _, isDay:= GetNowShiftStartEndTime()
-	if !isDay {
-		standardOutput = 1800
+	shift := request.TBllbShiftManageSearch{}
+	shift.ShiftManageCode = "白班"
+	shift.ShiftManageName = "白班"
+	err, days, _ := GetTBllbShiftManageInfoListByShift(shift)
+	daysEntities := days.([]model.TBllbShiftManage)
+	if len(daysEntities) == 0 {
+		fmt.Errorf("未配置白班信息")
+		//return err, chartDatas, 0
+	} else {
+		dayStandardOutput = daysEntities[0].TotalMente
 	}
+
+	shift.ShiftManageCode = "夜班"
+	shift.ShiftManageName = "夜班"
+	err, nights, _ := GetTBllbShiftManageInfoListByShift(shift)
+	nightsEntities := nights.([]model.TBllbShiftManage)
+	if len(nightsEntities) == 0 {
+		fmt.Errorf("未配置夜班信息")
+		//return err, chartDatas, 0
+	} else {
+		nightStandardOutput = nightsEntities[0].TotalMente
+	}
+
+	_, _, isDay:= GetNowShiftStartEndTime()
+	if isDay {
+		standardOutput = dayStandardOutput
+	} else {
+		standardOutput = nightStandardOutput
+	}
+	fmt.Printf("%f, %f, current: %f\n", dayStandardOutput, nightStandardOutput, standardOutput)
 
 	var i int64
 	lines := make(map[string]struct{}, 0)
@@ -380,13 +385,13 @@ func GetPUBMOrderProduce2InfoList4ChartDash(info request.PUBMOrderProduce2Search
 			}
 			if j>0 {
 				//diff := math.Max(float64(standardOutput-subTotalComplete), 0)
-				data = append(data, float64(standardOutput))	 	// 距离标准产量的差距
+				data = append(data, standardOutput)	 	// 距离标准产量的差距
 			} else {
 				data = append(data, float64(subTotalComplete))
 				totalCompletedQty += float64(subTotalComplete)
 				//totalPlanedQty += float64(subTotalPlan)
 				if standardOutput>0 && duration > 0 {
-					eff := float64(subTotalComplete * 100)/(float64(standardOutput) * duration / 720.0)
+					eff := float64(subTotalComplete * 100)/(standardOutput * duration / 720.0)
 					efficients = append(efficients, eff)
 					totalEff += eff
 				}

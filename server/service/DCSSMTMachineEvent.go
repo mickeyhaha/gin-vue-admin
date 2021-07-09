@@ -131,7 +131,7 @@ func getAvailLineMachineEvent(info request.DCSSMTMachineEventSearch) (err error,
 	lineAvailMachineEvent = make(map[string]model.DCSSMTMachineEvent, 0)
 	for i:=0; i<len(DSMEs); i++ {
 		sql = fmt.Sprintf(`
-	     select o.LineName, max(TableNo) TableNo, o.MachineCode
+	     select o.LineName, min(TableNo) TableNo, o.MachineCode
 			from DCS_SMT_MachineEvent o WITH(NOLOCK)
 			where o.CreateTime >='%s' AND o.CreateTime <='%s' and o.MachineCode = %d and o.LineName = '%s' group by o.LineName, o.MachineCode
 		`, info.StartDate, info.EndDate, DSMEs[i].MachineCode, DSMEs[i].LineName)

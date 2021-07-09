@@ -162,25 +162,25 @@ export const store = new Vuex.Store({
         //     },
         // },
         dateOutput4ChartDash: {
-            categories: ['Line1', 'Line2'], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
+            categories: [], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
             series: [
-                    {
-                        name: '产量',
-                        data: [10, 20],
-                    },
-                    {
-                        name: '标准产量',
-                        data: [30, 30],
-                    }
+                    // {
+                    //     name: '产量',
+                    //     data: [10, 20],
+                    // },
+                    // {
+                    //     name: '标准产量',
+                    //     data: [30, 30],
+                    // }
             ],
         }, 
         dateOutputEff4ChartDash: {
-            categories: ['Line1', 'Line2'], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
+            categories: [], //'Line1', 'Line2', 'Line3', 'Line4', 'Line5'
             series: [
-                {
-                    name: '效率',
-                    data: [0, 0],
-                }
+                // {
+                //     name: '效率',
+                //     data: [0, 0],
+                // }
             ],
         },
         dateOutputAll4ChartDash: {
